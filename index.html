@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="theme-color" content="#3a6b3e" />
+<title>崂山野路向导 · 北九水 / 仰口 定制线路</title>
+<style>
+  /* ---------- 基础重置与变量 ---------- */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --green-deep: #2f5a3a;
+    --green: #3f7a4c;
+    --green-soft: #6ea578;
+    --green-bg: #eaf2e3;
+    --blue: #4f9fc7;
+    --blue-soft: #cfe6ee;
+    --yellow: #f1deaa;
+    --yellow-soft: #faf2dd;
+    --cream: #faf6ec;
+    --paper: #ffffff;
+    --ink: #2a3b2c;
+    --ink-soft: #5b6e5d;
+    --line: #d9e2d3;
+    --shadow: 0 4px 16px rgba(58, 90, 50, 0.08);
+    --shadow-hover: 0 8px 24px rgba(58, 90, 50, 0.15);
+    --radius: 14px;
+  }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
+                 "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink);
+    background: var(--cream);
+    line-height: 1.65;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+
+  /* ---------- 顶部导航 ---------- */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(250, 246, 236, 0.92);
+    backdrop-filter: saturate(180%) blur(10px);
+    -webkit-backdrop-filter: saturate(180%) blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    max-width: 920px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+    color: var(--green-deep);
+    font-size: 16px;
+  }
+  .brand .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 0 4px var(--green-bg);
+  }
+  .nav-links {
+    display: flex;
+    gap: 14px;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+  }
+  .nav-links a { padding: 4px 2px; transition: color .2s; }
+  .nav-links a:hover { color: var(--green); }
+  .nav-cta {
+    background: var(--green);
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  @media (max-width: 480px) {
+    .nav-links { display: none; }
+  }
+
+  /* ---------- 通用区段 ---------- */
+  .wrap { max-width: 920px; margin: 0 auto; padding: 0 16px; }
+  section { padding: 48px 0; }
+  .section-title {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .section-title h2 {
+    font-size: 24px;
+    color: var(--green-deep);
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
+  .section-title .badge {
+    font-size: 12px;
+    color: var(--green);
+    background: var(--green-bg);
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+  .section-sub { color: var(--ink-soft); font-size: 14px; margin-bottom: 24px; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(180deg, #eaf2e3 0%, #faf2dd 100%);
+    padding: 64px 0 56px;
+    border-bottom: 1px dashed var(--line);
+  }
+  .hero::before {
+    content: "⛰️🍄💧🌲";
+    position: absolute;
+    top: 12px; right: -10px;
+    font-size: 28px;
+    letter-spacing: 8px;
+    opacity: 0.35;
+    transform: rotate(8deg);
+  }
+  .hero-inner { text-align: left; max-width: 720px; }
+  .hero-tag {
+    display: inline-block;
+    background: var(--yellow);
+    color: #6b5418;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+    letter-spacing: 1px;
+  }
+  .hero h1 {
+    font-size: 32px;
+    line-height: 1.25;
+    color: var(--green-deep);
+    font-weight: 800;
+    margin-bottom: 14px;
+  }
+  .hero h1 span { color: var(--blue); }
+  .hero p.lead {
+    font-size: 16px;
+    color: var(--ink-soft);
+    margin-bottom: 24px;
+  }
+  .hero-cta {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 11px 18px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-primary {
+    background: var(--green);
+    color: #fff;
+    box-shadow: var(--shadow);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--green-deep);
+    border: 1.5px solid var(--green);
+  }
+  .btn-ghost:hover { background: var(--green-bg); }
+
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 28px;
+  }
+  .stat {
+    background: rgba(255,255,255,0.6);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 12px 10px;
+    text-align: center;
+  }
+  .stat .n { font-size: 20px; font-weight: 800; color: var(--green-deep); }
+  .stat .l { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
+
+  /* ---------- 线路卡片 ---------- */
+  .route {
+    background: var(--paper);
+    border-radius: 18px;
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+    padding: 22px;
+    margin-bottom: 20px;
+  }
+  .route-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .route-mark {
+    flex: 0 0 auto;
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: var(--green-bg);
+    color: var(--green-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 18px;
+  }
+  .route.mark-b .route-mark { background: var(--blue-soft); color: #1f5d80; }
+  .route h3 {
+    font-size: 19px;
+    color: var(--green-deep);
+    font-weight: 800;
+    line-height: 1.3;
+  }
+  .route h3 .sub {
+    display: block;
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-weight: 500;
+    margin-top: 3px;
+  }
+  .route-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12.5px;
+    background: var(--green-bg);
+    color: var(--green-deep);
+    font-weight: 600;
+  }
+  .tag.amber { background: var(--yellow-soft); color: #7d631b; }
+  .tag.blue { background: var(--blue-soft); color: #1f5d80; }
+
+  .route-desc {
+    color: var(--ink-soft);
+    font-size: 14.5px;
+    margin-bottom: 18px;
+  }
+  .route-desc strong { color: var(--green-deep); font-weight: 700; }
+
+  /* 距离 chip */
+  .dist-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .chip {
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: var(--cream);
+    border: 1.5px solid var(--line);
+    color: var(--ink-soft);
+    font-weight: 700;
+    font-size: 13.5px;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .chip:hover { border-color: var(--green-soft); color: var(--green); }
+  .chip.active {
+    background: var(--green);
+    color: #fff;
+    border-color: var(--green);
+  }
+  .route.mark-b .chip.active { background: var(--blue); border-color: var(--blue); }
+
+  .dist-panel {
+    background: var(--green-bg);
+    border-radius: 14px;
+    padding: 16px;
+    display: none;
+    animation: fadeIn .25s ease;
+  }
+  .route.mark-b .dist-panel { background: var(--blue-soft); }
+  .dist-panel.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  .panel-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .panel-head .km {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--green-deep);
+  }
+  .route.mark-b .panel-head .km { color: #1f5d80; }
+  .panel-head .rise {
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .panel-head .rise b { color: #c2630a; }
+  .panel-title {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin: 8px 0 6px;
+    font-weight: 600;
+  }
+  .waypoints {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .wp {
+    background: rgba(255,255,255,0.85);
+    border: 1px solid rgba(58, 90, 50, 0.1);
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12.5px;
+    color: var(--ink);
+  }
+  .wp::before { content: "·"; margin-right: 4px; color: var(--green); font-weight: 800; }
+  .route.mark-b .wp::before { color: var(--blue); }
+
+  /* ---------- 对比表 ---------- */
+  .compare {
+    overflow-x: auto;
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    box-shadow: var(--shadow);
+  }
+  table.cmp {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    min-width: 540px;
+  }
+  table.cmp th, table.cmp td {
+    text-align: left;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  table.cmp thead th {
+    background: var(--green-bg);
+    color: var(--green-deep);
+    font-weight: 800;
+    font-size: 13px;
+  }
+  table.cmp tbody th {
+    background: var(--cream);
+    color: var(--ink-soft);
+    font-weight: 600;
+    width: 110px;
+  }
+  table.cmp tbody tr:last-child td,
+  table.cmp tbody tr:last-child th { border-bottom: none; }
+  table.cmp .cell-a { color: var(--green-deep); font-weight: 700; }
+  table.cmp .cell-b { color: #1f5d80; font-weight: 700; }
+
+  /* ---------- 装备清单 ---------- */
+  .gear-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 600px) {
+    .gear-grid { grid-template-columns: 1fr; }
+  }
+  .gear-card {
+    background: var(--paper);
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    padding: 18px;
+    box-shadow: var(--shadow);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .gear-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+  .gear-card .gear-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .gear-icon {
+    width: 32px; height: 32px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+  .gear-icon.must { background: var(--green-bg); }
+  .gear-icon.water { background: var(--blue-soft); }
+  .gear-icon.food { background: var(--yellow-soft); }
+  .gear-icon.extras { background: #f4e6e0; }
+  .gear-card h4 {
+    font-size: 15px;
+    color: var(--green-deep);
+    font-weight: 800;
+  }
+  .gear-card .hint { font-size: 12px; color: var(--ink-soft); }
+  .gear-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .gear-list li {
+    background: var(--cream);
+    border: 1px solid var(--line);
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+    color: var(--ink);
+  }
+  .gear-list li::before { content: "✓ "; color: var(--green); font-weight: 800; }
+  .gear-card.water .gear-list li::before { content: "💧 "; }
+  .gear-card.food .gear-list li::before { content: "🍞 "; }
+  .gear-card.extras .gear-list li::before { content: "➕ "; color: #b06a3a; }
+
+  /* ---------- FAQ ---------- */
+  .faq {
+    background: var(--paper);
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .faq details {
+    border-bottom: 1px solid var(--line);
+  }
+  .faq details:last-child { border-bottom: none; }
+  .faq summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-weight: 700;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    transition: background .2s;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary:hover { background: var(--green-bg); }
+  .faq summary::after {
+    content: "+";
+    font-size: 22px;
+    color: var(--green);
+    line-height: 1;
+    transition: transform .2s;
+  }
+  .faq details[open] summary::after { transform: rotate(45deg); }
+  .faq .answer {
+    padding: 0 16px 14px;
+    color: var(--ink-soft);
+    font-size: 14px;
+  }
+
+  /* ---------- 联系 ---------- */
+  .contact {
+    background: linear-gradient(135deg, #3f7a4c 0%, #2f5a3a 100%);
+    color: #f3f7ee;
+    border-radius: 18px;
+    padding: 28px 22px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .contact::before {
+    content: "📞🧭🍃";
+    position: absolute;
+    top: 12px; right: 18px;
+    font-size: 22px;
+    opacity: 0.3;
+    letter-spacing: 6px;
+  }
+  .contact h3 {
+    font-size: 22px;
+    margin-bottom: 6px;
+    font-weight: 800;
+  }
+  .contact p { opacity: 0.88; font-size: 14px; margin-bottom: 18px; }
+  .contact-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .contact-card {
+    flex: 1 1 220px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 12px;
+    padding: 12px 14px;
+  }
+  .contact-card .lbl { font-size: 12px; opacity: 0.7; }
+  .contact-card .val { font-size: 17px; font-weight: 700; margin-top: 2px; }
+
+  /* ---------- 页脚 ---------- */
+  footer {
+    text-align: center;
+    padding: 28px 16px 36px;
+    color: var(--ink-soft);
+    font-size: 12.5px;
+  }
+  footer .mini { opacity: 0.6; margin-top: 4px; }
+
+  /* ---------- 滚动渐入 ---------- */
+  .reveal { opacity: 0; transform: translateY(12px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* ---------- 提示气泡 ---------- */
+  .tip {
+    margin-top: 12px;
+    background: #fff8e3;
+    border: 1px dashed #d6b85a;
+    color: #6e5317;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  .tip b { color: #8a6512; }
+
+</style>
+</head>
+<body>
+
+<!-- ====== 顶部导航 ====== -->
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand"><span class="dot"></span> 崂山野路向导</div>
+    <nav class="nav-links" aria-label="主导航">
+      <a href="#route-a">线路A</a>
+      <a href="#route-b">线路B</a>
+      <a href="#compare">对比</a>
+      <a href="#gear">装备</a>
+      <a href="#faq">常见问题</a>
+    </nav>
+    <a class="nav-cta" href="#contact">预约 →</a>
+  </div>
+</header>
+
+<!-- ====== Hero ====== -->
+<section class="hero">
+  <div class="wrap hero-inner">
+    <span class="hero-tag">本地人带路 · 玩真正的崂山</span>
+    <h1>走一条<span>野路</span>进崂山<br/>玩水、找蘑菇、观石头</h1>
+    <p class="lead">北九水、仰口两条定制线路，按体力挑距离。我是小赵，青岛本地人，常年在山里走，知道哪条路孩子能玩、哪段水最清、哪个坡值得停一下拍照。</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#route-a">先看线路</a>
+      <a class="btn btn-ghost" href="#contact">直接约时间</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="n">2</div><div class="l">条主推野路线</div></div>
+      <div class="stat"><div class="n">7</div><div class="l">档距离可挑</div></div>
+      <div class="stat"><div class="n">6+</div><div class="l">年带山经验</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 线路 A：北九水 ====== -->
+<section id="route-a">
+  <div class="wrap">
+    <div class="section-title reveal">
+      <h2>线路 A · 北九水</h2>
+      <span class="badge">野路线 · 玩水找蘑菇</span>
+    </div>
+    <p class="section-sub reveal">景区蔚竹观出发，经留韵亭转入野路，串起双石屋到鸣泉院一段。整条线离景区近、补给方便，难度低，<strong>带 6 岁以上孩子没问题</strong>。</p>
+
+    <div class="route mark-a reveal">
+      <div class="route-head">
+        <div class="route-mark">A</div>
+        <h3>双石屋 — 鸣泉院 野路线
+          <span class="sub">起点：蔚竹观（北九水景区） · 玩水 / 找蘑菇 / 观石头</span>
+        </h3>
+      </div>
+      <div class="route-meta">
+        <span class="tag">🎒 适合亲子</span>
+        <span class="tag amber">⭐ 难度：低</span>
+        <span class="tag blue">💧 玩水段</span>
+        <span class="tag">🍄 可找蘑菇灵芝</span>
+        <span class="tag">🪨 石头景观丰富</span>
+        <span class="tag">📍 离景区近，补给方便</span>
+      </div>
+      <p class="route-desc">从<strong>蔚竹观</strong>入山，过<strong>留韵亭</strong>后就离开主景区栈道，走真正的野路。一路林荫、有水、有大石头，孩子走起来不累，玩的时间比走的时间多。四档距离自由选，按当天体力灵活安排。</p>
+
+      <div class="dist-tabs" role="tablist" data-route="a">
+        <button class="chip active" data-target="a-4">4 km</button>
+        <button class="chip" data-target="a-6">6 km</button>
+        <button class="chip" data-target="a-8">8 km</button>
+        <button class="chip" data-target="a-10">10 km</button>
+      </div>
+
+      <!-- 4 km -->
+      <div class="dist-panel active" id="a-4">
+        <div class="panel-head">
+          <span class="km">4.4 km</span>
+          <span class="rise">累计爬升 <b>207 m</b></span>
+        </div>
+        <div class="panel-title">途经点</div>
+        <div class="waypoints">
+          <span class="wp">将军崮</span><span class="wp">四水</span><span class="wp">双石屋村</span>
+          <span class="wp">一步三回头</span><span class="wp">山高水长</span><span class="wp">冷翠峡</span>
+        </div>
+        <div class="tip">💡 <b>推荐家庭组</b> · 爬升平缓、水声不断、阴凉多，最舒服的一档。</div>
+      </div>
+
+      <!-- 6 km -->
+      <div class="dist-panel" id="a-6">
+        <div class="panel-head">
+          <span class="km">约 6 km</span>
+          <span class="rise">累计爬升 <b>~330 m</b>（中档参考值）</span>
+        </div>
+        <div class="panel-title">线路特点</div>
+        <div class="waypoints">
+          <span class="wp">蔚竹观</span><span class="wp">冷翠峡</span><span class="wp">四水</span>
+          <span class="wp">双石屋村</span><span class="wp">一步三回头</span><span class="wp">山高水长</span>
+        </div>
+        <div class="tip">💡 <b>平衡款</b> · 4 km 不够尽兴、8 km 又怕累，6 km 是大多数家庭的最优解。</div>
+      </div>
+
+      <!-- 8 km -->
+      <div class="dist-panel" id="a-8">
+        <div class="panel-head">
+          <span class="km">8.83 km</span>
+          <span class="rise">累计爬升 <b>422 m</b></span>
+        </div>
+        <div class="panel-title">途经点</div>
+        <div class="waypoints">
+          <span class="wp">河东村</span><span class="wp">卧驼峰</span><span class="wp">飞龙瀑</span>
+          <span class="wp">布谷鸣春</span><span class="wp">将军崮</span><span class="wp">九水游览区</span>
+          <span class="wp">蔚竹庵</span><span class="wp">俱化潭</span><span class="wp">山高水长</span>
+          <span class="wp">靛缸湾</span>
+        </div>
+        <div class="tip">💡 <b>进阶款</b> · 多了一段卧驼峰和飞龙瀑，山势更立体，摄影出片多。</div>
+      </div>
+
+      <!-- 10 km -->
+      <div class="dist-panel" id="a-10">
+        <div class="panel-head">
+          <span class="km">9.08 km</span>
+          <span class="rise">累计爬升 <b>604 m</b></span>
+        </div>
+        <div class="panel-title">途经点</div>
+        <div class="waypoints">
+          <span class="wp">河东村</span><span class="wp">卧驼峰</span><span class="wp">飞龙瀑</span>
+          <span class="wp">九水游览区</span><span class="wp">一步三回头</span><span class="wp">鸣泉院</span>
+          <span class="wp">靛缸湾</span><span class="wp">潮音瀑</span>
+        </div>
+        <div class="tip">💡 <b>全段</b> · 一路直插鸣泉院+潮音瀑，爬升明显，适合有运动习惯的成人或大孩子。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 线路 B：仰口 ====== -->
+<section id="route-b" style="background: var(--green-bg); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+  <div class="wrap">
+    <div class="section-title reveal">
+      <h2>线路 B · 仰口</h2>
+      <span class="badge" style="background:var(--blue-soft); color:#1f5d80;">野路线 · 玩水摘茶</span>
+    </div>
+    <p class="section-sub reveal">从碧月潭入山，串起黑龙潭、飞碟石、芝麻石。<strong>纯野路</strong>，难度中等，野趣比线路A更浓——有茶园、有山涧、石头造型更奇。</p>
+
+    <div class="route mark-b reveal">
+      <div class="route-head">
+        <div class="route-mark">B</div>
+        <h3>碧月潭 — 黑龙潭 — 飞碟石 — 芝麻石 野路线
+          <span class="sub">起点：仰口 · 玩水 / 摘茶叶 / 采蘑菇 / 观石头</span>
+        </h3>
+      </div>
+      <div class="route-meta">
+        <span class="tag blue">⭐ 难度：中等（纯野路）</span>
+        <span class="tag">💧 玩水段</span>
+        <span class="tag">🍵 可摘茶叶</span>
+        <span class="tag">🍄 采蘑菇季限定</span>
+        <span class="tag">🪨 飞碟石 / 芝麻石造型独特</span>
+        <span class="tag">🧗 需一定体力</span>
+      </div>
+      <p class="route-desc">仰口这一段比北九水更野，<strong>全程没有景区栈道</strong>，要手脚并用。茶园边能闻到茶香，山涧里能玩水，飞碟石和芝麻石是出片点。体力一般的家庭，建议先从 8 km 开始尝试。</p>
+
+      <div class="dist-tabs" role="tablist" data-route="b">
+        <button class="chip active" data-target="b-8">8 km</button>
+        <button class="chip" data-target="b-10">10 km</button>
+        <button class="chip" data-target="b-12">12 km</button>
+      </div>
+
+      <!-- 8 km -->
+      <div class="dist-panel active" id="b-8">
+        <div class="panel-head">
+          <span class="km">9.08 km</span>
+          <span class="rise">累计爬升 <b>454 m</b></span>
+        </div>
+        <div class="panel-title">途经点</div>
+        <div class="waypoints">
+          <span class="wp">芝麻石北侧</span><span class="wp">仰口游览区北侧</span>
+        </div>
+        <div class="tip">💡 <b>入门款</b> · 爬升相对温和，第一次走野路推荐这一档，先熟悉路况。</div>
+      </div>
+
+      <!-- 10 km -->
+      <div class="dist-panel" id="b-10">
+        <div class="panel-head">
+          <span class="km">约 10 km</span>
+          <span class="rise">累计爬升 <b>~660 m</b>（参考值）</span>
+        </div>
+        <div class="panel-title">线路特点</div>
+        <div class="waypoints">
+          <span class="wp">防火屋</span><span class="wp">芝麻石</span><span class="wp">仰口游览区北侧</span>
+          <span class="wp">黑龙潭</span>
+        </div>
+        <div class="tip">💡 <b>经典款</b> · 加入黑龙潭段，野趣显著提升，是多数人选的距离。</div>
+      </div>
+
+      <!-- 12 km -->
+      <div class="dist-panel" id="b-12">
+        <div class="panel-head">
+          <span class="km">12.37 km</span>
+          <span class="rise">累计爬升 <b>860 m</b></span>
+        </div>
+        <div class="panel-title">途经点</div>
+        <div class="waypoints">
+          <span class="wp">防火屋</span><span class="wp">芝麻石</span><span class="wp">如意石</span>
+          <span class="wp">仰口游览区北侧</span><span class="wp">滑溜口</span>
+        </div>
+        <div class="tip">💡 <b>全段</b> · 加入了如意石和滑溜口，爬升 800+ 米，建议有越野经验或经常锻炼的朋友。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 对比表 ====== -->
+<section id="compare">
+  <div class="wrap">
+    <div class="section-title reveal">
+      <h2>两条线怎么选？</h2>
+      <span class="badge">一张表看明白</span>
+    </div>
+    <p class="section-sub reveal">不知道走哪条？看完这个对比图基本就有数了。</p>
+    <div class="compare reveal">
+      <table class="cmp">
+        <thead>
+          <tr>
+            <th></th>
+            <th>线路 A · 北九水</th>
+            <th>线路 B · 仰口</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>主题</th>
+            <td class="cell-a">玩水 · 找蘑菇/灵芝 · 观石头</td>
+            <td class="cell-b">玩水 · 摘茶叶 · 采蘑菇 · 观石头</td>
+          </tr>
+          <tr>
+            <th>距离</th>
+            <td class="cell-a">4 / 6 / 8 / 10 km</td>
+            <td class="cell-b">8 / 10 / 12 km</td>
+          </tr>
+          <tr>
+            <th>难度</th>
+            <td class="cell-a">⭐ 低（可带 6 岁以上孩子）</td>
+            <td class="cell-b">⭐⭐ 中等（纯野路，需一定体力）</td>
+          </tr>
+          <tr>
+            <th>路况</th>
+            <td class="cell-a">景区栈道 + 野路混合</td>
+            <td class="cell-b">全程野路</td>
+          </tr>
+          <tr>
+            <th>补给</th>
+            <td class="cell-a">离景区近，补给方便</td>
+            <td class="cell-b">补给点少，自备要足</td>
+          </tr>
+          <tr>
+            <th>最大爬升</th>
+            <td class="cell-a">604 m（10 km 段）</td>
+            <td class="cell-b">860 m（12 km 段）</td>
+          </tr>
+          <tr>
+            <th>适合谁</th>
+            <td class="cell-a">带孩子的家庭 / 第一次走野路</td>
+            <td class="cell-b">户外爱好者 / 有运动习惯的朋友</td>
+          </tr>
+          <tr>
+            <th>最佳季节</th>
+            <td class="cell-a">4–10 月</td>
+            <td class="cell-b">4–10 月（采蘑菇季 7–9 月）</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 装备清单 ====== -->
+<section id="gear" style="background: var(--yellow-soft); border-top:1px solid var(--line);">
+  <div class="wrap">
+    <div class="section-title reveal">
+      <h2>装备清单</h2>
+      <span class="badge" style="background:#fff; color:#7d631b;">按需勾选 · 别忘充电宝</span>
+    </div>
+    <p class="section-sub reveal">北九水温和些装备可减半，仰口野路必须带齐。下面按"必带 / 玩水装 / 补给 / 推荐补充"四档分好了，照着装就行。</p>
+
+    <div class="gear-grid">
+      <!-- 必带 -->
+      <div class="gear-card reveal">
+        <div class="gear-head">
+          <div class="gear-icon must">🧤</div>
+          <div>
+            <h4>必带</h4>
+            <div class="hint">走野路的安全底线</div>
+          </div>
+        </div>
+        <ul class="gear-list">
+          <li>手套</li><li>登山杆</li><li>登山帽</li><li>护膝</li>
+          <li>防晒衣</li><li>登山鞋</li><li>长裤</li><li>充电宝</li>
+        </ul>
+      </div>
+
+      <!-- 玩水装 -->
+      <div class="gear-card water reveal">
+        <div class="gear-head">
+          <div class="gear-icon water">🩱</div>
+          <div>
+            <h4>玩水装</h4>
+            <div class="hint">线路含玩水段必带</div>
+          </div>
+        </div>
+        <ul class="gear-list">
+          <li>泳裤</li><li>泳衣</li><li>泳镜</li>
+        </ul>
+      </div>
+
+      <!-- 补给 -->
+      <div class="gear-card food reveal">
+        <div class="gear-head">
+          <div class="gear-icon food">🥪</div>
+          <div>
+            <h4>补给</h4>
+            <div class="hint">建议每人 1.5L 水起</div>
+          </div>
+        </div>
+        <ul class="gear-list">
+          <li>水</li><li>电解质饮料</li><li>面包</li><li>香肠</li>
+        </ul>
+      </div>
+
+      <!-- 推荐补充 -->
+      <div class="gear-card extras reveal">
+        <div class="gear-head">
+          <div class="gear-icon extras">➕</div>
+          <div>
+            <h4>推荐补充</h4>
+            <div class="hint">让旅程舒服很多的物件</div>
+          </div>
+        </div>
+        <ul class="gear-list">
+          <li>速干毛巾</li><li>雨衣 / 雨伞</li><li>防蚊喷雾</li>
+          <li>创可贴 / 碘伏</li><li>小型急救包</li><li>头灯 / 手电</li>
+          <li>垃圾袋（带下来）</li><li>防晒霜</li><li>能量棒 / 巧克力</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== FAQ ====== -->
+<section id="faq">
+  <div class="wrap">
+    <div class="section-title reveal">
+      <h2>常见问题</h2>
+      <span class="badge">约之前看一眼</span>
+    </div>
+    <div class="faq reveal">
+      <details>
+        <summary>孩子多大能参加？</summary>
+        <div class="answer">线路A（北九水）建议 <b>6 岁以上</b>，4–6 km 段对小朋友很友好；线路B（仰口）路况更野，建议 <b>10 岁以上</b>或有一定户外经验的孩子。出发前告诉我孩子年龄和身高，我再帮你定距离。</div>
+      </details>
+      <details>
+        <summary>下雨天怎么办？</summary>
+        <div class="answer">小雨/阵雨不影响，照常出发（带好雨衣）；<b>中到大雨、雷电预警</b> 我会主动联系改期或取消，<b>不收任何费用</b>。雨后路滑，野路难度会上一档，孩子组建议直接改期。</div>
+      </details>
+      <details>
+        <summary>有没有保险？需要签什么吗？</summary>
+        <div class="answer">每次出行我都为每位参与者购买 <b>一日户外意外险</b>（费用已包含在向导费里），出发前一天会发电子保单。出发前会签一份简单的 <b>风险告知书</b>，主要是确认已知风险、家长同意孩子参加等。</div>
+      </details>
+      <details>
+        <summary>怎么预约？几个人成行？</summary>
+        <div class="answer">微信或电话都行，告诉我<b>想走哪条线 + 大致日期 + 几个人（含几大几小）</b> 即可。<b>2 人成行、6 人封顶</b>，人少走得更尽兴。旺季（7–8 月、十一）请提前 3–5 天约。</div>
+      </details>
+      <details>
+        <summary>费用怎么收？包含什么？</summary>
+        <div class="answer">向导费按线路和距离分档，含<b>全程带队 + 路线规划 + 装备建议 + 户外险</b>。不含：交通、餐食、景区门票（如有）、补给品。需要我推荐拼车或附近农家乐也可以。</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 联系 ====== -->
+<section id="contact">
+  <div class="wrap">
+    <div class="contact reveal">
+      <h3>约一条你的崂山野路</h3>
+      <p>告诉我日期、几个人、想走哪条，剩下的交给我。</p>
+      <div class="contact-row">
+        <div class="contact-card">
+          <div class="lbl">📞 电话 / 手机</div>
+          <div class="val">138-XXXX-XXXX</div>
+        </div>
+        <div class="contact-card">
+          <div class="lbl">💬 微信</div>
+          <div class="val">qingdao-laoshan</div>
+        </div>
+        <div class="contact-card">
+          <div class="lbl">📍 服务范围</div>
+          <div class="val">青岛崂山 · 全年可约</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>© 青岛崂山 · 野路向导小赵</div>
+  <div class="mini">本页面仅作线路介绍与售前沟通，最终线路以现场评估为准</div>
+</footer>
+
+<script>
+  // 距离 chip 切换
+  document.querySelectorAll('.dist-tabs').forEach(function(group){
+    group.querySelectorAll('.chip').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        // 同组内的 active 切换
+        group.querySelectorAll('.chip').forEach(function(b){ b.classList.remove('active'); });
+        btn.classList.add('active');
+        // 找到所在 .route 内的所有 panel
+        var route = group.closest('.route');
+        var target = btn.getAttribute('data-target');
+        route.querySelectorAll('.dist-panel').forEach(function(p){
+          p.classList.remove('active');
+          if (p.id === target) p.classList.add('active');
+        });
+      });
+    });
+  });
+
+  // 滚动渐入
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+</script>
+
+</body>
+</html>
