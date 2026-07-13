@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台风一走，青岛沙滩变"海鲜自助餐"</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap');
+
+  :root{
+    --deep-sea: #0B3B54;
+    --deep-sea-2: #123F5C;
+    --foam: #F3F6EC;
+    --sand: #E8C88A;
+    --coral: #E8623F;
+    --seaweed: #3C6E5C;
+    --storm: #6E8798;
+    --ink: #0D2B36;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--foam);
+    color: var(--ink);
+    font-family: 'Noto Sans SC', sans-serif;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+  h1,h2,h3,.display{
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 900;
+    letter-spacing: 0.01em;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position: relative;
+    min-height: 92vh;
+    background: linear-gradient(180deg, var(--deep-sea) 0%, var(--deep-sea-2) 55%, #1B5478 100%);
+    color: var(--foam);
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align:center;
+    padding: 80px 24px 140px;
+    overflow: hidden;
+  }
+  .hero .eyebrow{
+    font-size: 14px;
+    letter-spacing: 0.35em;
+    color: var(--sand);
+    margin-bottom: 22px;
+    text-transform: uppercase;
+  }
+  .hero h1{
+    font-size: clamp(40px, 7vw, 92px);
+    line-height: 1.15;
+    margin: 0 0 20px;
+    text-shadow: 0 6px 30px rgba(0,0,0,0.25);
+  }
+  .hero h1 .accent{ color: var(--coral); }
+  .hero p.sub{
+    max-width: 640px;
+    font-size: clamp(16px, 2vw, 20px);
+    color: #CFE3E8;
+    margin: 0 auto;
+  }
+  .hero .tag-row{
+    margin-top: 36px;
+    display:flex; gap:12px; flex-wrap:wrap; justify-content:center;
+  }
+  .hero .tag{
+    border: 1px solid rgba(243,246,236,0.35);
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-size: 13px;
+    color: var(--foam);
+    background: rgba(255,255,255,0.05);
+  }
+
+  .waves{
+    position:absolute; left:0; right:0; bottom:-2px; width:100%; line-height:0;
+  }
+  .waves svg{ width:100%; height: 110px; display:block; }
+
+  /* floating bubbles */
+  .bubble{
+    position:absolute; border-radius:50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.55), rgba(255,255,255,0.05));
+    animation: float 9s ease-in-out infinite;
+  }
+  @keyframes float{
+    0%,100%{ transform: translateY(0px); }
+    50%{ transform: translateY(-26px); }
+  }
+
+  /* ---------- SECTION SHELL ---------- */
+  section{
+    padding: 96px 24px;
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+  .section-head{
+    display:flex; align-items:baseline; gap:16px; margin-bottom:48px;
+    border-bottom: 3px solid var(--ink);
+    padding-bottom: 18px;
+  }
+  .section-num{
+    font-family:'Noto Serif SC',serif; font-weight:900; font-size:15px;
+    color: var(--coral);
+    letter-spacing: 0.1em;
+  }
+  .section-head h2{
+    font-size: clamp(28px, 4vw, 42px);
+    margin: 0;
+    color: var(--deep-sea);
+  }
+  .section-desc{
+    color: var(--storm);
+    font-size: 16px;
+    margin-top: -30px;
+    margin-bottom: 44px;
+  }
+
+  /* ---------- 现象 ---------- */
+  .story-card{
+    background: white;
+    border-radius: 18px;
+    padding: 36px;
+    box-shadow: 0 20px 50px -30px rgba(11,59,84,0.4);
+    border-left: 6px solid var(--coral);
+  }
+  .story-card p{ margin: 0 0 14px; font-size: 17px; }
+  .story-card p:last-child{ margin-bottom:0; }
+  .stat-row{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 32px;
+  }
+  .stat{
+    background: var(--deep-sea);
+    color: var(--foam);
+    border-radius: 14px;
+    padding: 24px 18px;
+    text-align:center;
+  }
+  .stat .num{
+    font-family:'Noto Serif SC',serif; font-weight:900;
+    font-size: 34px; color: var(--sand);
+    display:block;
+  }
+  .stat .label{ font-size:13px; color:#CFE3E8; margin-top:6px; }
+
+  /* ---------- 原因 cards ---------- */
+  .reason-grid{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  .reason-card{
+    background: white;
+    border-radius: 16px;
+    padding: 28px;
+    position:relative;
+    transition: transform .25s ease, box-shadow .25s ease;
+    box-shadow: 0 10px 30px -20px rgba(11,59,84,0.3);
+  }
+  .reason-card:hover{ transform: translateY(-6px); box-shadow: 0 20px 40px -20px rgba(11,59,84,0.45); }
+  .reason-card .icon{
+    width:52px; height:52px;
+    border-radius: 14px;
+    display:flex; align-items:center; justify-content:center;
+    font-size: 26px;
+    background: var(--sand);
+    margin-bottom: 16px;
+  }
+  .reason-card h3{ font-size:19px; margin: 0 0 10px; color: var(--deep-sea); }
+  .reason-card p{ margin:0; color: var(--ink); font-size: 15px; }
+
+  /* ---------- 地点 map list ---------- */
+  .map-wrap{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .spot{
+    display:grid;
+    grid-template-columns: 90px 1fr auto;
+    align-items:center;
+    gap: 20px;
+    background: white;
+    border-radius: 14px;
+    padding: 18px 24px;
+    border: 1px solid #E1E7DC;
+  }
+  .spot.featured{
+    border: 2px solid var(--coral);
+    background: linear-gradient(90deg, rgba(232,98,63,0.06), white 30%);
+  }
+  .spot .zone{
+    font-family:'Noto Serif SC',serif; font-weight:700;
+    color: var(--seaweed);
+    font-size: 14px;
+    text-align:center;
+    background: #E4EFE7;
+    border-radius: 10px;
+    padding: 10px 6px;
+  }
+  .spot.featured .zone{ background: var(--coral); color:white; }
+  .spot h4{ margin:0 0 4px; font-size:17px; color: var(--deep-sea); }
+  .spot .meta{ font-size: 13px; color: var(--storm); }
+  .spot .catch{
+    font-size: 13px;
+    color: var(--ink);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  /* ---------- 攻略 timeline ---------- */
+  .guide-grid{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+  .guide-card{
+    background: var(--deep-sea);
+    color: var(--foam);
+    border-radius: 16px;
+    padding: 26px 20px;
+  }
+  .guide-card .step{ font-size: 12px; letter-spacing:.15em; color: var(--sand); margin-bottom:10px; }
+  .guide-card h3{ font-size:17px; margin:0 0 10px; }
+  .guide-card p{ font-size: 13.5px; color:#CFE3E8; margin:0; }
+
+  .tool-tags{ display:flex; flex-wrap:wrap; gap:10px; margin-top:36px; }
+  .tool-tag{
+    background: var(--sand);
+    color: var(--ink);
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  /* ---------- 注意事项 ---------- */
+  .warn-section{
+    background: var(--ink);
+    color: var(--foam);
+    border-radius: 28px;
+    margin: 0 24px 96px;
+    padding: 64px 40px;
+  }
+  .warn-section .section-head{ border-bottom-color: rgba(255,255,255,0.2); }
+  .warn-section .section-head h2{ color: var(--foam); }
+  .warn-grid{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .warn-card{
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    padding: 22px;
+  }
+  .warn-card .mark{
+    color: var(--coral);
+    font-family:'Noto Serif SC',serif;
+    font-weight:900;
+    font-size: 20px;
+    margin-bottom: 8px;
+    display:block;
+  }
+  .warn-card p{ margin:0; font-size:14.5px; color:#D8E3E0; }
+
+  footer{
+    text-align:center;
+    padding: 40px 24px 60px;
+    color: var(--storm);
+    font-size: 13px;
+  }
+
+  @media (max-width: 780px){
+    .reason-grid, .warn-grid{ grid-template-columns: 1fr; }
+    .guide-grid{ grid-template-columns: 1fr 1fr; }
+    .stat-row{ grid-template-columns: 1fr; }
+    .spot{ grid-template-columns: 60px 1fr; }
+    .spot .catch{ grid-column: 1 / -1; text-align:left; margin-top:6px; }
+    .warn-section{ margin: 0 12px 60px; padding: 48px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="bubble" style="width:18px;height:18px; top:18%; left:12%; animation-delay:0s;"></div>
+  <div class="bubble" style="width:12px;height:12px; top:30%; left:78%; animation-delay:1.2s;"></div>
+  <div class="bubble" style="width:26px;height:26px; top:60%; left:85%; animation-delay:2.4s;"></div>
+  <div class="bubble" style="width:14px;height:14px; top:70%; left:8%; animation-delay:3.6s;"></div>
+  <div class="bubble" style="width:20px;height:20px; top:15%; left:50%; animation-delay:.8s;"></div>
+
+  <div class="eyebrow">台风走后 · 青岛海边奇观</div>
+  <h1>大风一停<br>沙滩秒变<span class="accent">"海鲜自助餐"</span></h1>
+  <p class="sub">每次台风扫过黄海，青岛沿海总会上演同一出戏：海水退去，蛤蜊、海蛎子、螃蟹密密麻麻铺满沙滩，市民提着桶、开着三轮车蜂拥而至——这场"天上掉海鲜"的狂欢，到底是怎么回事？</p>
+  <div class="tag-row">
+    <span class="tag">🌊 现象实录</span>
+    <span class="tag">🔍 原因揭秘</span>
+    <span class="tag">📍 赶海地图</span>
+    <span class="tag">⚠️ 安全提醒</span>
+  </div>
+
+  <div class="waves">
+    <svg viewBox="0 0 1440 110" preserveAspectRatio="none">
+      <path d="M0,50 C240,110 480,0 720,40 C960,80 1200,10 1440,50 L1440,110 L0,110 Z" fill="#F3F6EC"></path>
+    </svg>
+  </div>
+</div>
+
+<!-- 01 现象 -->
+<section id="phenomenon">
+  <div class="section-head">
+    <span class="section-num">01 · 现场直击</span>
+    <h2>海军公园"海鲜自助"名场面</h2>
+  </div>
+  <div class="story-card">
+    <p>2022年台风"梅花"离境后，黄岛区海军公园海滩迎来一次大幅退潮，大片贝类被留在了沙滩上——蛤蜊多到"论桶提"，没有人是拎着空桶走的。有市民一口气捡了满满几大桶花蛤，还有人特意开来三轮车来装货，现场既有养殖区冲散的海货，也有原本就藏在海里的"原住民"。</p>
+    <p>据附近商户回忆，从上午9点到下午2点，赶海的人络绎不绝，中午时分海滩上聚集的人数一度接近两百人，公园周边停满了车辆，堪比"赶集"。事实上这不是青岛第一次上演这样的戏码：早在台风"利奇马"过境后，沿海就出现过绵延数公里的海蛎子、海螺和蛤蜊；莱山区的一处海滩也曾被吹上岸的大片海菜铺满，场面十分壮观。这样的画面几乎每年台风季都会重演，早已成了老青岛人心照不宣的"福利"。</p>
+    <div class="stat-row">
+      <div class="stat"><span class="num">200+</span><span class="label">单日赶海人次（海军公园）</span></div>
+      <div class="stat"><span class="num">9h~14h</span><span class="label">当天最热闹时段</span></div>
+      <div class="stat"><span class="num">数公里</span><span class="label">利奇马过境后海货铺开范围</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 原因 -->
+<section id="reason">
+  <div class="section-head">
+    <span class="section-num">02 · 幕后真相</span>
+    <h2>海鲜为什么会"自己"跑上岸</h2>
+  </div>
+  <div class="section-desc">并不是海鲜商量好来"投喂"人类，而是几股力量凑在一起的自然（加人为）结果。</div>
+  <div class="reason-grid">
+    <div class="reason-card">
+      <div class="icon">🧵</div>
+      <h3>养殖设施被打散</h3>
+      <p>青岛近海有不少筏式吊养的生蚝、扇贝，台风掀起的巨浪让养殖绳索剧烈晃动、相互碰撞，贝类大批脱落，随浪被卷向岸边，成了"意外丰收"的主力。</p>
+    </div>
+    <div class="reason-card">
+      <div class="icon">🌪️</div>
+      <h3>海底被彻底"翻搅"</h3>
+      <p>强风加巨浪相当于给近岸海底做了一次深度翻耕，平时藏在沙下五到十厘米的文蛤、蛏子被连根掀起，来不及重新钻回沙里，就直接暴露在潮间带上。</p>
+    </div>
+    <div class="reason-card">
+      <div class="icon">🌊</div>
+      <h3>潮汐帮了大忙</h3>
+      <p>台风过后常伴随异常低潮或大幅退潮，海水线大幅后退，把原本沉在水下的猎物一次性"晒"在了滩涂上，捡拾难度直接从"潜水摸"降到"弯腰捡"。</p>
+    </div>
+    <div class="reason-card">
+      <div class="icon">🐚</div>
+      <h3>生物应激大逃亡</h3>
+      <p>剧烈的风浪和水体扰动让贝类、蟹类等海洋生物受到强烈应激反应，游动能力弱的种类根本来不及躲避，只能被动"随波逐岸"。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 地点 -->
+<section id="spots">
+  <div class="section-head">
+    <span class="section-num">03 · 赶海地图</span>
+    <h2>青岛这些海滩最容易"爆桶"</h2>
+  </div>
+  <div class="section-desc">台风季过后，以下地点都曾出现过"海鲜自助"级别的盛况，平时退潮时去，收获也不错。</div>
+  <div class="map-wrap">
+    <div class="spot featured">
+      <div class="zone">黄岛</div>
+      <div>
+        <h4>海军公园海滩 <span style="color:var(--coral); font-size:13px;">★ 事件现场</span></h4>
+        <div class="meta">黄岛区海崖路与海军路交叉口 · 台风梅花"海鲜自助"实拍地</div>
+      </div>
+      <div class="catch">蛤蜊 / 海蛎子 / 花螺</div>
+    </div>
+    <div class="spot">
+      <div class="zone">崂山</div>
+      <div>
+        <h4>会场赶海园 · 青山海滩</h4>
+        <div class="meta">王哥庄街道 · 挖蛏子蛤蜊的老牌胜地</div>
+      </div>
+      <div class="catch">西施舌蛤蜊 / 梭子蟹 / 海螺</div>
+    </div>
+    <div class="spot">
+      <div class="zone">市南</div>
+      <div>
+        <h4>太平角公园 · 雕塑园礁石滩</h4>
+        <div class="meta">市区就能到达，退潮后礁石缝里藏货多</div>
+      </div>
+      <div class="catch">石夹红螃蟹 / 海参 / 海螺</div>
+    </div>
+    <div class="spot">
+      <div class="zone">西海岸</div>
+      <div>
+        <h4>连三岛 · 星光岛北滩</h4>
+        <div class="meta">退潮时三岛相连，礁石区适合带娃翻找</div>
+      </div>
+      <div class="catch">海星 / 寄居蟹 / 小螃蟹</div>
+    </div>
+    <div class="spot">
+      <div class="zone">红岛</div>
+      <div>
+        <h4>红岛休闲渔村赶海区</h4>
+        <div class="meta">红岛蛤蜊的主产地，海岸线长、物产丰富</div>
+      </div>
+      <div class="catch">红岛蛤蜊 / 海菜 / 小鱼虾</div>
+    </div>
+    <div class="spot">
+      <div class="zone">市北</div>
+      <div>
+        <h4>栈桥西侧 · 八大峡礁石区</h4>
+        <div class="meta">滨海大道西端，沙滩+礁石+堤坝组合地形</div>
+      </div>
+      <div class="catch">小杂鱼 / 螃蟹 / 海蛎子</div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 攻略 -->
+<section id="guide">
+  <div class="section-head">
+    <span class="section-num">04 · 上手攻略</span>
+    <h2>想去"捡漏"？记住这四步</h2>
+  </div>
+  <div class="guide-grid">
+    <div class="guide-card">
+      <div class="step">STEP 01</div>
+      <h3>掐准时间</h3>
+      <p>台风走后第2~3天、海况基本恢复时最稳妥；出发前查好当天退潮时刻表，退潮前后2小时是黄金窗口，农历初一、十五前后大潮收获更多。</p>
+    </div>
+    <div class="guide-card">
+      <div class="step">STEP 02</div>
+      <h3>备齐装备</h3>
+      <p>雨靴、小铁铲、小水桶、手套、防晒帽一样不能少，翻礁石找蟹类时建议戴手套避免划伤。</p>
+    </div>
+    <div class="guide-card">
+      <div class="step">STEP 03</div>
+      <h3>就近下手</h3>
+      <p>沙质滩适合挖蛤蜊蛏子，礁石区适合翻找螃蟹海螺，跟着已经在捡的人群走，通常就是当天的"富矿区"。</p>
+    </div>
+    <div class="guide-card">
+      <div class="step">STEP 04</div>
+      <h3>见好就收</h3>
+      <p>留意涨潮时间，海水回涨速度比想象中快，千万别为了多捡一把而在低洼礁石区逗留太久。</p>
+    </div>
+  </div>
+  <div class="tool-tags">
+    <span class="tool-tag">🥾 雨靴</span>
+    <span class="tool-tag">🪣 小水桶</span>
+    <span class="tool-tag">🥄 小铁铲</span>
+    <span class="tool-tag">🧤 防割手套</span>
+    <span class="tool-tag">🧴 防晒霜</span>
+    <span class="tool-tag">📱 潮汐查询App</span>
+  </div>
+</section>
+
+<div class="warn-section">
+  <div class="section-head">
+    <span class="section-num" style="color:var(--sand);">05 · 划重点</span>
+    <h2>再香的海鲜，也别拿命去换</h2>
+  </div>
+  <div class="warn-grid">
+    <div class="warn-card">
+      <span class="mark">⚠ 01</span>
+      <p><strong>风浪未必真的停了。</strong>台风走后海边余浪仍可能很大，礁石区坡度变化陡，切勿背对大海，更不要在浪大、天气不稳时贸然下水或靠近礁石深处。</p>
+    </div>
+    <div class="warn-card">
+      <span class="mark">⚠ 02</span>
+      <p><strong>来路不明的海鲜要谨慎吃。</strong>专家提醒，台风后海滩上的海产品生活海域不明，且死亡后极易滋生副溶血性弧菌、诺如病毒等致病菌，食用有中毒风险；处理时如手上有伤口，还可能感染创伤弧菌。</p>
+    </div>
+    <div class="warn-card">
+      <span class="mark">⚠ 03</span>
+      <p><strong>淹死的禽畜、来历不明的动物制品千万别吃。</strong>洪涝过后卫生条件差，腐败变质或病死的禽畜可能携带肉毒素等毒素，食用风险极高，一律不吃。</p>
+    </div>
+    <div class="warn-card">
+      <span class="mark">⚠ 04</span>
+      <p><strong>皮肤长时间泡水易感染。</strong>下水赶海建议每1~2小时上岸休息一次，保持皮肤清洁干燥，回家后及时用香皂流水彻底洗手。</p>
+    </div>
+    <div class="warn-card">
+      <span class="mark">⚠ 05</span>
+      <p><strong>警惕隐藏的危险生物。</strong>台风过后近岸偶尔会出现水母、海胆、海蛇等，看到不认识的生物不要盲目触碰或捡拾。</p>
+    </div>
+    <div class="warn-card">
+      <span class="mark">⚠ 06</span>
+      <p><strong>身体不适立即就医。</strong>若赶海后出现发热、呕吐、腹泻、皮疹等症状，很可能是食源性疾病或感染的早期信号，应尽快就医，切勿拖延。</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  内容综合整理自公开报道，仅供参考 · 出海赶海请以当地气象、海洋部门实时预警为准 · 生命安全永远排第一位 🌊
+</footer>
+
+</body>
+</html>
