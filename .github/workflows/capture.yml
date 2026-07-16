@@ -2,7 +2,7 @@ name: Capture Frame
 
 on:
   schedule:
-    - cron: '*/5 * * * *'   # 每5分钟抓一帧，可自行调整间隔
+    - cron: '*/30 * * * *'   # 每30分钟抓一帧，可自行调整间隔
   workflow_dispatch:
 
 jobs:
