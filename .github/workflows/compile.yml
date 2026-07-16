@@ -8,21 +8,34 @@ on:
 jobs:
   compile:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        stream:
+          - name: laoshan
+            label: "崂山"
+          - name: lingqifeng
+            label: "灵旗峰"
+          - name: qtv1
+            label: "青视直播1"
+          - name: qtv2
+            label: "青视直播2"
     steps:
       - uses: actions/checkout@v4
 
       - name: Install ffmpeg
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
 
-      - name: Build timelapse for yesterday
+      - name: Build timelapse for yesterday - ${{ matrix.stream.name }}
         run: |
           DAY=$(TZ='Asia/Shanghai' date -d "yesterday" +%Y-%m-%d)
           echo "DAY=$DAY" >> $GITHUB_ENV
-          if [ -d "frames/$DAY" ] && [ "$(ls -A frames/$DAY)" ]; then
+          DIR="frames/${{ matrix.stream.name }}/$DAY"
+          if [ -d "$DIR" ] && [ "$(ls -A "$DIR")" ]; then
             ffmpeg -y -framerate 24 \
-                   -pattern_type glob -i "frames/$DAY/*.jpg" \
+                   -pattern_type glob -i "$DIR/*.jpg" \
                    -c:v libx264 -pix_fmt yuv420p \
-                   "timelapse-$DAY.mp4"
+                   "timelapse-${{ matrix.stream.name }}-$DAY.mp4"
             echo "SUCCESS=true" >> $GITHUB_ENV
           else
             echo "SUCCESS=false" >> $GITHUB_ENV
@@ -32,8 +45,8 @@ jobs:
         if: env.SUCCESS == 'true'
         uses: softprops/action-gh-release@v2
         with:
-          files: timelapse-${{ env.DAY }}.mp4
-          tag_name: timelapse-${{ env.DAY }}
+          files: timelapse-${{ matrix.stream.name }}-${{ env.DAY }}.mp4
+          tag_name: timelapse-${{ matrix.stream.name }}-${{ env.DAY }}
 
       - name: Send video by email
         if: env.SUCCESS == 'true'
@@ -43,17 +56,17 @@ jobs:
           server_port: 465
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
-          subject: "崂山延时视频 - ${{ env.DAY }}"
+          subject: "${{ matrix.stream.label }}延时视频 - ${{ env.DAY }}"
           to: eumensides@gmail.com
-          from: 崂山延时机器人 <${{ secrets.MAIL_USERNAME }}>
-          body: "附件是 ${{ env.DAY }} 的延时视频，自动生成，请查收。"
-          attachments: timelapse-${{ env.DAY }}.mp4
+          from: 延时机器人 <${{ secrets.MAIL_USERNAME }}>
+          body: "附件是${{ matrix.stream.label }} ${{ env.DAY }} 的延时视频，自动生成，请查收。"
+          attachments: timelapse-${{ matrix.stream.name }}-${{ env.DAY }}.mp4
 
-      - name: Clean up frames older than 7 days
+      - name: Clean up frames older than 7 days - ${{ matrix.stream.name }}
         if: env.SUCCESS == 'true'
         run: |
           CUTOFF=$(TZ='Asia/Shanghai' date -d "7 days ago" +%Y-%m-%d)
-          for dir in frames/*/; do
+          for dir in frames/${{ matrix.stream.name }}/*/; do
             folder_date=$(basename "$dir")
             if [[ "$folder_date" < "$CUTOFF" ]]; then
               echo "Removing $dir"
@@ -62,5 +75,6 @@ jobs:
           done
           git config user.name "bot"
           git config user.email "bot@users.noreply.github.com"
-          git commit -m "cleanup frames older than 7 days" || echo "nothing to clean"
-          git push
+          git pull --rebase origin main || true
+          git commit -m "cleanup [${{ matrix.stream.name }}] frames older than 7 days" || echo "nothing to clean"
+          git push || (git pull --rebase origin main && git push)
