@@ -2,30 +2,45 @@ name: Capture Frame
 
 on:
   schedule:
-    - cron: '*/30 * * * *'   # 每30分钟抓一帧，可自行调整间隔
+    - cron: '*/15 * * * *'   # 每15分钟抓一帧（GitHub对*/5这类高频任务限流明显，15分钟更稳定）
   workflow_dispatch:
 
 jobs:
   capture:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false   # 某一路直播源挂了，不影响其他几路继续抓
+      matrix:
+        stream:
+          - name: laoshan
+            url: "http://play.zhihuiwenlvyun.com/live/chaoyinpu2026.m3u8"
+          - name: lingqifeng
+            url: "http://play.zhihuiwenlvyun.com/live/lingqifeng2026.m3u8"
+          - name: qtv1
+            url: "https://hlspull.qtv.com.cn/v31faxcg/channel/dba5f5df47dc14a9b08385b1c22faadf/1.m3u8"
+          - name: qtv2
+            url: "https://hlspull.qtv.com.cn/v31faxcg/channel/51d10523f0a1fdcda5c4223babe1682c/1.m3u8"
     steps:
       - uses: actions/checkout@v4
 
       - name: Install ffmpeg
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
 
-      - name: Grab a frame
+      - name: Grab a frame - ${{ matrix.stream.name }}
         run: |
-          mkdir -p frames/$(TZ='Asia/Shanghai' date +%Y-%m-%d)
+          mkdir -p "frames/${{ matrix.stream.name }}/$(TZ='Asia/Shanghai' date +%Y-%m-%d)"
           ffmpeg -y -user_agent "Mozilla/5.0" \
-                 -i "http://play.zhihuiwenlvyun.com/live/chaoyinpu2026.m3u8" \
+                 -timeout 15000000 \
+                 -i "${{ matrix.stream.url }}" \
                  -frames:v 1 \
-                 "frames/$(TZ='Asia/Shanghai' date +%Y-%m-%d)/$(TZ='Asia/Shanghai' date +%H%M%S).jpg"
+                 "frames/${{ matrix.stream.name }}/$(TZ='Asia/Shanghai' date +%Y-%m-%d)/$(TZ='Asia/Shanghai' date +%H%M%S).jpg"
 
-      - name: Commit frame
+      - name: Commit frame - ${{ matrix.stream.name }}
         run: |
           git config user.name "bot"
           git config user.email "bot@users.noreply.github.com"
-          git add frames/
-          git commit -m "add frame $(TZ='Asia/Shanghai' date)" || echo "no change"
-          git push
+          # 先pull一下，避免多路并行提交时互相冲突
+          git pull --rebase origin main || true
+          git add "frames/${{ matrix.stream.name }}/"
+          git commit -m "add frame [${{ matrix.stream.name }}] $(TZ='Asia/Shanghai' date)" || echo "no change"
+          git push || (git pull --rebase origin main && git push)
