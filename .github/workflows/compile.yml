@@ -8,73 +8,139 @@ on:
 jobs:
   compile:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        stream:
-          - name: laoshan
-            label: "崂山"
-          - name: lingqifeng
-            label: "灵旗峰"
-          - name: qtv1
-            label: "青视直播1"
-          - name: qtv2
-            label: "青视直播2"
     steps:
       - uses: actions/checkout@v4
 
       - name: Install ffmpeg
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
 
-      - name: Build timelapse for yesterday - ${{ matrix.stream.name }}
+      - name: Build timelapses for yesterday
         run: |
+          set +e
           DAY=$(TZ='Asia/Shanghai' date -d "yesterday" +%Y-%m-%d)
           echo "DAY=$DAY" >> $GITHUB_ENV
-          DIR="frames/${{ matrix.stream.name }}/$DAY"
-          if [ -d "$DIR" ] && [ "$(ls -A "$DIR")" ]; then
-            ffmpeg -y -framerate 24 \
-                   -pattern_type glob -i "$DIR/*.jpg" \
-                   -c:v libx264 -pix_fmt yuv420p \
-                   "timelapse-${{ matrix.stream.name }}-$DAY.mp4"
-            echo "SUCCESS=true" >> $GITHUB_ENV
-          else
-            echo "SUCCESS=false" >> $GITHUB_ENV
-          fi
 
-      - name: Upload as release
-        if: env.SUCCESS == 'true'
+          declare -A LABELS=(
+            [laoshan]="崂山"
+            [lingqifeng]="灵旗峰"
+            [qtv1]="青视直播1"
+            [qtv2]="青视直播2"
+          )
+
+          for name in "${!LABELS[@]}"; do
+            DIR="frames/$name/$DAY"
+            if [ -d "$DIR" ] && [ "$(ls -A "$DIR")" ]; then
+              echo "=== Compiling $name ==="
+              ffmpeg -y -framerate 24 \
+                     -pattern_type glob -i "$DIR/*.jpg" \
+                     -c:v libx264 -pix_fmt yuv420p \
+                     "timelapse-$name-$DAY.mp4"
+              echo "${name}_SUCCESS=true" >> $GITHUB_ENV
+            else
+              echo "=== No data for $name on $DAY, skipping ==="
+              echo "${name}_SUCCESS=false" >> $GITHUB_ENV
+            fi
+          done
+
+      - name: Upload laoshan release
+        if: env.laoshan_SUCCESS == 'true'
         uses: softprops/action-gh-release@v2
         with:
-          files: timelapse-${{ matrix.stream.name }}-${{ env.DAY }}.mp4
-          tag_name: timelapse-${{ matrix.stream.name }}-${{ env.DAY }}
+          files: timelapse-laoshan-${{ env.DAY }}.mp4
+          tag_name: timelapse-laoshan-${{ env.DAY }}
 
-      - name: Send video by email
-        if: env.SUCCESS == 'true'
+      - name: Upload lingqifeng release
+        if: env.lingqifeng_SUCCESS == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: timelapse-lingqifeng-${{ env.DAY }}.mp4
+          tag_name: timelapse-lingqifeng-${{ env.DAY }}
+
+      - name: Upload qtv1 release
+        if: env.qtv1_SUCCESS == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: timelapse-qtv1-${{ env.DAY }}.mp4
+          tag_name: timelapse-qtv1-${{ env.DAY }}
+
+      - name: Upload qtv2 release
+        if: env.qtv2_SUCCESS == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: timelapse-qtv2-${{ env.DAY }}.mp4
+          tag_name: timelapse-qtv2-${{ env.DAY }}
+
+      - name: Email laoshan
+        if: env.laoshan_SUCCESS == 'true'
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
           server_port: 465
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
-          subject: "${{ matrix.stream.label }}延时视频 - ${{ env.DAY }}"
+          subject: "崂山延时视频 - ${{ env.DAY }}"
           to: eumensides@gmail.com
           from: 延时机器人 <${{ secrets.MAIL_USERNAME }}>
-          body: "附件是${{ matrix.stream.label }} ${{ env.DAY }} 的延时视频，自动生成，请查收。"
-          attachments: timelapse-${{ matrix.stream.name }}-${{ env.DAY }}.mp4
+          body: "附件是崂山 ${{ env.DAY }} 的延时视频，自动生成，请查收。"
+          attachments: timelapse-laoshan-${{ env.DAY }}.mp4
 
-      - name: Clean up frames older than 7 days - ${{ matrix.stream.name }}
-        if: env.SUCCESS == 'true'
+      - name: Email lingqifeng
+        if: env.lingqifeng_SUCCESS == 'true'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: "灵旗峰延时视频 - ${{ env.DAY }}"
+          to: eumensides@gmail.com
+          from: 延时机器人 <${{ secrets.MAIL_USERNAME }}>
+          body: "附件是灵旗峰 ${{ env.DAY }} 的延时视频，自动生成，请查收。"
+          attachments: timelapse-lingqifeng-${{ env.DAY }}.mp4
+
+      - name: Email qtv1
+        if: env.qtv1_SUCCESS == 'true'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: "青视直播1延时视频 - ${{ env.DAY }}"
+          to: eumensides@gmail.com
+          from: 延时机器人 <${{ secrets.MAIL_USERNAME }}>
+          body: "附件是青视直播1 ${{ env.DAY }} 的延时视频，自动生成，请查收。"
+          attachments: timelapse-qtv1-${{ env.DAY }}.mp4
+
+      - name: Email qtv2
+        if: env.qtv2_SUCCESS == 'true'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: "青视直播2延时视频 - ${{ env.DAY }}"
+          to: eumensides@gmail.com
+          from: 延时机器人 <${{ secrets.MAIL_USERNAME }}>
+          body: "附件是青视直播2 ${{ env.DAY }} 的延时视频，自动生成，请查收。"
+          attachments: timelapse-qtv2-${{ env.DAY }}.mp4
+
+      - name: Clean up frames older than 7 days
         run: |
           CUTOFF=$(TZ='Asia/Shanghai' date -d "7 days ago" +%Y-%m-%d)
-          for dir in frames/${{ matrix.stream.name }}/*/; do
-            folder_date=$(basename "$dir")
-            if [[ "$folder_date" < "$CUTOFF" ]]; then
-              echo "Removing $dir"
-              git rm -r "$dir"
-            fi
+          for stream_dir in frames/*/; do
+            for date_dir in "$stream_dir"*/; do
+              folder_date=$(basename "$date_dir")
+              if [[ "$folder_date" < "$CUTOFF" ]]; then
+                echo "Removing $date_dir"
+                git rm -rq "$date_dir" || rm -rf "$date_dir"
+              fi
+            done
           done
           git config user.name "bot"
           git config user.email "bot@users.noreply.github.com"
+          git add -A frames/
+          git commit -m "cleanup frames older than 7 days" || echo "nothing to clean"
           git pull --rebase origin main || true
-          git commit -m "cleanup [${{ matrix.stream.name }}] frames older than 7 days" || echo "nothing to clean"
-          git push || (git pull --rebase origin main && git push)
+          git push
