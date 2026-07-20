@@ -165,22 +165,28 @@
     margin-top:2.2rem;
     background:#fff;
     border:1px solid var(--line);
-    display:grid;
-    grid-template-columns:220px 1fr;
+    overflow:hidden;
   }
   .snake-visual{
-    background:var(--pine-deep);
+    background:#f4efe3;
     display:flex;align-items:center;justify-content:center;
-    padding:1.5rem;
-    overflow:hidden;
+    height:300px;
+    position:relative;
   }
   .snake-visual img{
     width:100%;height:100%;
-    min-height:160px;
-    object-fit:cover;
-    border-radius:4px;
+    object-fit:contain;
     display:block;
   }
+  .snake-visual .img-fallback-text{
+    display:none;
+    color:#8a7f68;
+    font-size:.85rem;
+    text-align:center;
+    padding:0 1.5rem;
+  }
+  .snake-visual.img-broken img{display:none;}
+  .snake-visual.img-broken .img-fallback-text{display:block;}
   .snake-body{padding:1.8rem 2rem;}
   .snake-body h3{font-size:1.3rem;}
   .snake-body .latin{color:var(--moss);font-size:.85rem;font-style:italic;margin:.2rem 0 1rem;}
@@ -384,8 +390,10 @@
     <div class="snake-visual">
       <img
         src="https://cdn.jsdelivr.net/gh/eumensides/laoshan@main/Gloydius_brevicaudus.webp"
-        onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/eumensides/laoshan@main/Gloydius_brevicaudus.png'"
+        data-fallbacks='["https://cdn.jsdelivr.net/gh/eumensides/laoshan@main/Gloydius_brevicaudus.png","https://raw.githubusercontent.com/eumensides/laoshan/main/Gloydius_brevicaudus.png"]'
+        onerror="imgFallback(this)"
         alt="短尾蝮（土虺）" loading="lazy">
+      <div class="img-fallback-text">短尾蝮（土虺）<br>图片加载失败</div>
     </div>
     <div class="snake-body">
       <h3>短尾蝮（土虺）</h3>
@@ -403,8 +411,10 @@
     <div class="snake-visual">
       <img
         src="https://cdn.jsdelivr.net/gh/eumensides/laoshan@main/Gloydius_changdaoensis.webp"
-        onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/eumensides/laoshan@main/Gloydius_changdaoensis.png'"
+        data-fallbacks='["https://cdn.jsdelivr.net/gh/eumensides/laoshan@main/Gloydius_changdaoensis.png","https://raw.githubusercontent.com/eumensides/laoshan/main/Gloydius_changdaoensis.png"]'
+        onerror="imgFallback(this)"
         alt="长岛蝮" loading="lazy">
+      <div class="img-fallback-text">长岛蝮<br>图片加载失败</div>
     </div>
     <div class="snake-body">
       <h3>长岛蝮</h3>
@@ -645,5 +655,25 @@
   如遇蛇咬伤等紧急情况，请第一时间拨打 <strong>120</strong> 并尽快前往有救治条件的医疗机构。
 </footer>
 
+<script>
+  // 图片加载失败时依次尝试 data-fallbacks 里的备用地址，
+  // 全部失败则显示文字占位，避免出现裂图标
+  function imgFallback(img) {
+    try {
+      var list = JSON.parse(img.getAttribute('data-fallbacks') || '[]');
+      if (list.length > 0) {
+        var next = list.shift();
+        img.setAttribute('data-fallbacks', JSON.stringify(list));
+        img.src = next;
+      } else {
+        img.onerror = null;
+        var visual = img.closest('.snake-visual');
+        if (visual) visual.classList.add('img-broken');
+      }
+    } catch (e) {
+      img.onerror = null;
+    }
+  }
+</script>
 </body>
 </html>
