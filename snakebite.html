@@ -314,15 +314,20 @@
   .gear-grid{
     margin-top:2.2rem;
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    grid-template-columns:repeat(3,1fr);
     gap:1px;
     background:var(--line);
     border:1px solid var(--line);
   }
   .gear-card{background:#fff;padding:1.5rem 1.4rem;}
+  .gear-card.gear-full{grid-column:1 / -1;}
   .gear-card .eyebrow{margin-bottom:.5rem;}
   .gear-card ul{margin:0;padding-left:1.1rem;font-size:.9rem;}
   .gear-card li{margin-bottom:.5rem;}
+  @media (max-width:640px){
+    .gear-grid{grid-template-columns:1fr;}
+    .gear-card.gear-full{grid-column:auto;}
+  }
 
   footer{
     background:var(--pine-deep);
@@ -611,16 +616,7 @@
   <span class="eyebrow">防患于未然</span>
   <h2>出发前的毒蛇防护准备</h2>
   <div class="gear-grid">
-    <div class="gear-card">
-      <span class="eyebrow" style="color:var(--moss);">穿着</span>
-      <ul>
-        <li>长袖上衣 + 长裤，裤脚扎紧或塞进高帮鞋 / 袜子内</li>
-        <li>高帮徒步鞋，避免裸露脚踝</li>
-        <li>穿越密林、深草区域可加穿防蛇护腿 / 绑腿</li>
-        <li>亮色衣物（浅蓝、米白）比深色更容易被蛇提前察觉，减少"误踩"</li>
-      </ul>
-    </div>
-    <div class="gear-card">
+    <div class="gear-card gear-full">
       <span class="eyebrow" style="color:var(--moss);">随身工具</span>
       <ul>
         <li><b>登山杖"打草惊蛇"</b>：行进中每走几步就用登山杖敲击、拨动前方约1米范围内的草丛、落叶堆和石缝，蛇能感知地面振动，绝大多数情况下会主动避让离开，这比直接用脚试探安全得多</li>
@@ -628,6 +624,15 @@
         <li>手电筒：晨昏或光线不足路段照明，看清落脚点，不要在夜间徒手摸黑穿越非正规路线</li>
         <li>干净纱布 / 弹性绷带：应急包扎备用</li>
         <li>充满电的手机 + 离线地图，救援电话及血清医院信息截图保存</li>
+      </ul>
+    </div>
+    <div class="gear-card">
+      <span class="eyebrow" style="color:var(--moss);">穿着</span>
+      <ul>
+        <li>长袖上衣 + 长裤，裤脚扎紧或塞进高帮鞋 / 袜子内</li>
+        <li>高帮徒步鞋，避免裸露脚踝</li>
+        <li>穿越密林、深草区域可加穿防蛇护腿 / 绑腿</li>
+        <li>亮色衣物（浅蓝、米白）比深色更容易被蛇提前察觉，减少"误踩"</li>
       </ul>
     </div>
     <div class="gear-card">
