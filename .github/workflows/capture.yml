@@ -1,17 +1,12 @@
-name: Capture Frame
+name: Compile Timelapse
 
 on:
   schedule:
-    # 以下时间均为 UTC，北京时间 = UTC + 8 小时
-    - cron: '*/5 19,20,21 * * *'                     # 北京 03:00-05:59 晨曦/日出蓝调，密集抓取
-    - cron: '*/20 22,23,0,1,2,3,4,5,6,7,8,9 * * *'    # 北京 06:00-16:59 白天，常规抓取
-    - cron: '*/5 9,10,11 * * *'                       # 北京 17:00-19:59 日落/晚霞蓝调，密集抓取
-    - cron: '*/20 12,13,14 * * *'                     # 北京 20:00-22:59 傍晚，常规抓取
-    # 北京 23:00-03:00（UTC 15:00-18:59）不设置 cron，完全跳过深夜时段
+    - cron: '0 22 * * *'   # UTC 22:00 = 北京时间次日早 6:00
   workflow_dispatch:
 
 jobs:
-  capture:
+  compile:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -19,48 +14,140 @@ jobs:
       - name: Install ffmpeg
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
 
-      - name: Grab frames for all streams
+      - name: Build timelapses for yesterday
         run: |
-          set +e   # 单个源失败不要中断整个脚本，继续抓其他源
-          DATE=$(TZ='Asia/Shanghai' date +%Y-%m-%d)
-          TIME=$(TZ='Asia/Shanghai' date +%H%M%S)
+          set +e
+          DAY=$(TZ='Asia/Shanghai' date -d "yesterday" +%Y-%m-%d)
+          echo "DAY=$DAY" >> $GITHUB_ENV
 
-          declare -A STREAMS=(
-            [shizifeng]="http://play.zhihuiwenlvyun.com/live/shizifeng2026.m3u8"
-            [chaoyinpu]="http://play.zhihuiwenlvyun.com/live/chaoyinpu2026.m3u8"
-            [taiqingwan]="http://play.zhihuiwenlvyun.com/live/taiqingwan2026.m3u8"
-            [jufengxiazhan]="http://play.zhihuiwenlvyun.com/live/jufengxiazhan2026.m3u8"
-            [shouzifeng]="http://play.zhihuiwenlvyun.com/live/shouzifeng2026.m3u8"
-            [lingqifeng]="http://play.zhihuiwenlvyun.com/live/lingqifeng2026.m3u8"
-            [erlongshan]="http://play.zhihuiwenlvyun.com/live/erlongshan2026.m3u8"
-            [huayanshijie]="http://play.zhihuiwenlvyun.com/live/huayanshijie2026.m3u8"
-            [wusiguangchang]="https://hlspull.qtv.com.cn/v31faxcg/channel/51d10523f0a1fdcda5c4223babe1682c/1.m3u8"
-            [yinchuanxilu]="https://hlspull.qtv.com.cn/v31faxcg/channel/e41ccb39c3292d868d6c72b66082a3f2/1.m3u8"
-            [fuzhoulu]="https://hlspull.qtv.com.cn/v31faxcg/channel/833fddf8b8271df2cf38835d14a2a3a5/1.m3u8"
-            [nanjinglu]="https://hlspull.qtv.com.cn/v31faxcg/channel/8db708403e7ad9c1a00c539c703b8ae0/1.m3u8"
-            [aofanzhongxin]="https://hlspull.qtv.com.cn/v31faxcg/channel/dba5f5df47dc14a9b08385b1c22faadf/1.m3u8"
+          declare -A LABELS=(
+            [shizifeng]="狮子峰"
+            [chaoyinpu]="潮音瀑"
+            [taiqingwan]="太清湾"
+            [jufengxiazhan]="巨峰下站"
+            [shouzifeng]="寿字峰"
+            [lingqifeng]="灵旗峰"
+            [erlongshan]="二龙山"
+            [huayanshijie]="华严世界"
+            [wusiguangchang]="五四广场"
+            [yinchuanxilu]="银川西路"
+            [fuzhoulu]="福州路"
+            [nanjinglu]="南京路"
+            [aofanzhongxin]="奥帆中心"
           )
 
-          for name in "${!STREAMS[@]}"; do
-            url="${STREAMS[$name]}"
-            mkdir -p "frames/$name/$DATE"
-            echo "=== Capturing $name ==="
-            ffmpeg -y -user_agent "Mozilla/5.0" \
-                   -timeout 15000000 \
-                   -i "$url" \
-                   -frames:v 1 \
-                   "frames/$name/$DATE/$TIME.jpg"
-            if [ $? -ne 0 ]; then
-              echo "!!! $name failed, removing empty/broken file if any"
-              rm -f "frames/$name/$DATE/$TIME.jpg"
+          for name in "${!LABELS[@]}"; do
+            DIR="frames/$name/$DAY"
+            if [ -d "$DIR" ] && [ "$(ls -A "$DIR")" ]; then
+              echo "=== Compiling $name ==="
+              # -framerate 4：输入端每秒读4张原图（放慢播放速度）
+              # -r 24：输出端补帧到24fps让播放更流畅
+              ffmpeg -y -framerate 4 \
+                     -pattern_type glob -i "$DIR/*.jpg" \
+                     -r 24 \
+                     -c:v libx264 -pix_fmt yuv420p \
+                     "timelapse-$name-$DAY.mp4"
+              echo "${name}_SUCCESS=true" >> $GITHUB_ENV
+            else
+              echo "=== No data for $name on $DAY, skipping ==="
+              echo "${name}_SUCCESS=false" >> $GITHUB_ENV
             fi
           done
 
-      - name: Commit all frames in one push
+      - name: Upload releases
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          set +e
+          declare -A LABELS=(
+            [shizifeng]="狮子峰" [chaoyinpu]="潮音瀑" [taiqingwan]="太清湾"
+            [jufengxiazhan]="巨峰下站" [shouzifeng]="寿字峰" [lingqifeng]="灵旗峰"
+            [erlongshan]="二龙山" [huayanshijie]="华严世界" [wusiguangchang]="五四广场"
+            [yinchuanxilu]="银川西路" [fuzhoulu]="福州路" [nanjinglu]="南京路"
+            [aofanzhongxin]="奥帆中心"
+          )
+          for name in "${!LABELS[@]}"; do
+            var="${name}_SUCCESS"
+            if [ "${!var}" == "true" ]; then
+              gh release create "timelapse-$name-$DAY" "timelapse-$name-$DAY.mp4" \
+                --title "${LABELS[$name]} $DAY" \
+                --notes "自动生成的延时视频" \
+                || echo "!!! release upload failed for $name"
+            fi
+          done
+
+      - name: Send emails
+        if: always()
+        env:
+          MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+        run: |
+          set +e
+          declare -A LABELS=(
+            [shizifeng]="狮子峰" [chaoyinpu]="潮音瀑" [taiqingwan]="太清湾"
+            [jufengxiazhan]="巨峰下站" [shouzifeng]="寿字峰" [lingqifeng]="灵旗峰"
+            [erlingshan]="二龙山" [huayanshijie]="华严世界" [wusiguangchang]="五四广场"
+            [yinchuanxilu]="银川西路" [fuzhoulu]="福州路" [nanjinglu]="南京路"
+            [aofanzhongxin]="奥帆中心"
+          )
+
+          cat > send_mail.py << 'PYEOF'
+          import smtplib, os, sys
+          from email.mime.multipart import MIMEMultipart
+          from email.mime.base import MIMEBase
+          from email.mime.text import MIMEText
+          from email import encoders
+
+          name, label, day, filepath = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
+          username = os.environ['MAIL_USERNAME']
+          password = os.environ['MAIL_PASSWORD']
+          to_addr = "eumensides@gmail.com"
+
+          msg = MIMEMultipart()
+          msg['From'] = f"延时机器人 <{username}>"
+          msg['To'] = to_addr
+          msg['Subject'] = f"{label}延时视频 - {day}"
+          msg.attach(MIMEText(f"附件是{label} {day} 的延时视频，自动生成，请查收。", 'plain', 'utf-8'))
+
+          with open(filepath, 'rb') as f:
+              part = MIMEBase('application', 'octet-stream')
+              part.set_payload(f.read())
+          encoders.encode_base64(part)
+          part.add_header('Content-Disposition', f'attachment; filename="{os.path.basename(filepath)}"')
+          msg.attach(part)
+
+          with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+              server.login(username, password)
+              server.sendmail(username, [to_addr], msg.as_string())
+          print(f"Sent email for {name}")
+          PYEOF
+
+          # 去掉heredoc从YAML继承来的10个空格前导缩进，避免python报IndentationError
+          sed -i 's/^          //' send_mail.py
+
+          for name in "${!LABELS[@]}"; do
+            var="${name}_SUCCESS"
+            if [ "${!var}" == "true" ]; then
+              python3 send_mail.py "$name" "${LABELS[$name]}" "$DAY" "timelapse-$name-$DAY.mp4" \
+                || echo "!!! email failed for $name"
+            fi
+          done
+
+      - name: Clean up frames older than 7 days
+        run: |
+          CUTOFF=$(TZ='Asia/Shanghai' date -d "7 days ago" +%Y-%m-%d)
+          for stream_dir in frames/*/; do
+            for date_dir in "$stream_dir"*/; do
+              folder_date=$(basename "$date_dir")
+              if [[ "$folder_date" < "$CUTOFF" ]]; then
+                echo "Removing $date_dir"
+                git rm -rq "$date_dir" || rm -rf "$date_dir"
+              fi
+            done
+          done
           git config user.name "bot"
           git config user.email "bot@users.noreply.github.com"
-          git add frames/
-          git commit -m "add frames $(TZ='Asia/Shanghai' date)" || echo "no change to commit"
+          git add -A frames/
+          git commit -m "cleanup frames older than 7 days" || echo "nothing to clean"
           git pull --rebase origin main || true
           git push
