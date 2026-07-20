@@ -31,8 +31,9 @@ jobs:
             DIR="frames/$name/$DAY"
             if [ -d "$DIR" ] && [ "$(ls -A "$DIR")" ]; then
               echo "=== Compiling $name ==="
-              ffmpeg -y -framerate 24 \
+              ffmpeg -y -framerate 1 \
                      -pattern_type glob -i "$DIR/*.jpg" \
+                     -vf "fps=24" \
                      -c:v libx264 -pix_fmt yuv420p \
                      "timelapse-$name-$DAY.mp4"
               echo "${name}_SUCCESS=true" >> $GITHUB_ENV
