@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>崂山野路蛇伤急救指南 | 驴友必读</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pine:#1f3a2e;
+    --pine-deep:#142720;
+    --granite:#4a4740;
+    --paper:#f1ede4;
+    --paper-dim:#e6e0d2;
+    --rust:#c4581c;
+    --rust-deep:#9c4315;
+    --moss:#6b7f5b;
+    --danger:#a6291f;
+    --danger-bg:#f7e6e2;
+    --safe-bg:#e9efe3;
+    --line:#d8d0bd;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--granite);
+    font-family:"Noto Sans SC",sans-serif;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:"Noto Serif SC",serif;
+    color:var(--pine-deep);
+    margin:0;
+  }
+  .eyebrow{
+    font-size:.78rem;
+    letter-spacing:.18em;
+    color:var(--rust-deep);
+    font-weight:700;
+    text-transform:uppercase;
+    margin-bottom:.6rem;
+    display:block;
+  }
+  a{color:inherit;}
+
+  /* ===== 顶部紧急条 ===== */
+  .emergency-bar{
+    position:sticky;top:0;z-index:100;
+    background:var(--danger);
+    color:#fff;
+    padding:.6rem 1rem;
+    text-align:center;
+    font-weight:700;
+    font-size:.92rem;
+    letter-spacing:.02em;
+    box-shadow:0 2px 10px rgba(0,0,0,.15);
+  }
+  .emergency-bar a{
+    color:#fff;text-decoration:underline;text-underline-offset:3px;
+  }
+  .emergency-bar .num{font-size:1.15rem;font-family:"Noto Serif SC",serif;font-weight:900;}
+
+  /* ===== 导航 ===== */
+  nav{
+    background:var(--pine-deep);
+    padding:.7rem 1.2rem;
+    display:flex;
+    gap:1.4rem;
+    overflow-x:auto;
+    font-size:.85rem;
+    white-space:nowrap;
+  }
+  nav a{
+    color:#cfd9c9;
+    text-decoration:none;
+    font-weight:500;
+    padding:.2rem 0;
+    border-bottom:2px solid transparent;
+    transition:.2s;
+  }
+  nav a:hover{color:#fff;border-bottom-color:var(--rust);}
+
+  /* ===== HERO ===== */
+  .hero{
+    position:relative;
+    background:var(--pine);
+    color:var(--paper);
+    padding:5rem 1.5rem 6rem;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute;inset:0;
+    background-image:
+      repeating-radial-gradient(circle at 15% 20%, transparent 0 34px, rgba(241,237,228,.05) 35px),
+      repeating-radial-gradient(circle at 85% 75%, transparent 0 50px, rgba(241,237,228,.04) 51px);
+    pointer-events:none;
+  }
+  .hero-inner{max-width:760px;margin:0 auto;position:relative;}
+  .hero h1{
+    font-size:clamp(2.1rem,5vw,3.2rem);
+    color:#fff;
+    line-height:1.25;
+    font-weight:900;
+  }
+  .hero h1 em{color:#e8a56b;font-style:normal;}
+  .hero p.lead{
+    margin-top:1.2rem;
+    font-size:1.05rem;
+    color:#cfd9c9;
+    max-width:56ch;
+  }
+  .hero-tags{
+    margin-top:2rem;
+    display:flex;flex-wrap:wrap;gap:.6rem;
+  }
+  .hero-tags span{
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.18);
+    color:#e8e4d8;
+    padding:.4rem .9rem;
+    border-radius:100px;
+    font-size:.82rem;
+  }
+
+  /* ===== 通用 section ===== */
+  section{
+    max-width:920px;
+    margin:0 auto;
+    padding:4rem 1.5rem;
+  }
+  section + section{border-top:1px solid var(--line);}
+  h2{font-size:clamp(1.5rem,3.4vw,2rem);font-weight:700;}
+  .section-intro{max-width:64ch;margin-top:.9rem;color:var(--granite);font-size:.98rem;}
+
+  /* ===== 概况统计条 ===== */
+  .stat-strip{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    margin-top:2rem;
+  }
+  .stat{
+    background:var(--paper);
+    padding:1.6rem 1.2rem;
+    text-align:center;
+  }
+  .stat .num{
+    font-family:"Noto Serif SC",serif;
+    font-weight:900;
+    font-size:2.1rem;
+    color:var(--rust-deep);
+    display:block;
+  }
+  .stat .label{font-size:.82rem;color:var(--granite);margin-top:.3rem;display:block;}
+
+  /* ===== 蛇卡片 ===== */
+  .snake-card{
+    margin-top:2.2rem;
+    background:#fff;
+    border:1px solid var(--line);
+    display:grid;
+    grid-template-columns:220px 1fr;
+  }
+  .snake-visual{
+    background:var(--pine-deep);
+    display:flex;align-items:center;justify-content:center;
+    padding:1.5rem;
+  }
+  .snake-body{padding:1.8rem 2rem;}
+  .snake-body h3{font-size:1.3rem;}
+  .snake-body .latin{color:var(--moss);font-size:.85rem;font-style:italic;margin:.2rem 0 1rem;}
+  .snake-facts{
+    list-style:none;padding:0;margin:1rem 0 0;
+    display:grid;grid-template-columns:1fr 1fr;gap:.6rem 1.4rem;
+  }
+  .snake-facts li{font-size:.88rem;border-left:3px solid var(--rust);padding-left:.7rem;}
+  .snake-facts b{display:block;color:var(--pine-deep);font-size:.78rem;letter-spacing:.05em;margin-bottom:.15rem;}
+
+  /* ===== 对比表格（毒蛇 vs 无毒蛇） ===== */
+  .compare{
+    margin-top:2.2rem;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .compare-col{background:#fff;padding:1.8rem;}
+  .compare-col.venom{background:var(--danger-bg);}
+  .compare-col.safe{background:var(--safe-bg);}
+  .compare-col h3{
+    display:flex;align-items:center;gap:.5rem;
+    font-size:1.05rem;margin-bottom:1rem;
+  }
+  .compare-col ul{margin:0;padding-left:1.1rem;font-size:.9rem;}
+  .compare-col li{margin-bottom:.55rem;}
+  .warn-note{
+    margin-top:1.6rem;
+    background:#fff8e8;
+    border:1px solid #e8c86a;
+    padding:1rem 1.3rem;
+    font-size:.9rem;
+    border-radius:4px;
+  }
+
+  /* ===== 栖息地网格 ===== */
+  .habitat-grid{
+    margin-top:2.2rem;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:1.1rem;
+  }
+  .habitat-card{
+    background:#fff;
+    border:1px solid var(--line);
+    padding:1.4rem 1.3rem;
+  }
+  .habitat-card .icon{width:34px;height:34px;color:var(--rust-deep);margin-bottom:.7rem;}
+  .habitat-card h4{margin:0 0 .35rem;font-size:1rem;color:var(--pine-deep);font-family:"Noto Serif SC",serif;}
+  .habitat-card p{margin:0;font-size:.85rem;color:var(--granite);}
+
+  .time-strip{
+    margin-top:1.6rem;
+    background:var(--pine-deep);
+    color:#e8e4d8;
+    padding:1.3rem 1.6rem;
+    font-size:.9rem;
+    border-radius:4px;
+  }
+  .time-strip b{color:#e8a56b;}
+
+  /* ===== 处理步骤时间线 ===== */
+  .steps{margin-top:2.4rem;counter-reset:step;}
+  .step{
+    display:grid;
+    grid-template-columns:56px 1fr;
+    gap:1.2rem;
+    padding-bottom:2rem;
+    position:relative;
+  }
+  .step:not(:last-child)::before{
+    content:"";
+    position:absolute;left:27px;top:56px;bottom:0;
+    width:1px;background:var(--line);
+  }
+  .step-num{
+    counter-increment:step;
+    width:54px;height:54px;
+    border-radius:50%;
+    background:var(--pine);
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-family:"Noto Serif SC",serif;font-weight:900;font-size:1.3rem;
+    flex-shrink:0;
+  }
+  .step-num::before{content:counter(step);}
+  .step-body h4{margin:.15rem 0 .4rem;font-size:1.05rem;color:var(--pine-deep);font-family:"Noto Serif SC",serif;}
+  .step-body p{margin:0;font-size:.92rem;color:var(--granite);}
+
+  .donts{
+    margin-top:2rem;
+    background:var(--danger-bg);
+    border:1px solid #e3b3aa;
+    padding:1.6rem 1.8rem;
+  }
+  .donts h3{color:var(--danger);font-size:1.05rem;margin-bottom:.9rem;}
+  .donts ul{margin:0;padding-left:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.6rem 1.4rem;}
+  .donts li{font-size:.88rem;padding-left:1.4rem;position:relative;}
+  .donts li::before{content:"✕";position:absolute;left:0;color:var(--danger);font-weight:900;}
+
+  /* ===== 电话卡片 ===== */
+  .phone-grid{
+    margin-top:2.2rem;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:1.1rem;
+  }
+  .phone-card{
+    background:var(--pine-deep);
+    color:#e8e4d8;
+    padding:1.6rem 1.5rem;
+    border-radius:4px;
+  }
+  .phone-card .num{
+    font-family:"Noto Serif SC",serif;
+    font-size:2.2rem;font-weight:900;color:#fff;
+    display:block;margin-bottom:.3rem;
+  }
+  .phone-card.alt{background:var(--moss);}
+  .phone-card p{margin:.3rem 0 0;font-size:.85rem;color:#d9dfd0;}
+
+  /* ===== 装备清单 ===== */
+  .gear-grid{
+    margin-top:2.2rem;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .gear-card{background:#fff;padding:1.5rem 1.4rem;}
+  .gear-card .eyebrow{margin-bottom:.5rem;}
+  .gear-card ul{margin:0;padding-left:1.1rem;font-size:.9rem;}
+  .gear-card li{margin-bottom:.5rem;}
+
+  footer{
+    background:var(--pine-deep);
+    color:#9fae96;
+    padding:2.4rem 1.5rem;
+    text-align:center;
+    font-size:.82rem;
+  }
+  footer strong{color:#e8e4d8;}
+
+  @media(max-width:700px){
+    .snake-card{grid-template-columns:1fr;}
+    .compare{grid-template-columns:1fr;}
+    nav{gap:1rem;}
+  }
+</style>
+</head>
+<body>
+
+<div class="emergency-bar">
+  被蛇咬伤请立即拨打急救电话 <a href="tel:120" class="num">120</a> ｜ 山林被困可拨打 <a href="tel:110" class="num">110</a>
+</div>
+
+<nav>
+  <a href="#overview">崂山蛇况</a>
+  <a href="#culprit">头号毒蛇</a>
+  <a href="#identify">如何辨别</a>
+  <a href="#habitat">栖息与活跃期</a>
+  <a href="#firstaid">被咬后怎么办</a>
+  <a href="#call">拨打电话/血清医院</a>
+  <a href="#gear">出发前防护</a>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">崂山户外安全科普 · 驴友必读</span>
+    <h1>走崂山野路，<br>遇到蛇该<em>怎么办</em>？</h1>
+    <p class="lead">崂山非游览区路线草木茂密、乱石嶙峋，是"土虺"（黑眉蝮蛇）的栖息地。这份指南帮你在出发前做好防护，在意外发生时不慌不乱、正确处置，为送医争取每一分钟。</p>
+    <div class="hero-tags">
+      <span>识别毒蛇 / 无毒蛇</span>
+      <span>伤口正确处理步骤</span>
+      <span>秋季高发期提醒</span>
+      <span>出行装备清单</span>
+    </div>
+  </div>
+</header>
+
+<section id="overview">
+  <span class="eyebrow">崂山蛇况总览</span>
+  <h2>10 种蛇里，只有 1 种有毒——但正是它咬伤了大部分驴友</h2>
+  <p class="section-intro">青岛地区已记录蛇类约 10 种，崂山几乎都有分布。其中虎斑游蛇、赤链蛇、白条锦蛇、黑眉锦蛇等多数为无毒蛇，真正有毒的只有蝮蛇类——短尾蝮和长岛蝮（本地俗称"土虺"）。它们体型不算大，却是崂山驴友被咬伤事故的主要"元凶"。</p>
+  <div class="stat-strip">
+    <div class="stat"><span class="num">10</span><span class="label">青岛地区已记录蛇类种数</span></div>
+    <div class="stat"><span class="num">2</span><span class="label">有毒种类：短尾蝮、长岛蝮</span></div>
+    <div class="stat"><span class="num">4-9月</span><span class="label">蛇类外出活动较多的月份</span></div>
+    <div class="stat"><span class="num">10月+</span><span class="label">越冬前觅食期，攻击性与毒性最高</span></div>
+  </div>
+</section>
+
+<section id="culprit">
+  <span class="eyebrow">认识对手</span>
+  <h2>崂山两种真正的毒蛇：短尾蝮与长岛蝮</h2>
+  <p class="section-intro">青岛当地毒蛇均属蝰科亚洲蝮属，主要是短尾蝮和长岛蝮，山东沿海一带俗称"土虺"。两者外形接近，均体形短粗、头呈三角形，眼后有一条黑色眉纹，毒液以血循毒素为主，可造成剧烈灼痛、出血甚至组织坏死。</p>
+  <div class="snake-card">
+    <div class="snake-visual">
+      <svg viewBox="0 0 160 120" width="150" height="110" fill="none">
+        <path d="M10 90 Q30 40 60 55 Q90 70 110 40 Q125 20 140 25" stroke="#8a8168" stroke-width="10" stroke-linecap="round" fill="none"/>
+        <path d="M10 90 Q30 40 60 55 Q90 70 110 40 Q125 20 140 25" stroke="#c4581c" stroke-width="2" stroke-dasharray="3 5" fill="none" opacity=".6"/>
+        <path d="M132 15 L150 22 L132 32 Z" fill="#8a8168"/>
+        <ellipse cx="139" cy="21" rx="9" ry="7" fill="#8a8168"/>
+        <path d="M132 15 Q139 21 132 27" stroke="#1f3a2e" stroke-width="3" fill="none"/>
+        <circle cx="143" cy="19" r="1.6" fill="#f1ede4"/>
+      </svg>
+    </div>
+    <div class="snake-body">
+      <h3>短尾蝮（土虺）</h3>
+      <p class="latin">Gloydius brevicaudus · 蝰科亚洲蝮属</p>
+      <p>分布最广、被咬伤案例最多的一种，多栖息于坟堆、草丛、乱石堆附近。头侧具黑褐色眉纹并镶白边，体背两侧各有一行交错圆斑，尾尖发黑。</p>
+      <ul class="snake-facts">
+        <li><b>体长</b>成体约 40–70 厘米，体粗短</li>
+        <li><b>体色</b>黄褐 / 灰褐 / 土红色，头背有深色"∧"形斑</li>
+        <li><b>毒性类型</b>血循毒素为主，可致剧痛、出血、组织坏死</li>
+        <li><b>活动时间</b>多夜间及晨昏活动，雨天前后更活跃</li>
+      </ul>
+    </div>
+  </div>
+  <div class="snake-card" style="margin-top:1.2rem;">
+    <div class="snake-visual">
+      <svg viewBox="0 0 160 120" width="150" height="110" fill="none">
+        <path d="M10 100 Q40 60 70 70 Q100 80 115 45 Q125 22 140 20" stroke="#8a7358" stroke-width="10" stroke-linecap="round" fill="none"/>
+        <path d="M10 100 Q40 60 70 70 Q100 80 115 45 Q125 22 140 20" stroke="#c4581c" stroke-width="2" stroke-dasharray="3 5" fill="none" opacity=".6"/>
+        <path d="M132 10 L150 18 L132 28 Z" fill="#8a7358"/>
+        <ellipse cx="139" cy="17" rx="9" ry="7" fill="#8a7358"/>
+        <path d="M132 10 Q139 17 132 23" stroke="#1f3a2e" stroke-width="3" fill="none"/>
+        <circle cx="143" cy="15" r="1.6" fill="#f1ede4"/>
+      </svg>
+    </div>
+    <div class="snake-body">
+      <h3>长岛蝮</h3>
+      <p class="latin">Gloydius changdaoensis · 蝰科亚洲蝮属</p>
+      <p>山东半岛及沿海岛屿（庙岛群岛、烟台、威海、青岛沿海一带）分布的地方特有种，体型比短尾蝮更粗壮，春秋季有时会盘伏于低矮树枝上伏击鸟类，排毒量较大。</p>
+      <ul class="snake-facts">
+        <li><b>体长</b>成体可超过 70 厘米，体格粗壮</li>
+        <li><b>体色</b>灰褐色，两侧有粗大圆斑，眶后有黑色眉纹</li>
+        <li><b>毒性类型</b>血循毒素为主，被咬后灼烧感强烈，易出血坏死</li>
+        <li><b>活动时间</b>春秋季可爬树伏击，其余时间多晨昏及夜间活动</li>
+      </ul>
+    </div>
+  </div>
+  <div class="warn-note" style="margin-top:1.4rem;">
+    ⚠️ 特别提醒：崂山常见的<strong>黑眉锦蛇</strong>（俗称"黄凤"）虽然名字里也有"黑眉"，外形和土虺有几分相似，但它属于游蛇科，是无毒蛇，容易被非专业人士混淆。只要不能确定蛇种，一律按毒蛇咬伤处理，不要自行凭外观下结论。
+  </div>
+</section>
+
+<section id="identify">
+  <span class="eyebrow">被咬后先判断</span>
+  <h2>如何辨别毒蛇还是无毒蛇</h2>
+  <p class="section-intro">很多情况下蛇已逃走或来不及看清，可以从头型、伤口牙痕和症状发展来初步判断——但记住：无法百分百确认时，一律按毒蛇咬伤处理，立即就医。</p>
+  <div class="compare">
+    <div class="compare-col venom">
+      <h3>🔺 毒蛇特征</h3>
+      <ul>
+        <li>头部多呈三角形，头大颈细，尾部短粗</li>
+        <li>色斑较艳，体表花纹醒目</li>
+        <li>牙痕深而粗大，常为 2 个或 3–4 个针尖状牙洞，间距较大</li>
+        <li>伤口迅速红肿、剧痛、麻木，可能有瘀斑、水泡或血泡</li>
+        <li>全身症状明显（头晕、恶心、视物模糊、呼吸急促等）</li>
+      </ul>
+    </div>
+    <div class="compare-col safe">
+      <h3>⚪ 无毒蛇特征</h3>
+      <ul>
+        <li>头部呈钝圆形，颈部不细，尾部细长</li>
+        <li>体表花纹通常不明显</li>
+        <li>牙痕浅而密集，呈锯齿状排列</li>
+        <li>伤口通常不明显肿胀、不麻木</li>
+        <li>疼痛感会逐渐减轻直至消失</li>
+      </ul>
+    </div>
+  </div>
+  <div class="warn-note">
+    ⚠️ 注意：约 70% 的无毒蛇咬伤伤口也会出现肿胀，不能仅凭"肿不肿"来判断有毒无毒。如果条件允许，在安全距离（1.5 米以上）拍下蛇的照片，尤其是头部花纹和体色，能帮助医生快速判断蛇种、选用对应血清——但绝不要试图去追打或捕捉蛇。
+  </div>
+</section>
+
+<section id="habitat">
+  <span class="eyebrow">知己知彼</span>
+  <h2>蛇类常栖息在哪里？什么时候最活跃？</h2>
+  <p class="section-intro">土虺喜欢盘绕在与自身花纹相近的环境里，很难被发现，登山时经过以下区域要格外留意。</p>
+  <div class="habitat-grid">
+    <div class="habitat-card">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 20 L9 6 L13 14 L16 9 L21 20 Z"/></svg>
+      <h4>石缝与乱石堆</h4>
+      <p>非游览区裸露山石缝隙，是蛇类白天躲藏、日夜温差中调节体温的主要场所。</p>
+    </div>
+    <div class="habitat-card">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20 C4 14 6 10 6 10 C6 10 8 14 8 20 M11 20 C11 13 13 8 13 8 C13 8 15 13 15 20 M18 20 C18 15 20 11 20 11 C20 11 22 15 22 20"/></svg>
+      <h4>茂密草丛 / 灌木</h4>
+      <p>野草丛生的非游览路线是土虺出没最集中的区域，体色与枯草几乎融为一体，极难辨识。</p>
+    </div>
+    <div class="habitat-card">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8 Q6 4 10 8 T18 8 T22 8 M2 14 Q6 10 10 14 T18 14 T22 14 M2 20 Q6 16 10 20 T18 20 T22 20"/></svg>
+      <h4>溪流、水沟附近</h4>
+      <p>崂山北九水等溪流沿线阴湿环境适合蛇类捕食蛙类等猎物，湿度大的路段需放慢脚步。</p>
+    </div>
+    <div class="habitat-card">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2 L12 22 M12 6 L18 3 M12 10 L19 8 M12 14 L18 12"/></svg>
+      <h4>低矮树枝 / 树荫</h4>
+      <p>春秋季偶见土虺盘于树上，斑驳树皮色的身体完美隐蔽，用于伏击鸟类，经过时不要贴树丛穿行。</p>
+    </div>
+  </div>
+  <div class="time-strip">
+    <b>活跃时间：</b>以夜间及晨昏（清晨、傍晚）最为活跃；行动迟缓、喜盘绕静伏；<b>雨天前后</b>及闷热天气更易出洞活动；<b>每年 10 月进入越冬前采食活跃期</b>，是全年攻击性与毒性最高的季节，秋季登崂山务必格外小心非正规路线。
+  </div>
+</section>
+
+<section id="firstaid">
+  <span class="eyebrow">意外发生时</span>
+  <h2>被咬伤后应该如何正确处理</h2>
+  <p class="section-intro">现场处置的核心原则是"制动、清洗、送医"，目的是延缓毒素扩散、为救治争取时间，而不是自己"排毒"。</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num"></div>
+      <div class="step-body">
+        <h4>保持冷静，脱离原地</h4>
+        <p>不要惊慌奔跑——剧烈活动会加速血液循环，让毒素更快扩散。缓慢移动到安全、平坦的地方坐下或斜靠。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num"></div>
+      <div class="step-body">
+        <h4>记住蛇的特征，不要追打</h4>
+        <p>保持 1.5 米以上安全距离，尽量记住或拍下蛇头形状、体色、花纹，供医生判断蛇种、选用血清。切勿试图捕捉或击打蛇——大量二次伤害都发生在这个环节。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num"></div>
+      <div class="step-body">
+        <h4>伤肢制动并放低</h4>
+        <p>受伤肢体尽量制动、少活动，保持在心脏水平以下，减缓毒素随血液回流扩散。摘掉伤肢上的戒指、手表、绑腿等物品，防止后续肿胀后被勒紧。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num"></div>
+      <div class="step-body">
+        <h4>立即呼救 / 拨打 120</h4>
+        <p>说清楚所在的具体位置（游览区名称、路标编号或明显地标），如信号弱可先发送位置共享给同伴，再持续尝试拨打。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num"></div>
+      <div class="step-body">
+        <h4>视情况酌情包扎</h4>
+        <p>若预计送医时间较长，可用干净布条、绷带或背包肩带，在伤口近心端 5–10 厘米处适度绑扎，松紧以能插入 1–2 根手指为宜，每 15–30 分钟松开 1–2 分钟。土虺以血循毒素为主，绑扎务必适度，过紧会加重局部组织坏死。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num"></div>
+      <div class="step-body">
+        <h4>清水冲洗伤口</h4>
+        <p>用干净的流动水持续冲洗伤口至少 15 分钟，可轻揉周围软组织帮助排出表层毒液，但不要用力挤压伤口深处。没有干净水源时，不要用唾液、尿液冲洗，也不要用酒精、碘酒擦拭。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num"></div>
+      <div class="step-body">
+        <h4>尽快下撤，持续观察</h4>
+        <p>下撤或转运途中保持伤者安静、伤肢低位、减少颠簸；记下第一次出现肿痛、麻木等症状的时间，供医生参考。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="donts">
+    <h3>以下做法一律不要做</h3>
+    <ul>
+      <li>用嘴吸吮伤口排毒</li>
+      <li>用刀片切开伤口放血</li>
+      <li>冰敷或用火烧烫伤口</li>
+      <li>饮酒"活血"</li>
+      <li>盲目服用民间"蛇药"或偏方</li>
+      <li>拔罐吸毒（毒素已结合血液蛋白，无法物理吸出）</li>
+      <li>绑扎过紧完全阻断动脉血流</li>
+    </ul>
+  </div>
+</section>
+
+<section id="call">
+  <span class="eyebrow">求助渠道</span>
+  <h2>应该拨打什么电话</h2>
+  <p class="section-intro">在崂山非正规路线出现意外时，信号往往不稳定，出发前建议截图保存以下号码，并提前把行程告知家人或朋友。</p>
+  <div class="phone-grid">
+    <div class="phone-card">
+      <span class="num">120</span>
+      急救中心
+      <p>全国统一急救电话，被蛇咬伤后的首选求助方式，说明具体位置和伤情。</p>
+    </div>
+    <div class="phone-card alt">
+      <span class="num">110</span>
+      公安报警 / 山林救援
+      <p>若在非正规路线迷路、被困或无法自行下撤，可拨打 110 请求警方或山地救援力量协助定位搜救。</p>
+    </div>
+  </div>
+  <div class="warn-note" style="margin-top:1.4rem;">
+    📌 建议进山前在景区入口或门票上核对该游览区管理处的应急电话并拍照留存；结伴出行，行前把具体路线告知不同行的家人或朋友，便于万一失联时快速缩小搜救范围。
+  </div>
+
+  <h3 style="margin-top:2.6rem;font-size:1.2rem;color:var(--pine-deep);font-family:'Noto Serif SC',serif;">青岛储备抗蛇毒血清的医院</h3>
+  <p class="section-intro">抗蛇毒血清属于血液制品，保质期短、需冷藏，并非所有医院都有储备。目前青岛市明确长期储备蝮蛇抗蛇毒血清、具备救治能力的主要是以下两家医院，建议出发前保存好地址与电话：</p>
+  <div class="phone-grid">
+    <div class="phone-card" style="background:var(--rust-deep);">
+      <span style="font-family:'Noto Serif SC',serif;font-weight:900;font-size:1.15rem;color:#fff;display:block;margin-bottom:.5rem;">青岛市第八人民医院（本部）</span>
+      <p>地址：青岛市李沧区峰山路84号<br>
+      急救中心：0532-87895235<br>
+      导医台：0532-87625052<br>
+      北方地区规模最大的毒蛇咬伤救治中心之一，24小时急诊，长期储备蝮蛇抗蛇毒血清，也是崂山驴友被咬伤后最常送治的医院。</p>
+    </div>
+    <div class="phone-card" style="background:var(--pine);">
+      <span style="font-family:'Noto Serif SC',serif;font-weight:900;font-size:1.15rem;color:#fff;display:block;margin-bottom:.5rem;">青岛大学附属医院（西海岸院区）</span>
+      <p>地址：青岛市黄岛区五台山路1677号<br>
+      统一预约/咨询电话：0532-96166<br>
+      急诊24小时开放，长期备有蝮蛇抗蛇毒血清，主要服务西海岸新区大小珠山一带的蛇伤患者。</p>
+    </div>
+  </div>
+  <div class="warn-note" style="margin-top:1.4rem;">
+    💊 就医前可先电话确认血清库存，避免白跑一趟延误时间；也可通过微信小程序"赛伦100蛇伤防治"查询就近有血清储备的医疗机构。以上信息可能随医院安排调整，出发前建议再次核实。
+  </div>
+</section>
+
+<section id="gear">
+  <span class="eyebrow">防患于未然</span>
+  <h2>出发前的毒蛇防护准备</h2>
+  <div class="gear-grid">
+    <div class="gear-card">
+      <span class="eyebrow" style="color:var(--moss);">穿着</span>
+      <ul>
+        <li>长袖上衣 + 长裤，裤脚扎紧或塞进高帮鞋 / 袜子内</li>
+        <li>高帮徒步鞋，避免裸露脚踝</li>
+        <li>穿越密林、深草区域可加穿防蛇护腿 / 绑腿</li>
+        <li>亮色衣物（浅蓝、米白）比深色更容易被蛇提前察觉，减少"误踩"</li>
+      </ul>
+    </div>
+    <div class="gear-card">
+      <span class="eyebrow" style="color:var(--moss);">随身工具</span>
+      <ul>
+        <li><b>登山杖"打草惊蛇"</b>：行进中每走几步就用登山杖敲击、拨动前方约1米范围内的草丛、落叶堆和石缝，蛇能感知地面振动，绝大多数情况下会主动避让离开，这比直接用脚试探安全得多</li>
+        <li>路过石堆、倒木、灌木丛等视线盲区时，先用登山杖探一探再落脚，不要贸然伸手翻动石块或把手脚探入石缝、树洞</li>
+        <li>手电筒：晨昏或光线不足路段照明，看清落脚点，不要在夜间徒手摸黑穿越非正规路线</li>
+        <li>干净纱布 / 弹性绷带：应急包扎备用</li>
+        <li>充满电的手机 + 离线地图，救援电话及血清医院信息截图保存</li>
+      </ul>
+    </div>
+    <div class="gear-card">
+      <span class="eyebrow" style="color:var(--moss);">路线与时间</span>
+      <ul>
+        <li>尽量走正规游览步道，避开非游览区茂密草丛与树林</li>
+        <li>10 月前后为土虺越冬前活跃高峰期，出行需格外谨慎</li>
+        <li>避开清晨、傍晚及雨后蛇类活跃时段单独穿行非正规路线</li>
+        <li>结伴而行，不单独深入陌生野路</li>
+      </ul>
+    </div>
+    <div class="gear-card">
+      <span class="eyebrow" style="color:var(--moss);">观念提醒</span>
+      <ul>
+        <li>不建议自行携带"蛇药"随意服用——未确认蛇种前用药可能适得其反</li>
+        <li>遇到蛇不要惊扰、不要驱赶捕打，绕行离开即可</li>
+        <li>任何现场处理都不能代替专业医疗，核心目标始终是尽快送医</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  本页面内容综合公开科普资料整理，仅用于户外安全知识普及，<strong>不能替代专业医疗诊断与救治</strong>。<br>
+  如遇蛇咬伤等紧急情况，请第一时间拨打 <strong>120</strong> 并尽快前往有救治条件的医疗机构。
+</footer>
+
+</body>
+</html>
