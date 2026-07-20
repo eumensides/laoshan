@@ -172,6 +172,14 @@
     background:var(--pine-deep);
     display:flex;align-items:center;justify-content:center;
     padding:1.5rem;
+    overflow:hidden;
+  }
+  .snake-visual img{
+    width:100%;height:100%;
+    min-height:160px;
+    object-fit:cover;
+    border-radius:4px;
+    display:block;
   }
   .snake-body{padding:1.8rem 2rem;}
   .snake-body h3{font-size:1.3rem;}
@@ -374,14 +382,10 @@
   <p class="section-intro">青岛当地毒蛇均属蝰科亚洲蝮属，主要是短尾蝮和长岛蝮，山东沿海一带俗称"土虺"。两者外形接近，均体形短粗、头呈三角形，眼后有一条黑色眉纹，毒液以血循毒素为主，可造成剧烈灼痛、出血甚至组织坏死。</p>
   <div class="snake-card">
     <div class="snake-visual">
-      <svg viewBox="0 0 160 120" width="150" height="110" fill="none">
-        <path d="M10 90 Q30 40 60 55 Q90 70 110 40 Q125 20 140 25" stroke="#8a8168" stroke-width="10" stroke-linecap="round" fill="none"/>
-        <path d="M10 90 Q30 40 60 55 Q90 70 110 40 Q125 20 140 25" stroke="#c4581c" stroke-width="2" stroke-dasharray="3 5" fill="none" opacity=".6"/>
-        <path d="M132 15 L150 22 L132 32 Z" fill="#8a8168"/>
-        <ellipse cx="139" cy="21" rx="9" ry="7" fill="#8a8168"/>
-        <path d="M132 15 Q139 21 132 27" stroke="#1f3a2e" stroke-width="3" fill="none"/>
-        <circle cx="143" cy="19" r="1.6" fill="#f1ede4"/>
-      </svg>
+      <img
+        src="https://cdn.jsdelivr.net/gh/eumensides/laoshan@main/Gloydius_brevicaudus.webp"
+        onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/eumensides/laoshan@main/Gloydius_brevicaudus.png'"
+        alt="短尾蝮（土虺）" loading="lazy">
     </div>
     <div class="snake-body">
       <h3>短尾蝮（土虺）</h3>
@@ -397,14 +401,10 @@
   </div>
   <div class="snake-card" style="margin-top:1.2rem;">
     <div class="snake-visual">
-      <svg viewBox="0 0 160 120" width="150" height="110" fill="none">
-        <path d="M10 100 Q40 60 70 70 Q100 80 115 45 Q125 22 140 20" stroke="#8a7358" stroke-width="10" stroke-linecap="round" fill="none"/>
-        <path d="M10 100 Q40 60 70 70 Q100 80 115 45 Q125 22 140 20" stroke="#c4581c" stroke-width="2" stroke-dasharray="3 5" fill="none" opacity=".6"/>
-        <path d="M132 10 L150 18 L132 28 Z" fill="#8a7358"/>
-        <ellipse cx="139" cy="17" rx="9" ry="7" fill="#8a7358"/>
-        <path d="M132 10 Q139 17 132 23" stroke="#1f3a2e" stroke-width="3" fill="none"/>
-        <circle cx="143" cy="15" r="1.6" fill="#f1ede4"/>
-      </svg>
+      <img
+        src="https://cdn.jsdelivr.net/gh/eumensides/laoshan@main/Gloydius_changdaoensis.webp"
+        onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/eumensides/laoshan@main/Gloydius_changdaoensis.png'"
+        alt="长岛蝮" loading="lazy">
     </div>
     <div class="snake-body">
       <h3>长岛蝮</h3>
