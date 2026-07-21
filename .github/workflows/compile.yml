@@ -21,19 +21,30 @@ jobs:
           echo "DAY=$DAY" >> $GITHUB_ENV
 
           declare -A LABELS=(
-            [laoshan]="崂山"
+            [shizifeng]="狮子峰"
+            [chaoyinpu]="潮音瀑"
+            [taiqingwan]="太清湾"
+            [jufengxiazhan]="巨峰下站"
+            [shouzifeng]="寿字峰"
             [lingqifeng]="灵旗峰"
-            [qtv1]="青视直播1"
-            [qtv2]="青视直播2"
+            [erlongshan]="二龙山"
+            [huayanshijie]="华严世界"
+            [wusiguangchang]="五四广场"
+            [yinchuanxilu]="银川西路"
+            [fuzhoulu]="福州路"
+            [nanjinglu]="南京路"
+            [aofanzhongxin]="奥帆中心"
           )
 
           for name in "${!LABELS[@]}"; do
             DIR="frames/$name/$DAY"
             if [ -d "$DIR" ] && [ "$(ls -A "$DIR")" ]; then
               echo "=== Compiling $name ==="
-              ffmpeg -y -framerate 1 \
+              # -framerate 4：输入端每秒读4张原图（放慢播放速度）
+              # -r 24：输出端补帧到24fps让播放更流畅
+              ffmpeg -y -framerate 4 \
                      -pattern_type glob -i "$DIR/*.jpg" \
-                     -vf "fps=24" \
+                     -r 24 \
                      -c:v libx264 -pix_fmt yuv420p \
                      "timelapse-$name-$DAY.mp4"
               echo "${name}_SUCCESS=true" >> $GITHUB_ENV
@@ -43,89 +54,84 @@ jobs:
             fi
           done
 
-      - name: Upload laoshan release
-        if: env.laoshan_SUCCESS == 'true'
-        uses: softprops/action-gh-release@v2
-        with:
-          files: timelapse-laoshan-${{ env.DAY }}.mp4
-          tag_name: timelapse-laoshan-${{ env.DAY }}
+      - name: Upload releases
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set +e
+          declare -A LABELS=(
+            [shizifeng]="狮子峰" [chaoyinpu]="潮音瀑" [taiqingwan]="太清湾"
+            [jufengxiazhan]="巨峰下站" [shouzifeng]="寿字峰" [lingqifeng]="灵旗峰"
+            [erlongshan]="二龙山" [huayanshijie]="华严世界" [wusiguangchang]="五四广场"
+            [yinchuanxilu]="银川西路" [fuzhoulu]="福州路" [nanjinglu]="南京路"
+            [aofanzhongxin]="奥帆中心"
+          )
+          for name in "${!LABELS[@]}"; do
+            var="${name}_SUCCESS"
+            if [ "${!var}" == "true" ]; then
+              gh release create "timelapse-$name-$DAY" "timelapse-$name-$DAY.mp4" \
+                --title "${LABELS[$name]} $DAY" \
+                --notes "自动生成的延时视频" \
+                || echo "!!! release upload failed for $name"
+            fi
+          done
 
-      - name: Upload lingqifeng release
-        if: env.lingqifeng_SUCCESS == 'true'
-        uses: softprops/action-gh-release@v2
-        with:
-          files: timelapse-lingqifeng-${{ env.DAY }}.mp4
-          tag_name: timelapse-lingqifeng-${{ env.DAY }}
+      - name: Send emails
+        if: always()
+        env:
+          MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+        run: |
+          set +e
+          declare -A LABELS=(
+            [shizifeng]="狮子峰" [chaoyinpu]="潮音瀑" [taiqingwan]="太清湾"
+            [jufengxiazhan]="巨峰下站" [shouzifeng]="寿字峰" [lingqifeng]="灵旗峰"
+            [erlongshan]="二龙山" [huayanshijie]="华严世界" [wusiguangchang]="五四广场"
+            [yinchuanxilu]="银川西路" [fuzhoulu]="福州路" [nanjinglu]="南京路"
+            [aofanzhongxin]="奥帆中心"
+          )
 
-      - name: Upload qtv1 release
-        if: env.qtv1_SUCCESS == 'true'
-        uses: softprops/action-gh-release@v2
-        with:
-          files: timelapse-qtv1-${{ env.DAY }}.mp4
-          tag_name: timelapse-qtv1-${{ env.DAY }}
+          cat > send_mail.py << 'PYEOF'
+          import smtplib, os, sys
+          from email.mime.multipart import MIMEMultipart
+          from email.mime.base import MIMEBase
+          from email.mime.text import MIMEText
+          from email import encoders
 
-      - name: Upload qtv2 release
-        if: env.qtv2_SUCCESS == 'true'
-        uses: softprops/action-gh-release@v2
-        with:
-          files: timelapse-qtv2-${{ env.DAY }}.mp4
-          tag_name: timelapse-qtv2-${{ env.DAY }}
+          name, label, day, filepath = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
+          username = os.environ['MAIL_USERNAME']
+          password = os.environ['MAIL_PASSWORD']
+          to_addr = "eumensides@gmail.com"
 
-      - name: Email laoshan
-        if: env.laoshan_SUCCESS == 'true'
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.MAIL_USERNAME }}
-          password: ${{ secrets.MAIL_PASSWORD }}
-          subject: "崂山延时视频 - ${{ env.DAY }}"
-          to: eumensides@gmail.com
-          from: 延时机器人 <${{ secrets.MAIL_USERNAME }}>
-          body: "附件是崂山 ${{ env.DAY }} 的延时视频，自动生成，请查收。"
-          attachments: timelapse-laoshan-${{ env.DAY }}.mp4
+          msg = MIMEMultipart()
+          msg['From'] = f"延时机器人 <{username}>"
+          msg['To'] = to_addr
+          msg['Subject'] = f"{label}延时视频 - {day}"
+          msg.attach(MIMEText(f"附件是{label} {day} 的延时视频，自动生成，请查收。", 'plain', 'utf-8'))
 
-      - name: Email lingqifeng
-        if: env.lingqifeng_SUCCESS == 'true'
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.MAIL_USERNAME }}
-          password: ${{ secrets.MAIL_PASSWORD }}
-          subject: "灵旗峰延时视频 - ${{ env.DAY }}"
-          to: eumensides@gmail.com
-          from: 延时机器人 <${{ secrets.MAIL_USERNAME }}>
-          body: "附件是灵旗峰 ${{ env.DAY }} 的延时视频，自动生成，请查收。"
-          attachments: timelapse-lingqifeng-${{ env.DAY }}.mp4
+          with open(filepath, 'rb') as f:
+              part = MIMEBase('application', 'octet-stream')
+              part.set_payload(f.read())
+          encoders.encode_base64(part)
+          part.add_header('Content-Disposition', f'attachment; filename="{os.path.basename(filepath)}"')
+          msg.attach(part)
 
-      - name: Email qtv1
-        if: env.qtv1_SUCCESS == 'true'
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.MAIL_USERNAME }}
-          password: ${{ secrets.MAIL_PASSWORD }}
-          subject: "青视直播1延时视频 - ${{ env.DAY }}"
-          to: eumensides@gmail.com
-          from: 延时机器人 <${{ secrets.MAIL_USERNAME }}>
-          body: "附件是青视直播1 ${{ env.DAY }} 的延时视频，自动生成，请查收。"
-          attachments: timelapse-qtv1-${{ env.DAY }}.mp4
+          with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+              server.login(username, password)
+              server.sendmail(username, [to_addr], msg.as_string())
+          print(f"Sent email for {name}")
+          PYEOF
 
-      - name: Email qtv2
-        if: env.qtv2_SUCCESS == 'true'
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.MAIL_USERNAME }}
-          password: ${{ secrets.MAIL_PASSWORD }}
-          subject: "青视直播2延时视频 - ${{ env.DAY }}"
-          to: eumensides@gmail.com
-          from: 延时机器人 <${{ secrets.MAIL_USERNAME }}>
-          body: "附件是青视直播2 ${{ env.DAY }} 的延时视频，自动生成，请查收。"
-          attachments: timelapse-qtv2-${{ env.DAY }}.mp4
+          # 去掉heredoc从YAML继承来的10个空格前导缩进，避免python报IndentationError
+          sed -i 's/^          //' send_mail.py
+
+          for name in "${!LABELS[@]}"; do
+            var="${name}_SUCCESS"
+            if [ "${!var}" == "true" ]; then
+              python3 send_mail.py "$name" "${LABELS[$name]}" "$DAY" "timelapse-$name-$DAY.mp4" \
+                || echo "!!! email failed for $name"
+            fi
+          done
 
       - name: Clean up frames older than 7 days
         run: |
