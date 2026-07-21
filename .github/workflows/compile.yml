@@ -39,14 +39,23 @@ jobs:
           for name in "${!LABELS[@]}"; do
             DIR="frames/$name/$DAY"
             if [ -d "$DIR" ] && [ "$(ls -A "$DIR")" ]; then
-              echo "=== Compiling $name ==="
-              # -framerate 4：输入端每秒读4张原图（放慢播放速度）
-              # -r 24：输出端补帧到24fps让播放更流畅
-              ffmpeg -y -framerate 4 \
+              echo "=== Compiling $name (MP4) ==="
+              # -framerate 1：每张原图停留1秒
+              # -r 24：用24fps封装（把每张图复制成24帧），保证各播放器兼容且时长稳定
+              ffmpeg -y -framerate 1 \
                      -pattern_type glob -i "$DIR/*.jpg" \
                      -r 24 \
                      -c:v libx264 -pix_fmt yuv420p \
                      "timelapse-$name-$DAY.mp4"
+
+              echo "=== Compiling $name (GIF) ==="
+              # 同样每张1秒；缩到640宽 + 生成调色板，控制GIF文件大小和画质
+              ffmpeg -y -framerate 1 \
+                     -pattern_type glob -i "$DIR/*.jpg" \
+                     -vf "fps=1,scale=640:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" \
+                     -loop 0 \
+                     "timelapse-$name-$DAY.gif"
+
               echo "${name}_SUCCESS=true" >> $GITHUB_ENV
             else
               echo "=== No data for $name on $DAY, skipping ==="
@@ -69,9 +78,9 @@ jobs:
           for name in "${!LABELS[@]}"; do
             var="${name}_SUCCESS"
             if [ "${!var}" == "true" ]; then
-              gh release create "timelapse-$name-$DAY" "timelapse-$name-$DAY.mp4" \
+              gh release create "timelapse-$name-$DAY" "timelapse-$name-$DAY.mp4" "timelapse-$name-$DAY.gif" \
                 --title "${LABELS[$name]} $DAY" \
-                --notes "自动生成的延时视频" \
+                --notes "自动生成的延时视频（含MP4和GIF两种格式）" \
                 || echo "!!! release upload failed for $name"
             fi
           done
@@ -98,7 +107,7 @@ jobs:
           from email.mime.text import MIMEText
           from email import encoders
 
-          name, label, day, filepath = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
+          name, label, day, mp4_path, gif_path = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5]
           username = os.environ['MAIL_USERNAME']
           password = os.environ['MAIL_PASSWORD']
           to_addr = "eumensides@gmail.com"
@@ -107,14 +116,16 @@ jobs:
           msg['From'] = f"延时机器人 <{username}>"
           msg['To'] = to_addr
           msg['Subject'] = f"{label}延时视频 - {day}"
-          msg.attach(MIMEText(f"附件是{label} {day} 的延时视频，自动生成，请查收。", 'plain', 'utf-8'))
+          msg.attach(MIMEText(f"附件是{label} {day} 的延时视频（MP4 + GIF两种格式），自动生成，请查收。", 'plain', 'utf-8'))
 
-          with open(filepath, 'rb') as f:
-              part = MIMEBase('application', 'octet-stream')
-              part.set_payload(f.read())
-          encoders.encode_base64(part)
-          part.add_header('Content-Disposition', f'attachment; filename="{os.path.basename(filepath)}"')
-          msg.attach(part)
+          for filepath in [mp4_path, gif_path]:
+              if os.path.exists(filepath):
+                  with open(filepath, 'rb') as f:
+                      part = MIMEBase('application', 'octet-stream')
+                      part.set_payload(f.read())
+                  encoders.encode_base64(part)
+                  part.add_header('Content-Disposition', f'attachment; filename="{os.path.basename(filepath)}"')
+                  msg.attach(part)
 
           with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
               server.login(username, password)
@@ -128,7 +139,7 @@ jobs:
           for name in "${!LABELS[@]}"; do
             var="${name}_SUCCESS"
             if [ "${!var}" == "true" ]; then
-              python3 send_mail.py "$name" "${LABELS[$name]}" "$DAY" "timelapse-$name-$DAY.mp4" \
+              python3 send_mail.py "$name" "${LABELS[$name]}" "$DAY" "timelapse-$name-$DAY.mp4" "timelapse-$name-$DAY.gif" \
                 || echo "!!! email failed for $name"
             fi
           done
