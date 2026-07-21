@@ -100,41 +100,15 @@ jobs:
             [aofanzhongxin]="奥帆中心"
           )
 
-          cat > send_mail.py << 'PYEOF'
-          import smtplib, os, sys
-          from email.mime.multipart import MIMEMultipart
-          from email.mime.base import MIMEBase
-          from email.mime.text import MIMEText
-          from email import encoders
+          # send_mail.py 以 base64 编码嵌入，避免复制粘贴时破坏 Python 缩进
+          echo 'aW1wb3J0IHNtdHBsaWIsIG9zLCBzeXMKZnJvbSBlbWFpbC5taW1lLm11bHRpcGFydCBpbXBvcnQgTUlNRU11bHRpcGFydApmcm9tIGVtYWlsLm1pbWUuYmFzZSBpbXBvcnQgTUlNRUJhc2UKZnJvbSBlbWFpbC5taW1lLnRleHQgaW1wb3J0IE1JTUVUZXh0CmZyb20gZW1haWwgaW1wb3J0IGVuY29kZXJzCgpuYW1lLCBsYWJlbCwgZGF5LCBtcDRfcGF0aCwgZ2lmX3BhdGggPSBzeXMuYXJndlsxXSwgc3lzLmFyZ3ZbMl0sIHN5cy5hcmd2WzNdLCBzeXMuYXJndls0XSwgc3lzLmFyZ3ZbNV0KdXNlcm5hbWUgPSBvcy5lbnZpcm9uWydNQUlMX1VTRVJOQU1FJ10KcGFzc3dvcmQgPSBvcy5lbnZpcm9uWydNQUlMX1BBU1NXT1JEJ10KdG9fYWRkciA9ICJldW1lbnNpZGVzQGdtYWlsLmNvbSIKCm1zZyA9IE1JTUVNdWx0aXBhcnQoKQptc2dbJ0Zyb20nXSA9IGYi5bu25pe25py65Zmo5Lq6IDx7dXNlcm5hbWV9PiIKbXNnWydUbyddID0gdG9fYWRkcgptc2dbJ1N1YmplY3QnXSA9IGYie2xhYmVsfeW7tuaXtuinhumikSAtIHtkYXl9Igptc2cuYXR0YWNoKE1JTUVUZXh0KGYi6ZmE5Lu25pive2xhYmVsfSB7ZGF5fSDnmoTlu7bml7bop4bpopHvvIhNUDQgKyBHSUbkuKTnp43moLzlvI/vvInvvIzoh6rliqjnlJ/miJDvvIzor7fmn6XmlLbjgIIiLCAncGxhaW4nLCAndXRmLTgnKSkKCmZvciBmaWxlcGF0aCBpbiBbbXA0X3BhdGgsIGdpZl9wYXRoXToKICAgIGlmIG9zLnBhdGguZXhpc3RzKGZpbGVwYXRoKToKICAgICAgICB3aXRoIG9wZW4oZmlsZXBhdGgsICdyYicpIGFzIGY6CiAgICAgICAgICAgIHBhcnQgPSBNSU1FQmFzZSgnYXBwbGljYXRpb24nLCAnb2N0ZXQtc3RyZWFtJykKICAgICAgICAgICAgcGFydC5zZXRfcGF5bG9hZChmLnJlYWQoKSkKICAgICAgICBlbmNvZGVycy5lbmNvZGVfYmFzZTY0KHBhcnQpCiAgICAgICAgcGFydC5hZGRfaGVhZGVyKCdDb250ZW50LURpc3Bvc2l0aW9uJywgZidhdHRhY2htZW50OyBmaWxlbmFtZT0ie29zLnBhdGguYmFzZW5hbWUoZmlsZXBhdGgpfSInKQogICAgICAgIG1zZy5hdHRhY2gocGFydCkKCndpdGggc210cGxpYi5TTVRQX1NTTCgnc210cC5nbWFpbC5jb20nLCA0NjUpIGFzIHNlcnZlcjoKICAgIHNlcnZlci5sb2dpbih1c2VybmFtZSwgcGFzc3dvcmQpCiAgICBzZXJ2ZXIuc2VuZG1haWwodXNlcm5hbWUsIFt0b19hZGRyXSwgbXNnLmFzX3N0cmluZygpKQpwcmludChmIlNlbnQgZW1haWwgZm9yIHtuYW1lfSIpCg==' | base64 -d > send_mail.py
 
-          name, label, day, mp4_path, gif_path = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5]
-          username = os.environ['MAIL_USERNAME']
-          password = os.environ['MAIL_PASSWORD']
-          to_addr = "eumensides@gmail.com"
-
-          msg = MIMEMultipart()
-          msg['From'] = f"延时机器人 <{username}>"
-          msg['To'] = to_addr
-          msg['Subject'] = f"{label}延时视频 - {day}"
-          msg.attach(MIMEText(f"附件是{label} {day} 的延时视频（MP4 + GIF两种格式），自动生成，请查收。", 'plain', 'utf-8'))
-
-          for filepath in [mp4_path, gif_path]:
-              if os.path.exists(filepath):
-                  with open(filepath, 'rb') as f:
-                      part = MIMEBase('application', 'octet-stream')
-                      part.set_payload(f.read())
-                  encoders.encode_base64(part)
-                  part.add_header('Content-Disposition', f'attachment; filename="{os.path.basename(filepath)}"')
-                  msg.attach(part)
-
-          with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
-              server.login(username, password)
-              server.sendmail(username, [to_addr], msg.as_string())
-          print(f"Sent email for {name}")
-          PYEOF
-
-          # 去掉heredoc从YAML继承来的10个空格前导缩进，避免python报IndentationError
-          sed -i 's/^          //' send_mail.py
+          # 校验一下脚本语法是否正确，不正确直接报错终止（避免像之前那样静默失败13次）
+          python3 -m py_compile send_mail.py
+          if [ $? -ne 0 ]; then
+            echo "!!! send_mail.py 语法有误，中止发送邮件"
+            exit 1
+          fi
 
           for name in "${!LABELS[@]}"; do
             var="${name}_SUCCESS"
