@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>《山东省兵要地志概说》｜史料摘译</title>
+<style>
+  :root{
+    --paper: #ece5d6;
+    --paper-dark: #ddd3bd;
+    --ink: #2b2620;
+    --ink-soft: #5b5344;
+    --seal: #8c3b2e;
+    --line: #b8ab8e;
+    --gold: #a8863f;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse at top left, rgba(255,255,255,0.15), transparent 60%),
+      var(--paper);
+    color:var(--ink);
+    font-family:"Songti SC","STSong","SimSun","Noto Serif SC",serif;
+    line-height:1.9;
+  }
+  .texture{
+    position:fixed; inset:0; pointer-events:none; opacity:0.05; z-index:0;
+    background-image: repeating-linear-gradient(0deg, #000 0px, transparent 1px, transparent 3px);
+  }
+
+  header.title-block{
+    position:relative;
+    padding: 5rem 1.5rem 4rem;
+    text-align:center;
+    border-bottom: 1px solid var(--line);
+  }
+  .archive-tag{
+    font-family:"Noto Sans SC",sans-serif;
+    font-size:0.7rem;
+    letter-spacing:0.25em;
+    color:var(--ink-soft);
+    text-transform:uppercase;
+    margin-bottom:1.2rem;
+  }
+  h1.main-title{
+    font-size:clamp(2.2rem, 6vw, 3.6rem);
+    font-weight:700;
+    letter-spacing:0.15em;
+    margin:0 0 0.6rem;
+    writing-mode: horizontal-tb;
+  }
+  .subtitle{
+    font-family:"Noto Sans SC",sans-serif;
+    font-size:0.95rem;
+    color:var(--ink-soft);
+    letter-spacing:0.08em;
+  }
+  .doc-number{
+    margin-top:1.6rem;
+    display:inline-block;
+    font-family:"Noto Sans SC",sans-serif;
+    font-size:0.75rem;
+    color:var(--seal);
+    border:1px solid var(--seal);
+    padding:0.3rem 0.9rem;
+    border-radius:2px;
+    letter-spacing:0.1em;
+  }
+
+  .notice{
+    max-width:760px;
+    margin:2.5rem auto 0;
+    padding:1.1rem 1.4rem;
+    background: rgba(140,59,46,0.06);
+    border-left:3px solid var(--seal);
+    font-family:"Noto Sans SC",sans-serif;
+    font-size:0.85rem;
+    color:var(--ink-soft);
+    text-align:left;
+    border-radius:2px;
+  }
+
+  main{
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 6rem;
+    position:relative;
+    z-index:1;
+  }
+
+  .toc{
+    display:flex;
+    flex-wrap:wrap;
+    gap:0.6rem 1.2rem;
+    justify-content:center;
+    margin: 0 0 4rem;
+    padding: 1.6rem;
+    background: var(--paper-dark);
+    border:1px solid var(--line);
+  }
+  .toc a{
+    font-family:"Noto Sans SC",sans-serif;
+    font-size:0.85rem;
+    color:var(--ink);
+    text-decoration:none;
+    border-bottom:1px dotted var(--gold);
+    padding-bottom:2px;
+  }
+  .toc a:hover{ color:var(--seal); }
+
+  section.chapter{
+    margin-bottom: 4rem;
+    padding-top: 1.5rem;
+    scroll-margin-top: 2rem;
+  }
+  .chapter-head{
+    display:flex;
+    align-items:baseline;
+    gap:1rem;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom:0.5rem;
+    margin-bottom:1.4rem;
+  }
+  .chapter-num{
+    font-family:"Noto Sans SC",sans-serif;
+    font-size:0.8rem;
+    color:var(--gold);
+    letter-spacing:0.1em;
+  }
+  .chapter-title{
+    font-size:1.5rem;
+    font-weight:700;
+    letter-spacing:0.05em;
+  }
+  .chapter-orig{
+    font-family:"Noto Sans SC",sans-serif;
+    font-size:0.8rem;
+    color:var(--ink-soft);
+    margin-left:auto;
+  }
+  .chapter-page{
+    font-family:"Noto Sans SC",sans-serif;
+    font-size:0.75rem;
+    color:var(--ink-soft);
+  }
+
+  .summary{
+    font-size:1rem;
+    margin-bottom:1.2rem;
+  }
+  .topics{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap:0.7rem;
+    margin-top:1rem;
+  }
+  .topic-card{
+    background:#fff;
+    border:1px solid var(--line);
+    padding:0.8rem 1rem;
+    font-family:"Noto Sans SC",sans-serif;
+    font-size:0.85rem;
+  }
+  .topic-card .zh{
+    font-weight:600;
+    color:var(--ink);
+    display:block;
+    margin-bottom:0.15rem;
+  }
+  .topic-card .jp{
+    color:var(--ink-soft);
+    font-size:0.75rem;
+  }
+
+  .fragment{
+    margin-top:1.4rem;
+    padding:1rem 1.2rem;
+    background: rgba(0,0,0,0.02);
+    border-left: 2px solid var(--line);
+    font-family:"Noto Sans SC",sans-serif;
+    font-size:0.85rem;
+    color:var(--ink-soft);
+  }
+  .fragment b{ color:var(--ink); }
+
+  footer{
+    text-align:center;
+    padding: 3rem 1.5rem 4rem;
+    border-top:1px solid var(--line);
+    font-family:"Noto Sans SC",sans-serif;
+    font-size:0.75rem;
+    color:var(--ink-soft);
+  }
+
+  @media (max-width:600px){
+    .chapter-head{ flex-wrap:wrap; }
+    .chapter-orig{ margin-left:0; }
+  }
+</style>
+</head>
+<body>
+<div class="texture"></div>
+
+<header class="title-block">
+  <div class="archive-tag">アジア歴史資料センター JACAR 藏档摘译</div>
+  <h1 class="main-title">山东省兵要地志概说</h1>
+  <div class="subtitle">山東省兵要地誌概說　｜　旧日本陆军资料</div>
+  <div class="doc-number">档号 C13032679300／1803</div>
+
+  <div class="notice">
+    <b>关于本页说明：</b>原件为竖排旧式日文（汉字＋片假名混排）扫描件，经文字识别后行序错乱、部分笔画残损，正文多处已无法逐句准确复原。本页仅依据目录、分类标题及可辨认的片段，整理出忠实于原文结构的中文摘要，不对无法确认的内容做臆测补全。如需精确文本，建议对照
+    <a href="http://www.jacar.go.jp" target="_blank" rel="noopener" style="color:var(--seal)">JACAR 官网</a> 原始影像核校。
+  </div>
+</header>
+
+<main>
+
+  <nav class="toc">
+    <a href="#c1">一、用兵的观察</a>
+    <a href="#c2">二、地形之概况</a>
+    <a href="#c3">三、地形</a>
+    <a href="#c4">四、运输交通</a>
+    <a href="#c5">五、通信</a>
+    <a href="#c6">六、宿营</a>
+    <a href="#c7">七、产业</a>
+    <a href="#c8">八、气象</a>
+  </nav>
+
+  <!-- 一 用兵的觀察 -->
+  <section class="chapter" id="c1">
+    <div class="chapter-head">
+      <span class="chapter-num">01</span>
+      <span class="chapter-title">用兵的观察</span>
+      <span class="chapter-orig">用兵的觀察</span>
+      <span class="chapter-page">原书 第1页</span>
+    </div>
+    <p class="summary">
+      本章从军事角度对山东省的战略地位与作战条件作总体判断。可辨读的片段显示，文中提到山东地处华北与华中之间，
+      济南经由铁路可与津浦线、胶济线等相连，交通较为便利；文中还就沿海登陆、内陆山地对兵力机动的影响、
+      以及各季气候对作战行动的制约等问题分条论述。由于原件扫描严重模糊，具体的六条判断（原文标注序号"一"至"六"）
+      无法逐条准确复原，仅能确认其为逐条列述的战略评估形式。
+    </p>
+    <div class="fragment">
+      可辨认片段举例（原文用字）：<b>"山東省ハ…津浦…膠濟…交通至便"</b>、<b>"戦時ニ於テモ利用スル価値"</b>
+      ——大意涉及山东交通线在平时与战时的可利用价值，但完整语句因扫描缺损无法确定。
+    </div>
+  </section>
+
+  <!-- 二 地形ノ概況 -->
+  <section class="chapter" id="c2">
+    <div class="chapter-head">
+      <span class="chapter-num">02</span>
+      <span class="chapter-title">地形之概况</span>
+      <span class="chapter-orig">地形ノ概況</span>
+      <span class="chapter-page">原书 第3页</span>
+    </div>
+    <p class="summary">
+      本章为地形专章前的总论，概述山东省整体地势格局——山地、丘陵与平原的大致分布，以及沿海与内陆地形的差异，
+      为后一章按山、河、湖沼、海岸等分类详述做铺垫。因原件模糊，具体数据与地名多不可辨。
+    </p>
+  </section>
+
+  <!-- 三 地形 -->
+  <section class="chapter" id="c3">
+    <div class="chapter-head">
+      <span class="chapter-num">03</span>
+      <span class="chapter-title">地形</span>
+      <span class="chapter-orig">地形</span>
+      <span class="chapter-page">原书 第4页</span>
+    </div>
+    <p class="summary">本章按自然地理要素分类叙述，原表格清晰列出以下分类项目：</p>
+    <div class="topics">
+      <div class="topic-card"><span class="zh">山地</span><span class="jp">山</span></div>
+      <div class="topic-card"><span class="zh">河流</span><span class="jp">河</span></div>
+      <div class="topic-card"><span class="zh">川流</span><span class="jp">川</span></div>
+      <div class="topic-card"><span class="zh">湖泊沼泽</span><span class="jp">沼</span></div>
+      <div class="topic-card"><span class="zh">海岸</span><span class="jp">海岸</span></div>
+      <div class="topic-card"><span class="zh">森林</span><span class="jp">森林</span></div>
+      <div class="topic-card"><span class="zh">村落房舍</span><span class="jp">家</span></div>
+    </div>
+    <div class="fragment">
+      可辨认内容涉及黄河及其支流的流路、河口位置与水量变化（提到"黄河"改道相关表述），
+      以及沿海登陆条件、内陆山区森林覆盖情况的简要描述；具体数值、里程与地名因扫描质量原因大多无法确认。
+    </div>
+  </section>
+
+  <!-- 四 運輸交通 -->
+  <section class="chapter" id="c4">
+    <div class="chapter-head">
+      <span class="chapter-num">04</span>
+      <span class="chapter-title">运输交通</span>
+      <span class="chapter-orig">運輸交通</span>
+      <span class="chapter-page">原书 第6页</span>
+    </div>
+    <p class="summary">本章介绍山东境内的交通运输体系，表格分类包括：</p>
+    <div class="topics">
+      <div class="topic-card"><span class="zh">铁道</span><span class="jp">鐵道</span></div>
+      <div class="topic-card"><span class="zh">陆运</span><span class="jp">陸運</span></div>
+      <div class="topic-card"><span class="zh">水运</span><span class="jp">水運</span></div>
+      <div class="topic-card"><span class="zh">港湾</span><span class="jp">港灣</span></div>
+    </div>
+    <div class="fragment">
+      可辨认片段提到<b>津浦铁路</b>与<b>胶济铁路</b>为省内主要铁路干线，青岛为主要港口之一；
+      另涉及公路与内河航运的运输能力、票价及班次等信息，但具体数字（如运费、班次时刻）因原件模糊无法准确摘录。
+    </div>
+  </section>
+
+  <!-- 五 通信 -->
+  <section class="chapter" id="c5">
+    <div class="chapter-head">
+      <span class="chapter-num">05</span>
+      <span class="chapter-title">通信</span>
+      <span class="chapter-orig">通信</span>
+      <span class="chapter-page">原书 第8页</span>
+    </div>
+    <p class="summary">本章分为有线与无线两类，概述省内电报、电话线路及无线电设施的分布情况。</p>
+    <div class="topics">
+      <div class="topic-card"><span class="zh">有线通信</span><span class="jp">有線</span></div>
+      <div class="topic-card"><span class="zh">无线通信</span><span class="jp">無線</span></div>
+    </div>
+  </section>
+
+  <!-- 六 宿營 -->
+  <section class="chapter" id="c6">
+    <div class="chapter-head">
+      <span class="chapter-num">06</span>
+      <span class="chapter-title">宿营</span>
+      <span class="chapter-orig">宿營</span>
+      <span class="chapter-page">原书 第8页</span>
+    </div>
+    <p class="summary">
+      本章讨论军队在山东境内驻扎、宿营条件相关的地方情况，如房舍、人口分布等可供参考的因素，
+      与"通信"章共用同一页码区间，原文表格中两者并列排布。因扫描质量限制，具体条目内容多不可辨。
+    </div>
+  </section>
+
+  <!-- 七 産業 -->
+  <section class="chapter" id="c7">
+    <div class="chapter-head">
+      <span class="chapter-num">07</span>
+      <span class="chapter-title">产业</span>
+      <span class="chapter-orig">産業</span>
+      <span class="chapter-page">原书 第10页</span>
+    </div>
+    <p class="summary">本章概述山东的经济产业结构，原表格列有以下分类：</p>
+    <div class="topics">
+      <div class="topic-card"><span class="zh">农业</span><span class="jp">農</span></div>
+      <div class="topic-card"><span class="zh">畜牧业</span><span class="jp">畜</span></div>
+      <div class="topic-card"><span class="zh">物产／矿产</span><span class="jp">産</span></div>
+    </div>
+    <div class="fragment">
+      可辨认片段涉及小麦、棉花等农作物及部分矿产资源的简要罗列，具体产量数字与地区分布因原件模糊无法确认。
+    </div>
+  </section>
+
+  <!-- 八 氣象 -->
+  <section class="chapter" id="c8">
+    <div class="chapter-head">
+      <span class="chapter-num">08</span>
+      <span class="chapter-title">气象</span>
+      <span class="chapter-orig">氣象</span>
+      <span class="chapter-page">原书 第12页</span>
+    </div>
+    <p class="summary">本章分类叙述影响用兵的气候要素，原表格列有：</p>
+    <div class="topics">
+      <div class="topic-card"><span class="zh">天候概况</span><span class="jp">天候</span></div>
+      <div class="topic-card"><span class="zh">气象数据</span><span class="jp">氣象</span></div>
+      <div class="topic-card"><span class="zh">降雨</span><span class="jp">雨</span></div>
+      <div class="topic-card"><span class="zh">风况</span><span class="jp">風</span></div>
+      <div class="topic-card"><span class="zh">浓雾</span><span class="jp">濃霧</span></div>
+      <div class="topic-card"><span class="zh">结冰</span><span class="jp">結氷</span></div>
+    </div>
+    <div class="fragment">
+      可辨认片段提到黄河及省内部分河流在冬季有结冰现象，并涉及春秋季多风、沿海地区雾况等描述，具体气温、降水数值无法确认。
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  资料来源：日本国立公文书馆・亚洲历史资料中心（JACAR）　档号 C13032679300 / 1803　
+  http://www.jacar.go.jp　｜　本页为基于可辨识内容的摘要整理，非逐字对照翻译
+</footer>
+
+</body>
+</html>
