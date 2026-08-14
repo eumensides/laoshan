@@ -29,6 +29,7 @@ jobs:
             [lingqifeng]="灵旗峰"
             [erlongshan]="二龙山"
             [huayanshijie]="华严世界"
+            [shanhaishengjing]="山海胜境"
             [wusiguangchang]="五四广场"
             [yinchuanxilu]="银川西路"
             [fuzhoulu]="福州路"
@@ -71,8 +72,9 @@ jobs:
           declare -A LABELS=(
             [shizifeng]="狮子峰" [chaoyinpu]="潮音瀑" [taiqingwan]="太清湾"
             [jufengxiazhan]="巨峰下站" [shouzifeng]="寿字峰" [lingqifeng]="灵旗峰"
-            [erlongshan]="二龙山" [huayanshijie]="华严世界" [wusiguangchang]="五四广场"
-            [yinchuanxilu]="银川西路" [fuzhoulu]="福州路" [nanjinglu]="南京路"
+            [erlongshan]="二龙山" [huayanshijie]="华严世界" [shanhaishengjing]="山海胜境"
+            [wusiguangchang]="五四广场" [yinchuanxilu]="银川西路" 
+            [fuzhoulu]="福州路" [nanjinglu]="南京路"
             [aofanzhongxin]="奥帆中心"
           )
           for name in "${!LABELS[@]}"; do
@@ -95,7 +97,8 @@ jobs:
           declare -A LABELS=(
             [shizifeng]="狮子峰" [chaoyinpu]="潮音瀑" [taiqingwan]="太清湾"
             [jufengxiazhan]="巨峰下站" [shouzifeng]="寿字峰" [lingqifeng]="灵旗峰"
-            [erlongshan]="二龙山" [huayanshijie]="华严世界" [wusiguangchang]="五四广场"
+            [erlongshan]="二龙山" [huayanshijie]="华严世界" [shanhaishengjing]="山海胜境"
+            [wusiguangchang]="五四广场"
             [yinchuanxilu]="银川西路" [fuzhoulu]="福州路" [nanjinglu]="南京路"
             [aofanzhongxin]="奥帆中心"
           )
