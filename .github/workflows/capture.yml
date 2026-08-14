@@ -34,6 +34,7 @@ jobs:
             [lingqifeng]="http://play.zhihuiwenlvyun.com/live/lingqifeng2026.m3u8"
             [erlongshan]="http://play.zhihuiwenlvyun.com/live/erlongshan2026.m3u8"
             [huayanshijie]="http://play.zhihuiwenlvyun.com/live/huayanshijie2026.m3u8"
+            [shanhaishengjing]="http://play.zhihuiwenlvyun.com/live/shanhaishengjing2026.m3u8"
             [wusiguangchang]="https://hlspull.qtv.com.cn/v31faxcg/channel/51d10523f0a1fdcda5c4223babe1682c/1.m3u8"
             [yinchuanxilu]="https://hlspull.qtv.com.cn/v31faxcg/channel/e41ccb39c3292d868d6c72b66082a3f2/1.m3u8"
             [fuzhoulu]="https://hlspull.qtv.com.cn/v31faxcg/channel/833fddf8b8271df2cf38835d14a2a3a5/1.m3u8"
