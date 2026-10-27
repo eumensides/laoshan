@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>一生的心跳账户｜动物心跳与寿命</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#fff3d6;--ink:#2b2438;--card:#fffdf5;--soft:#ffe4a8;--red:#ff4d6d;--mute:#6b6280;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1f1a33;--ink:#fff3d6;--card:#2c2548;--soft:#3b3260;--red:#ff6b86;--mute:#b9b0d6;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1f1a33;--ink:#fff3d6;--card:#2c2548;--soft:#3b3260;--red:#ff6b86;--mute:#b9b0d6;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.75 "ZCOOL KuaiLe","Comic Sans MS","PingFang SC","Microsoft YaHei",sans-serif;
+background-image:radial-gradient(var(--soft) 2px,transparent 2px);background-size:26px 26px}
+main{max-width:1000px;margin:0 auto;padding:16px}
+h1,h2,h3{margin:0;line-height:1.3;font-weight:400}
+section{margin:36px 0}
+.box{background:var(--card);border:3px solid var(--ink);border-radius:22px;box-shadow:6px 6px 0 var(--ink);padding:18px 20px}
+.hero{text-align:center;padding:28px 16px}
+.hero h1{font-size:clamp(30px,6vw,52px)}
+.heart{display:inline-block;font-size:72px;animation:bp .8s infinite}
+@keyframes bp{0%,100%{transform:scale(1)}15%{transform:scale(1.25)}30%{transform:scale(1)}45%{transform:scale(1.15)}}
+.lead{max-width:640px;margin:10px auto 0;color:var(--mute)}
+h2{font-size:clamp(24px,4vw,34px);margin-bottom:6px}
+.sub{color:var(--mute);margin:0 0 14px}
+.big{font-size:clamp(22px,4vw,30px);color:var(--red)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.chip{border:3px solid var(--ink);border-radius:999px;background:var(--card);color:var(--ink);font:inherit;padding:2px 14px;cursor:pointer;box-shadow:3px 3px 0 var(--ink)}
+.chip[aria-pressed="true"]{background:var(--c,var(--red));color:#2b2438}
+.chip:focus-visible,select:focus-visible,svg text:focus-visible{outline:3px dashed var(--red);outline-offset:2px}
+.lab{display:grid;grid-template-columns:230px 1fr;gap:16px;align-items:start}
+@media(max-width:760px){.lab{grid-template-columns:1fr}}
+.det{text-align:center;position:sticky;top:calc(env(safe-area-inset-top,0px) + 10px)}
+.det .e{font-size:64px;display:inline-block;animation:bp var(--d,.8s) infinite}
+.det h3{font-size:26px}
+.det p{margin:4px 0;font-size:15px}
+.tag{display:inline-block;border:2px solid var(--ink);border-radius:10px;padding:0 10px;font-size:14px;color:#2b2438;background:var(--c)}
+svg{width:100%;height:auto;display:block}
+svg text{font-family:inherit;fill:var(--ink)}
+.pt{cursor:pointer;font-size:19px;transition:font-size .1s}
+.pt:hover,.pt.on{font-size:30px}
+.ax{stroke:var(--ink);stroke-width:1.5}.gr{stroke:var(--mute);stroke-opacity:.25}
+.cl{fill:none;stroke:var(--red);stroke-width:2.5;stroke-dasharray:7 6}
+.ctl{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+select{font:inherit;border:3px solid var(--ink);border-radius:12px;background:var(--card);color:var(--ink);padding:2px 8px}
+.rank{max-height:520px;overflow:auto;margin-top:8px;padding-right:6px}
+.row{display:grid;grid-template-columns:130px 1fr 78px;gap:8px;align-items:center;font-size:15px;cursor:pointer}
+.row .bar{height:16px;border:2px solid var(--ink);border-radius:9px;background:var(--soft);overflow:hidden}
+.row .bar i{display:block;height:100%;background:var(--c)}
+.row b{font-weight:400;text-align:right}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}
+.cards .box{box-shadow:5px 5px 0 var(--ink)}
+.cards h3{font-size:21px}
+.cards p{margin:6px 0 0;font-size:15px}
+.quote{font-size:clamp(20px,3.5vw,28px);text-align:center;padding:26px 14px}
+.note{font-size:13px;color:var(--mute);text-align:center}
+.zero{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px}
+.zero div{flex:1 1 150px;border:3px dashed var(--ink);border-radius:16px;padding:8px 12px;text-align:center}
+@media(prefers-reduced-motion:reduce){.heart,.det .e{animation:none}}
+</style>
+</head>
+<body>
+<main>
+
+<section class="box hero">
+  <span class="heart">❤️</span>
+  <h1>一生的心跳账户</h1>
+  <p class="lead">老鼠的心每分钟嘣嘣嘣 600 下，大象慢悠悠 30 下。有人说：每种动物一辈子的心跳次数都差不多，大约 10 亿下。真的吗？我们找来了 110 多位动物朋友，一起查查账。</p>
+  <p class="big" id="hum"></p>
+</section>
+
+<section>
+  <h2>🔭 心跳—寿命星空图</h2>
+  <p class="sub">横轴是寿命，纵轴是心率（都是对数刻度，每格差 10 倍）。红色虚线是“心跳总数相同”的等值线：落在同一条线上的动物，一辈子心跳数一样多。点一点、碰一碰小动物，右边会听到它的心跳。</p>
+  <div class="chips" id="chips"></div>
+  <div class="lab">
+    <div class="box det" id="det"></div>
+    <div class="box"><svg id="sc" viewBox="0 0 700 520" role="img" aria-label="动物心率与寿命的对数散点图"></svg></div>
+  </div>
+</section>
+
+<section>
+  <h2>🏆 心跳富翁榜</h2>
+  <p class="sub">按你喜欢的方式排排队，条形长度为对数刻度。</p>
+  <div class="ctl"><span>排序：</span>
+    <select id="srt"><option value="t">一生心跳总数</option><option value="h">心率（每分钟）</option><option value="l">寿命（年）</option></select>
+    <span class="note" id="cnt"></span></div>
+  <div class="box rank" id="rank"></div>
+</section>
+
+<section>
+  <h2>🧐 先别急着下结论</h2>
+  <p class="sub">“十亿次心跳定律”大体适用于哺乳动物，但它更像一条路标，不是铁律。</p>
+  <div class="cards">
+    <div class="box"><h3>⚖️ 体型的魔法</h3><p>个子越大，新陈代谢越慢，心跳越慢，寿命也越长。心率大致随体重的 1/4 次方下降，寿命随它上升，两者一乘，总数就差不多了，所以老鼠和大象能“打平”。</p></div>
+    <div class="box"><h3>🧑 人类是账本里的 BUG</h3><p>我们约 70 下 × 80 年，是近 30 亿下，是大象的近 3 倍。靠的是医院、疫苗、干净的水和不挨饿，把心跳账户“透支”了好几倍。</p></div>
+    <div class="box"><h3>🐦 小鸟与蝙蝠的反杀</h3><p>蜂鸟心率超过 1000，却能活好几年，鸟类和蝙蝠的细胞特别会“清理垃圾”，抗氧化能力强，所以心跳总数远超同体型的老鼠。</p></div>
+    <div class="box"><h3>🐢 慢到极致的赢家</h3><p>象龟、格陵兰鲨、北极蛤的心跳都慢得惊人，而寿命以世纪计。冷血动物靠体温调节代谢，天冷就“降速”，活得慢也活得久。</p></div>
+    <div class="box"><h3>🐝 昆虫是另一套玩法</h3><p>昆虫的“心脏”是背上一根会收缩的管子，血液不负责运氧气，所以心跳数和寿命的关系很弱。蜜蜂工蜂只活几周，总心跳只有哺乳动物的百分之一。</p></div>
+    <div class="box"><h3>🪼 没有心脏的家伙</h3><p>下面三位没有心脏，一样好好活着：</p>
+      <div class="zero" style="margin-top:6px"><div>🪼 水母<br>几个月–多年</div><div>🧽 海绵<br>可达数千年</div><div>⭐ 海星<br>几年至几十年</div></div></div>
+  </div>
+</section>
+
+<section>
+  <h2>🌱 植物有心跳吗？</h2>
+  <p class="sub">没有。植物没有心脏，水和养分靠“蒸腾拉力”和“压力流”慢慢往上走：叶子蒸发水分，像吸管一样把水一路往上拽，不需要泵。但植物有自己的节拍：</p>
+  <div class="cards">
+    <div class="box"><h3>🕐 昼夜节律</h3><p>植物有 24 小时的生物钟，叶片白天张开、夜里合拢，气孔也按时开关。这是它的“日跳”。</p></div>
+    <div class="box"><h3>🪵 年轮</h3><p>树每年长一圈年轮，一圈就是一次“年跳”，数年轮就是在数它的心跳账户。</p></div>
+    <div class="box"><h3>🪰 捕蝇草会数数</h3><p>苍蝇 20 秒内碰到触毛 2 次，叶子才合上，碰到 5 次才开始消化。它用电信号“数数”，防止被雨点骗了。</p></div>
+    <div class="box"><h3>🌿 含羞草的电信号</h3><p>一碰就合拢，靠的是类似神经的电信号和水压变化，一次小小的“心惊肉跳”。</p></div>
+  </div>
+  <h3 style="margin:22px 0 4px">植物的寿命和“心跳”有关吗？</h3>
+  <p class="sub">目前没有证据显示植物有一本固定的“心跳账户”。一年生草花几个月就开花结籽，刺果松却活了近 5000 年，差别主要来自生活策略：长得快的“短跑选手”把能量投给繁殖，长得慢、木质致密、防御强的“马拉松选手”能活很久。再加上植物能不断长出新芽、新根，甚至靠克隆重生，“衰老”对它们不是一条单行道。（条形为对数刻度，1 圈年轮 ≈ 1 年）</p>
+  <div class="box" id="plants"></div>
+</section>
+
+<section class="box quote">
+  “每个生命的账户不一样大，也不必一样大。”<br>
+  心跳快的，把日子过成了烟花；心跳慢的，把时间熬成了老树。<br>
+  数据说明不了谁更幸运，只提醒我们：<b style="color:var(--red)">别只顾着数心跳，也要想想让每一下都跳得值。</b>
+  <p class="note" style="margin-top:14px">数据说明：心率与寿命均为典型值或估算（野外与圈养、休息与活动、个体差异都很大），部分物种（如格陵兰鲨、北极蛤、昆虫）为粗略推测。总心跳 = 心率 × 60 × 24 × 365 × 寿命。仅供科普与思考。</p>
+</section>
+</main>
+
+<script>
+const MIN=525600;
+const G={m:['哺乳类','#ff8fab'],b:['鸟类','#4cc9f0'],r:['爬行类','#80ed99'],a:['两栖类','#ffd166'],f:['鱼类','#9db4ff'],i:['无脊椎','#d69cff']};
+const D=`蓝鲸|🐋|10|80|m;座头鲸|🐳|15|80|m;抹香鲸|🐳|15|70|m;虎鲸|🐳|60|50|m;大象|🐘|30|65|m;河马|🦛|40|40|m;犀牛|🦏|45|40|m;长颈鹿|🦒|70|25|m;马|🐴|40|28|m;牛|🐄|60|20|m;骆驼|🐪|50|40|m;棕熊|🐻|60|25|m;北极熊|🐻‍❄️|60|25|m;狮子|🦁|70|15|m;老虎|🐯|70|16|m;大猩猩|🦍|70|40|m;红毛猩猩|🦧|80|40|m;黑猩猩|🐵|90|45|m;猕猴|🐒|120|25|m;人类|🧑|70|80|m;海豚|🐬|100|30|m;海豹|🦭|100|25|m;猪|🐖|70|15|m;绵羊|🐑|75|12|m;山羊|🐐|80|15|m;狗|🐕|100|13|m;猫|🐈|150|15|m;兔子|🐇|200|9|m;仓鼠|🐹|450|2.5|m;小鼠|🐭|600|2|m;大鼠|🐀|400|3|m;松鼠|🐿️|300|8|m;刺猬|🦔|190|5|m;蝙蝠|🦇|400|20|m;鼩鼱|🐁|1000|1.5|m;裸鼹鼠|🐀|200|30|m;考拉|🐨|80|15|m;袋鼠|🦘|80|20|m;树懒|🦥|50|30|m;大熊猫|🐼|80|20|m;狼|🐺|90|12|m;狐狸|🦊|150|10|m;鹿|🦌|80|20|m;斑马|🦓|45|25|m;野牛|🦬|50|20|m;水獭|🦦|150|15|m;浣熊|🦝|100|15|m;臭鼬|🦨|100|8|m;河狸|🦫|100|18|m;羊驼|🦙|70|20|m;蜂鸟|🐦|1200|5|b;麻雀|🐤|500|4|b;鸽子|🕊️|170|15|b;鸡|🐓|280|8|b;鸭|🦆|200|10|b;鹅|🪿|150|20|b;老鹰|🦅|150|25|b;猫头鹰|🦉|150|20|b;鹦鹉|🦜|100|50|b;企鹅|🐧|100|20|b;鸵鸟|🐦|70|40|b;火烈鸟|🦩|130|40|b;天鹅|🦢|100|25|b;乌鸦|🐦‍⬛|250|15|b;孔雀|🦚|150|20|b;火鸡|🦃|200|10|b;信天翁|🪽|100|50|b;象龟|🐢|6|150|r;海龟|🐢|10|80|r;巴西龟|🐢|30|30|r;鳄鱼|🐊|30|70|r;蟒蛇|🐍|30|25|r;眼镜蛇|🐍|40|20|r;壁虎|🦎|80|10|r;变色龙|🦎|60|5|r;科莫多龙|🦎|40|30|r;鬣蜥|🦎|40|20|r;青蛙|🐸|50|10|a;蟾蜍|🐸|40|15|a;树蛙|🐸|80|6|a;蝾螈|🦎|40|15|a;大鲵|🦎|20|60|a;大白鲨|🦈|40|70|f;鲸鲨|🦈|30|80|f;格陵兰鲨|🦈|6|300|f;金鱼|🐠|100|15|f;锦鲤|🐟|60|40|f;三文鱼|🐟|50|5|f;鳕鱼|🐟|40|25|f;金枪鱼|🐟|60|20|f;鳗鱼|🐟|30|50|f;斑马鱼|🐟|150|3|f;鲟鱼|🐟|40|100|f;蜻蜓|🚁|120|1|i;蜜蜂|🐝|300|0.12|i;蚂蚁|🐜|60|1|i;苍蝇|🪰|250|0.08|i;蚊子|🦟|200|0.1|i;蝴蝶|🦋|100|0.1|i;蟑螂|🪳|60|1|i;蜘蛛|🕷️|100|2|i;蝎子|🦂|60|5|i;蜗牛|🐌|40|7|i;章鱼|🐙|40|2|i;乌贼|🦑|60|1.5|i;龙虾|🦞|60|50|i;螃蟹|🦀|100|10|i;蚯蚓|🪱|60|5|i;水蚤|🦐|300|0.2|i;虾|🦐|150|2|i;牡蛎|🦪|10|20|i;北极蛤|🦪|4|400|i;蟋蟀|🦗|80|0.3|i`
+.split(';').map(s=>{const[n,e,h,l,g]=s.split('|');return{n,e,h:+h,l:+l,g,t:h*MIN*l}});
+const hum=D.find(d=>d.n==='人类');
+const fmt=t=>t>=1e8?(t/1e8).toFixed(t>=1e9?1:2)+'亿':t>=1e4?Math.round(t/1e4)+'万':Math.round(t);
+const $=id=>document.getElementById(id);
+$('hum').textContent='你的一辈子大约要跳 '+fmt(hum.t)+' 下（每分钟 70 下 × 80 年）。';
+let on=new Set(Object.keys(G)),cur=hum;
+
+// chips
+$('chips').innerHTML=Object.entries(G).map(([k,v])=>`<button class="chip" style="--c:${v[1]}" data-g="${k}" aria-pressed="true">${v[0]}</button>`).join('');
+$('chips').onclick=e=>{const k=e.target.dataset.g;if(!k)return;on.has(k)?on.delete(k):on.add(k);e.target.setAttribute('aria-pressed',on.has(k));draw();rank()};
+
+// detail card
+function show(d){cur=d;const r=d.t/hum.t;
+ const w=r<.1?'心跳账户很小气，几乎是“穷人”':r<.5?'账户偏小，属于“细水长流”':r<1.6?'正好落在“十亿级”传说区间':r<3?'账户超大，是“心跳富翁”':'简直是“心跳首富”';
+ $('det').innerHTML=`<div class="e" style="--d:${Math.max(.2,60/d.h)}s">${d.e}</div><h3>${d.n}</h3><span class="tag" style="--c:${G[d.g][1]}">${G[d.g][0]}</span>
+ <p>心率约 <b>${d.h}</b> 次/分</p><p>寿命约 <b>${d.l}</b> 年</p><p>一生心跳 <b style="color:var(--red)">${fmt(d.t)}</b> 次</p>
+ <p>≈ ${r>=.01?r.toFixed(2):'不到 0.01'} 个人类</p><p class="note">${w}</p>`;
+ document.querySelectorAll('.pt').forEach(x=>x.classList.toggle('on',x.dataset.i==D.indexOf(d)))}
+
+// scatter
+const X0=-1.5,X1=2.9,Y0=.4,Y1=3.3,L=50,R=15,T=15,B=45,W=700,H=520;
+const sx=v=>L+(Math.log10(v)-X0)/(X1-X0)*(W-L-R),sy=v=>H-B-(Math.log10(v)-Y0)/(Y1-Y0)*(H-B-T);
+function draw(){
+ let s=`<rect x="${L}" y="${T}" width="${W-L-R}" height="${H-T-B}" fill="none" class="ax"/>`;
+ [.05,.1,.5,1,5,10,50,100,500].forEach(v=>s+=`<line class="gr" x1="${sx(v)}" x2="${sx(v)}" y1="${T}" y2="${H-B}"/><text x="${sx(v)}" y="${H-B+18}" text-anchor="middle" font-size="13">${v}</text>`);
+ [3,10,30,100,300,1000].forEach(v=>s+=`<line class="gr" y1="${sy(v)}" y2="${sy(v)}" x1="${L}" x2="${W-R}"/><text x="${L-6}" y="${sy(v)+4}" text-anchor="end" font-size="13">${v}</text>`);
+ s+=`<text x="${(L+W-R)/2}" y="${H-8}" text-anchor="middle" font-size="15">寿命（年）→ 活得越久越靠右</text><text transform="translate(14 ${H/2}) rotate(-90)" text-anchor="middle" font-size="15">每分钟心跳 → 越快越靠上</text>`;
+ [[5e8,'5亿'],[1e9,'10亿'],[3e9,'30亿']].forEach(([N,lb])=>{let p='',lx,ly;
+  for(let i=0;i<=60;i++){const x=Math.pow(10,X0+(X1-X0)*i/60),y=N/MIN/x;if(y<Math.pow(10,Y0)||y>Math.pow(10,Y1))continue;p+=(p?'L':'M')+sx(x).toFixed(1)+' '+sy(y).toFixed(1);lx=sx(x);ly=sy(y)}
+  s+=`<path class="cl" d="${p}"/><text x="${lx-4}" y="${ly-8}" text-anchor="end" font-size="14" style="fill:var(--red)">${lb}次</text>`});
+ D.forEach((d,i)=>{if(on.has(d.g))s+=`<text class="pt" data-i="${i}" x="${sx(d.l).toFixed(1)}" y="${(sy(d.h)+7).toFixed(1)}" text-anchor="middle" tabindex="0" role="button" aria-label="${d.n}">${d.e}</text>`});
+ $('sc').innerHTML=s;show(cur)}
+$('sc').addEventListener('mouseover',e=>{const i=e.target.dataset.i;if(i!=null)show(D[i])});
+$('sc').addEventListener('click',e=>{const i=e.target.dataset.i;if(i!=null)show(D[i])});
+$('sc').addEventListener('keydown',e=>{const i=e.target.dataset.i;if(i!=null&&(e.key==='Enter'||e.key===' '))show(D[i])});
+
+// ranking
+const rng={};['t','h','l'].forEach(k=>{const v=D.map(d=>Math.log10(d[k]));rng[k]=[Math.min(...v)-.1,Math.max(...v)]});
+function rank(){const k=$('srt').value,a=D.filter(d=>on.has(d.g)).sort((x,y)=>y[k]-x[k]);$('cnt').textContent='共 '+a.length+' 位';
+ $('rank').innerHTML=a.map(d=>{const w=(Math.log10(d[k])-rng[k][0])/(rng[k][1]-rng[k][0])*100,v=k==='t'?fmt(d.t):k==='h'?d.h+'次':d.l+'年';
+ return`<div class="row" data-i="${D.indexOf(d)}"><span>${d.e} ${d.n}</span><div class="bar"><i style="width:${w}%;--c:${G[d.g][1]}"></i></div><b>${v}</b></div>`}).join('')}
+$('srt').onchange=rank;
+$('rank').onclick=e=>{const r=e.target.closest('.row');if(r){show(D[r.dataset.i]);document.getElementById('sc').scrollIntoView({behavior:'smooth',block:'center'})}};
+
+// plants
+const P=[['拟南芥','🌱',.15,'几周就走完一生'],['向日葵','🌻',.8,'一年生，开花就谢幕'],['番茄','🍅',1,'一年生'],['含羞草','🌿',2,'爱害羞的短命者'],['捕蝇草','🪴',25,'会数数的肉食者'],['竹子','🎋',60,'一辈子只开一次花，开完就走'],['椰子树','🌴',80,'海边的长跑者'],['仙人掌','🌵',175,'墨西哥巨柱仙人掌'],['橡树','🌳',800,'年轮一圈一圈叠'],['橄榄树','🫒',2000,'地中海的老爷爷'],['银杏','🍂',2500,'活化石'],['红杉','🌲',2000,'森林巨人，个别可达 3000 年'],['刺果松','🌲',4800,'已知最长寿的单株树之一'],['颤杨林“潘多”','🌳',80000,'一片克隆森林，年龄为估算']];
+const pr=Math.log10(.15),pm=Math.log10(80000)-pr;
+$('plants').innerHTML=P.map(p=>`<div class="row" style="grid-template-columns:150px 1fr 90px;margin:3px 0"><span>${p[1]} ${p[0]}</span><div class="bar" title="${p[3]}"><i style="width:${(Math.log10(p[2])-pr)/pm*100+4}%;--c:#80ed99"></i></div><b>${p[2]>=1?p[2]+'圈':'几周'}</b></div>`).join('')+'<p class="note">悬停条形可看简介；“圈”指年轮数，约等于年龄。</p>';
+
+draw();rank();
+</script>
+</body>
+</html>
