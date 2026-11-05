@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>短伽马射线暴击中地球：影响的层次与因果链</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef2f7;--ink:#101c3a;--mut:#55627f;--panel:#fff;--line:#cdd6e4;--up:#2457d6;--down:#d4691c;--sel:#101c3a;--selt:#fff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1626;--ink:#e6ebf7;--mut:#9aa7c7;--panel:#17203a;--line:#2b3758;--up:#7aa2ff;--down:#ffa25c;--sel:#e6ebf7;--selt:#0f1626}}
+:root[data-theme="dark"]{--bg:#0f1626;--ink:#e6ebf7;--mut:#9aa7c7;--panel:#17203a;--line:#2b3758;--up:#7aa2ff;--down:#ffa25c;--sel:#e6ebf7;--selt:#0f1626}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 -apple-system,"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px 56px}
+h1{font:800 clamp(28px,5vw,48px)/1.2 "Noto Serif SC","Songti SC",serif;margin:0 0 14px;letter-spacing:.02em}
+.lead{max-width:44em;color:var(--mut);margin:0 0 22px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:30px}
+.fact{border-left:4px solid var(--down);padding:2px 0 2px 14px;font-size:15px}
+.fact b{display:block;font:600 17px "Noto Serif SC",serif}
+h2{font:600 22px "Noto Serif SC",serif;margin:28px 0 6px}
+.hint{color:var(--mut);font-size:14px;margin:0 0 12px}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+.grid{display:grid;grid-template-columns:120px repeat(5,minmax(160px,1fr));min-width:940px}
+.sh{padding:10px 10px 8px;border:0;border-top:6px solid var(--c);border-left:1px solid var(--line);background:transparent;color:var(--ink);text-align:left;font:inherit;cursor:pointer}
+.sh b{display:block;font-size:15px}.sh span{font-size:12px;color:var(--mut)}
+.sh[aria-pressed="true"]{background:var(--bg)}
+.rl{padding:12px 10px;border-top:1px solid var(--line);font-size:14px;font-weight:600;background:var(--bg)}
+.rl span{display:block;font-weight:400;font-size:12px;color:var(--mut)}
+.cell{border-top:1px solid var(--line);border-left:1px solid var(--line);padding:8px;display:flex;flex-direction:column;gap:6px;min-height:64px;transition:opacity .2s}
+.cell.off{opacity:.25}
+.chip{font:inherit;font-size:13px;line-height:1.4;text-align:left;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);border-radius:6px;padding:6px 8px;cursor:pointer}
+.chip:hover{border-color:var(--mut)}
+.chip:focus-visible,.sh:focus-visible,.lk:focus-visible{outline:3px solid var(--up);outline-offset:2px}
+.dim .chip:not(.sel):not(.up):not(.dn){opacity:.35}
+.chip.up{border-color:var(--up);box-shadow:inset 4px 0 0 var(--up)}
+.chip.dn{border-color:var(--down);box-shadow:inset 4px 0 0 var(--down)}
+.chip.sel{background:var(--sel);color:var(--selt);border-color:var(--sel)}
+.key{display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:var(--mut);margin:10px 0 0}
+.key i{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:6px;border:1.5px solid}
+.detail{margin-top:18px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:22px}
+@media(max-width:820px){.detail{grid-template-columns:1fr}}
+.detail h3{font:600 20px "Noto Serif SC",serif;margin:0 0 4px}
+.tag{font-size:13px;color:var(--mut);margin-bottom:8px}
+.detail h4{margin:0 0 6px;font-size:14px}
+.detail ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.lk{font:inherit;font-size:14px;background:none;border:0;border-bottom:1px dashed var(--mut);color:var(--ink);padding:0;cursor:pointer;text-align:left}
+.col-up h4{color:var(--up)}.col-dn h4{color:var(--down)}
+.empty{color:var(--mut);font-size:14px}
+.ext{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;border-top:1px solid var(--line);padding-top:16px}
+.ext h4{margin:0 0 6px;font-size:15px}.ext p{margin:0;font-size:14px}.ext ul{padding-left:18px;margin:0;font-size:14px;list-style:disc;gap:4px}
+.act{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:16px}@media(max-width:820px){.act{grid-template-columns:1fr}}
+.act>div{border-radius:8px;padding:12px 14px;border:1px solid var(--line);border-top:4px solid var(--up)}.act>div+div{border-top-color:var(--down)}
+.act h4{margin:0 0 6px;font-size:15px}.act ul{padding-left:18px;margin:0;font-size:14px;list-style:disc;gap:4px}
+.sim{grid-column:1/-1;border:1px solid var(--line);border-radius:8px;padding:14px}
+.sim input{width:100%}.rg{display:grid;grid-template-columns:120px 1fr 56px;gap:8px;align-items:center;font-size:13px;margin:5px 0}
+.bar{height:12px;border-radius:3px;background:var(--up)}.bar.m{background:var(--down)}.bar.h{background:#c8304a}
+.note{margin-top:30px;font-size:14px;color:var(--mut);max-width:48em}
+.note p{margin:0 0 8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>一道不到两秒的闪光，如何改写一个星球</h1>
+<p class="lead">假设一次近距离的短伽马射线暴正对地球。大气会挡住大部分伽马射线，真正造成破坏的，是它在高层大气里引发的化学反应、气候变化和生态连锁反应。下面按“地球圈层”与“时间尺度”把这条因果链摊开。</p>
+<div class="facts">
+<div class="fact"><b>没有预警</b>光子以光速抵达，爆发与到达几乎同时发生。</div>
+<div class="fact"><b>大气既是盾牌也是引信</b>地面几乎不被直接照射，但氮氧化物与臭氧损耗会放大后果。</div>
+<div class="fact"><b>伤害分几波到来</b>从毫秒级的电子故障，到延迟数年的宇宙线，再到百万年的地质记录。</div>
+</div>
+
+<h2>影响矩阵</h2>
+<p class="hint">点击任一方块，查看它的成因（蓝）与后果（橙）。点击列标题可聚焦某个时间段。</p>
+<div class="scroll"><div class="grid" id="grid" role="group" aria-label="影响矩阵"></div></div>
+<div class="key"><span><i style="background:var(--sel);border-color:var(--sel)"></i>当前选中</span><span><i style="border-color:var(--up)"></i>直接或间接成因</span><span><i style="border-color:var(--down)"></i>直接或间接后果</span></div>
+
+<div class="detail" id="detail" aria-live="polite"></div>
+
+<div class="note">
+<p>说明：这是基于大气化学与天体物理模型的情景推演，数值与时间点存在较大不确定性，带“推测”的条目尚无定论。</p>
+<p>短暴通常由中子星并合产生，能量低于长暴，因此需要近得多的距离才会造成全球性后果，发生概率极低。爆发多为窄束喷流，只有被束流扫过的方向才会受到直接冲击。</p>
+</div>
+</div>
+
+<script>
+var L=[["太空与近地轨道","卫星、航天器"],["高层大气","电离层、平流层"],["气候与海洋","光照、温度、水体"],["生物圈","动植物、微生物"],["人类社会与技术","设施、经济、健康"],["地质与科学记录","可被后世发现的痕迹"]];
+var S=[["瞬间","0–10 秒","#e5b21d"],["数小时至数周","","#e8872a"],["数月至数年","","#c8504a"],["数十年至数世纪","","#7a4fb0"],["万年至百万年","","#2457d6"]];
+var N=[
+{id:"a1",l:0,s:0,t:"伽马射线与X射线闪光",d:"持续时间不足两秒的高能光子流以光速抵达，向阳半球的上层大气首当其冲。若爆发源为中子星并合，引力波探测器会同时记录到信号。",f:[]},
+{id:"a2",l:0,s:0,t:"卫星电子系统过载",d:"高能光子与卫星材料作用产生大量电子，造成单粒子翻转、传感器致盲，太阳能电池板也会受损。",f:["a1"]},
+{id:"a3",l:1,s:0,t:"电离层瞬间被击穿",d:"向阳半球的高层大气被强烈电离，短波无线电中断，卫星导航信号出现严重漂移。",f:["a1"]},
+{id:"a5",l:1,s:0,t:"大气康普顿电流与电磁脉冲（推测）",d:"高能光子在大气中打出高速电子，可能形成类似高空核爆的电磁脉冲，对长距离电缆和电子设备构成威胁，强度尚有争议。",f:["a1"]},
+{id:"f1",l:5,s:0,t:"全球探测器同时触发",d:"仍在运行的空间望远镜、地面宇宙线探测器和引力波装置几乎同时记录到异常，这是后世确认事件的第一手证据。",f:["a1"]},
+{id:"a4",l:4,s:0,t:"通信、导航、授时中断",d:"卫星失效叠加电离层扰动，导致通信、定位、气象监测与金融系统授时同时出现故障。",f:["a2","a3"]},
+{id:"b1",l:1,s:1,t:"大量氮氧化物生成",d:"氮气与氧气被电离裂解后重新结合，产生大量一氧化氮与二氧化氮，这是后续一系列化学后果的起点。",f:["a1","a3"]},
+{id:"b2",l:1,s:1,t:"臭氧层急剧损耗",d:"氮氧化物催化破坏臭氧分子。模型估计在较近距离下，臭氧柱浓度可能下降数十个百分点。",f:["b1"]},
+{id:"b3",l:2,s:1,t:"天空褐变、阳光减弱",d:"二氧化氮吸收可见光，使天空呈褐色，到达地面的阳光减少。",f:["b1"]},
+{id:"b4",l:3,s:1,t:"地表紫外线激增",d:"臭氧减少后，UV-B 与 UV-C 大量到达地面和水面，造成动物晒伤、眼损伤，微生物与表层浮游生物 DNA 受损。",f:["b2"]},
+{id:"b5",l:0,s:1,t:"失控卫星与碰撞隐患",d:"失效卫星无法变轨，近地轨道碎片碰撞风险上升，存在引发连锁碰撞的隐患。",f:["a2"]},
+{id:"b6",l:4,s:1,t:"关键基础设施连锁故障",d:"电网波动、航空管制与应急通信失灵，医疗和救援响应受限，局部出现混乱。",f:["a4","a5"]},
+{id:"c1",l:2,s:2,t:"酸雨与光化学烟雾",d:"二氧化氮转化为硝酸，随降水落下，使局部水体与土壤酸化，同时带来少量氮沉降。",f:["b1"]},
+{id:"c2",l:2,s:2,t:"全球性降温",d:"褐色二氧化氮雾持续遮挡阳光，可能引发类似“撞击冬天”的短期降温，幅度取决于距离与持续时间，模型不确定。",f:["b3"]},
+{id:"c3",l:3,s:2,t:"海洋浮游植物受创",d:"紫外线穿透表层水体，抑制光合作用并降低产氧，作为食物链基底的浮游生物受挫，渔业随之萎缩。",f:["b4"]},
+{id:"c4",l:3,s:2,t:"陆地植物减产",d:"紫外线损伤叶片，降温与光照不足进一步压低产量，草原与森林生态系统失衡。",f:["b4","c2"]},
+{id:"c5",l:4,s:2,t:"全球粮食危机",d:"作物与渔业同时歉收，粮价飙升，贫困地区首先出现饥荒与人口迁移。",f:["c2","c3","c4"]},
+{id:"c7",l:4,s:2,t:"经济与供应链崩解",d:"基础设施受损叠加粮食短缺，国际贸易与金融体系承压，各国转向自保。",f:["b6","c5"]},
+{id:"c8",l:0,s:2,t:"太空基础设施难以重建",d:"资金紧缺、轨道碎片增多，使重新部署卫星网络的窗口变窄。",f:["b5","c7"]},
+{id:"d1",l:1,s:3,t:"延迟宇宙线抵达（推测）",d:"爆发加速的宇宙线被星际磁场散射而延迟，可能在数年至数百年内陆续抵达，在大气中产生次级粒子与缪子雨。",f:["a1"]},
+{id:"d4",l:1,s:3,t:"臭氧缓慢恢复",d:"氮氧化物逐渐被清除，臭氧通常需要数年到十余年回升，若宇宙线持续注入，恢复期会被拉长。",f:["b2","d1"]},
+{id:"d2",l:3,s:3,t:"突变率上升",d:"缪子辐射与紫外线持续损伤生物 DNA，肿瘤、突变与发育异常增多。",f:["b4","d1"]},
+{id:"d3",l:4,s:3,t:"长期健康负担",d:"皮肤癌、白内障、免疫抑制与出生缺陷增加，医疗系统长期承压。",f:["b4","d2"]},
+{id:"d6",l:3,s:3,t:"物种灭绝潮与群落重组",d:"对紫外线敏感的浅水与陆地物种大量消失，耐辐射、穴居与深水物种相对占优。",f:["c3","c4","d2"]},
+{id:"d5",l:4,s:3,t:"文明的适应性重组",d:"紫外线防护成为基础设施，农业转向耐紫外线作物与室内种植，居住地向高纬度、地下与海岸迁移。",f:["c5","d3"]},
+{id:"e1",l:5,s:4,t:"同位素与冰芯痕迹",d:"碳-14、铍-10 与冰芯中的硝酸盐会出现异常峰值，成为未来科学家识别这次事件的指纹。",f:["b1","d1"]},
+{id:"e4",l:5,s:4,t:"重元素沉积指纹（推测）",d:"中子星并合会合成金、铂等 r 过程元素，可能在沉积物中留下钚-244、铁-60 等痕迹。",f:["a1"]},
+{id:"e3",l:2,s:4,t:"冰期触发假说（推测）",d:"臭氧与大气成分的长期改变叠加降温，可能把气候推向冰期，这一假说目前证据有限。",f:["c2","d4"]},
+{id:"e2",l:3,s:4,t:"大灭绝候选事件",d:"有研究者提出约 4.4 亿年前的奥陶纪末大灭绝可能与近距离伽马射线暴有关，但学界尚有分歧。",f:["d6"]},
+{id:"e5",l:3,s:4,t:"演化路径重置",d:"灭绝后空出的生态位让幸存类群快速辐射，之后的演化方向被改写。",f:["d6","e2"]}
+];
+var X={
+a1:[["距离与概率","2017 年 GW170817 的引力波与伽马暴相隔约 1.7 秒到达，但它在约 1.3 亿光年外，对地球无害。要造成全球灾难，估计需在数百光年以内，这类事件在地球历史上极为罕见。"]],
+a2:[["历史类比","1962 年“星鱼”高空核试验产生的辐射带，使当时多颗低轨卫星在数月内失效。"]],
+a5:[["历史类比","星鱼试验在约 1400 公里外的夏威夷造成路灯熄灭、通信故障。"]],
+b1:[["好处",["硝酸盐沉降相当于天然氮肥，类似“雷雨发庄稼”，贫氮的森林与草原短期可能增产。","二氧化氮遮光，可在短期内对冲部分升温。"]],["害处",["催化破坏臭氧，是后续紫外线灾害的源头。","二氧化氮刺激呼吸道，并促成地面光化学烟雾与对流层臭氧。","过量氮进入水体引发藻华与缺氧“死区”，墨西哥湾死区是现实类比。","硝酸沉降造成酸雨，阿迪朗达克湖区的鱼类死亡是历史案例。"]]],
+b2:[["数量关系","对 DNA 有害的紫外线，约比臭氧减少的百分比多 1.5 至 2 倍。南极臭氧洞最严重时，局部臭氧损失可达六七成，可作为参照。"]],
+b4:[["人类防护","长袖、宽檐帽、UV400 墨镜与高 SPF 防晒霜；玻璃窗可挡大部分 UV-B。"],["水下与地下","清澈海水中 UV-B 一般只能穿透数米至二十米，更深处较安全。"]],
+b6:[["历史类比","1989 年地磁暴使魁北克电网崩溃约 9 小时，约 600 万人停电。"]],
+b5:[["历史类比","2009 年铱星与俄罗斯卫星相撞、2007 年反卫星试验，都产生了长期存在的碎片云。"]],
+c1:[["利与弊","硝酸为土壤带来氮营养，但会酸化湖泊与土壤，历史上北欧与北美的酸雨损害过森林与鱼类。"]],
+c3:[["实证","南极臭氧洞下的研究估计，浮游植物初级生产力下降约 6% 至 12%。表层的鱼卵与磷虾幼体也对紫外线敏感。"],["天然防护","红藻与部分浮游植物含类菌孢素氨基酸（MAAs），能吸收紫外线，可作为养殖候选。"]],
+c2:[["类比与不确定性","1991 年皮纳图博火山使全球降温约 0.5 ℃；小规模核冲突的模拟约降 1 至 2 ℃，大规模核战约降 7 ℃。下方滑块是在这些类比上的示意估算，不是气候模式输出。"]],
+c5:[["历史类比","1816 年“无夏之年”由坦博拉火山引发，欧洲与北美歉收并发生饥荒。全球粮食库存通常只够数月。"],["应急方向","动用种子库、扩大块根类与食用菌生产、发展室内植物工厂。"]],
+c4:[["植物如何抗紫外线",["类黄酮、花青素等酚类化合物吸收 UV-B，所以紫玉米、紫甘薯、黑米较耐受。","叶面蜡质与绒毛可反射紫外线。","光修复酶可修复紫外线造成的 DNA 损伤，紫外线光受体 UVR8 启动防护基因。"]],["品种差异","水稻与大豆不同品种对 UV-B 的敏感度差别很大，可从中筛选耐受品种。"]],
+d1:[["量级","海平面缪子通量平时约每平方厘米每分钟 1 个。若升高一到两个数量级，年剂量会明显上升，具体取决于模型。"]],
+d3:[["现实参照","澳大利亚紫外线强、皮肤癌发病率居世界前列，其“防晒文化”可作为未来防护体系的雏形。"]],
+d4:[["恢复先例","依据《蒙特利尔议定书》的评估，南极臭氧洞预计在 2066 年前后恢复，说明臭氧恢复可能需要数十年。"]],
+d5:[["耐紫外线作物",["高原作物：藜麦、马铃薯、玉米在安第斯高海拔长期适应强紫外线，可作为育种资源。","块根茎：马铃薯、红薯、木薯的食用部分在土中，受紫外线影响小。","免光照食物：食用菌、豆芽与室内 LED 植物工厂。","海藻：紫菜、海带含紫外线吸收物质，适合水下养殖。","覆盖栽培：玻璃温室可挡大部分 UV-B。"]],["高纬度与海岸",["海洋性气候的中高纬地带：挪威、冰岛、爱尔兰、新西兰南岛、智利南部，太阳高度角低，基础紫外线弱，海洋调节气温。","需权衡：高纬度降温与霜冻更重，生长季更短。"]],["地下可用空间",["土耳其德林库尤地下城，据估计可容纳约两万人。","波兰维利奇卡盐矿，地下数百米。","芬兰赫尔辛基与加拿大蒙特利尔的大型地下设施。","挪威斯瓦尔巴全球种子库，用于保存作物种质。","几毫米遮挡即可挡住紫外线；缪子较难屏蔽，需要数十米的岩层或水层。"]]],
+e1:[["真实先例","公元 774 至 775 年的树轮显示碳-14 突增约 1.2%，原因至今未定，曾有短伽马暴假说。"]],
+e4:[["相关证据","2017 年观测到并合产生的千新星，确认金、铂等重元素的合成。深海结壳中的铁-60 与钚-244 则是邻近天体爆发的证据。"]],
+e2:[["奥陶纪末灭绝","约 85% 的海洋物种消失，分两波发生。主流解释是冈瓦纳冰期，GRB 假说由 Melott 等人在 2004 年提出。"]],
+e5:[["类比","恐龙灭绝后，哺乳动物迅速辐射并占据空出的生态位。"]]};
+var R=[["欧亚北部内陆",1.6],["北美内陆",1.5],["中东欧",1.3],["东亚季风区",1.1],["中东与撒哈拉",1],["西欧沿海",.9],["澳大利亚",.9],["南亚",.8],["南半球海洋",.6],["热带海洋",.5]];
+var SV=[["轻度",-0.5],["中度",-2],["重度",-5]];
+function sim(){var w=el("div","sim");w.appendChild(el("h4","","降温模拟：先选强度，查看各地区的示意降温"));
+var r=document.createElement("input");r.type="range";r.min=0;r.max=2;r.value=1;r.setAttribute("aria-label","降温强度");
+var lab=el("p",""),box=el("div");w.appendChild(r);w.appendChild(lab);w.appendChild(box);
+function go(){var g=SV[r.value][1];lab.textContent=SV[r.value][0]+"：全球平均约 "+g+" ℃（类比："+["皮纳图博","小规模核冲突","介于小规模与大规模核冬天之间"][r.value]+"）。仅一个半球受直接冲击时，另一半球降幅较小。";box.innerHTML="";
+R.forEach(function(x){var t=g*x[1],a=Math.abs(t),row=el("div","rg");row.appendChild(el("span","",x[0]));
+var b=el("div","bar"+(a>=3?" h":a>=1?" m":""));b.style.width=Math.min(100,a/8*100)+"%";row.appendChild(b);
+row.appendChild(el("span","",t.toFixed(1)+"℃"));row.title=a>=3?"大面积霜冻与绝收风险":a>=1?"明显歉收风险":"影响轻微";box.appendChild(row)});
+box.appendChild(el("p","hint","条形颜色：蓝=影响轻微（降温小于 1 ℃），橙=明显歉收风险（1 至 3 ℃），红=大面积霜冻（3 ℃ 以上）。内陆放大系数大，海洋小。"))}
+r.oninput=go;go();return w}
+var P={
+a1:["没有预警，不必恐慌；留在室内、远离窗户，关注官方广播；记下时间与现象，便于日后核对","启动国家应急机制；汇总天文台与探测器数据确认事件性质；统一对外发布简短、可操作的指引"],
+a2:["不依赖卫星业务的人几乎无感；重要数据做离线备份","评估在轨资产；启动备用卫星与地面替代链路；对关键卫星提前加固或预留备份"],
+a3:["用手机之外的收音机收听中波、长波广播；短波通信失灵时改用有线电话","航空与航运改用备用导航与低频通信；开放军用与民用的备用频段协调"],
+a5:["拔掉不用的电器插头，备好手电与电池；车辆与金属外壳设备不必担心","对电网、变电站与通信节点评估脉冲防护；储备关键变压器与保护器件"],
+f1:["关注科普与官方通报，辨别网传谣言","开放数据并组织国际联合分析；建立统一的事件时间线，作为后续决策依据"],
+a4:["备好纸质地图与指南针，约定家人集合点；准备现金与离线通讯录；用收音机获取通告；手表校时依赖原子钟网络，可先用日出日落估算时间；不要涌向银行与超市抢购","启用地面授时（光纤与原子钟）替代卫星授时；恢复 eLoran 等地基导航；为银行与电网设置时钟保持模式；统一发布指引并保障应急频段；优先保障医院、交通与能源"],
+b1:["关注空气质量通报；呼吸道不适者减少外出；雨水先不直接饮用","监测 NO2 浓度与酸沉降；对水源与农田做水质与土壤检测；发布空气质量预警"],
+b2:["白天尽量待在室内，外出做好防晒与眼睛防护；孩子与老人尤其要保护","发布紫外线预警指数；调整户外工作时间；在学校与公共场所提供遮阳与防护用品"],
+b3:["阳光变弱时注意室内照明与保暖；调整作息","调整农业与能源预测（光照下降影响光伏与作物）；通报灾害气象并启动气象监测"],
+b4:["穿长袖与宽檐帽，戴 UV400 墨镜，涂防晒霜；避开中午时段；给宠物与牲畜提供遮蔽","设置紫外线分级警报；为户外岗位（农业、建筑、环卫）调整作息；储备防晒与眼科药品"],
+b5:["无需特别行动；留意卫星业务可能中断","强化空间态势感知；规划卫星离轨与碎片清理；国际协调轨道资源"],
+b6:["准备应急包：饮水、食物、药品、手电、收音机、充电宝；与邻居互助","启动关键设施的备用电源；统一调度医院与救援；通过广播与地面通信保持指挥"],
+c1:["雨后不要直接使用雨水；检查家用水源是否变酸","对水体与土壤酸度做调查；必要时对湖泊投放石灰缓冲；监测对森林的影响"],
+c2:["储备保暖衣物与燃料；室内种植与温室抢种；关注霜冻预警","调整农时与保护性耕作；准备种子与防霜物资；启动能源与取暖保障"],
+c3:["食用不受影响的深海鱼与养殖产品，减少对表层鱼群的依赖","监测渔场与浮游生物；调整捕捞配额；扶持深水养殖与海藻养殖"],
+c4:["阳台与屋顶改为遮阳种植；选择耐紫外线与耐寒作物；留存种子","启动抗逆品种推广；使用遮阳网与温室；保护种质资源库"],
+c5:["家庭囤备以谷物、豆类与罐头为主，不过度囤积；学习保存与烹饪技巧","动用战略粮储；限制出口与囤积；配给制度与公平分配；扩大块根茎与食用菌生产"],
+c7:["保留现金与生活必需品；避免恐慌性抢购；邻里互助","稳定金融与支付系统；保障关键物资的运输与分配；国际协调贸易与援助"],
+c8:["关注卫星服务恢复进度","评估重建成本与优先级；国际共享碎片监测；分阶段重建关键卫星"],
+d1:["长期的剂量变化很小，主要靠官方监测；不必频繁检查身体","部署地面辐射与缪子监测网；发布年剂量与安全建议；资助相关研究"],
+d4:["臭氧恢复前，保持长期防晒习惯","持续跟踪臭氧恢复；借鉴蒙特利尔议定书的国际合作机制；限制进一步消耗臭氧的物质"],
+d2:["定期体检，关注皮肤与眼睛变化；重视孕期保护","建立癌症与出生缺陷监测；加强遗传咨询与医疗资源"],
+d3:["定期皮肤与眼科检查；日常防晒；维护心理健康","扩充皮肤科与眼科资源；制定职业防护标准；提供医保与药物保障"],
+d6:["支持保护区与种质保存；不乱引入外来物种","设立避难保护区；冷冻保存物种与种子；监测关键物种"],
+d5:["考虑向海洋性气候的中高纬度、地下与海岸迁移；学习室内种植","规划移民与地下空间；建设防护型基础设施；国际协调接收与安置"],
+e1:["可关注科普与展览，了解科学证据","支持冰芯、树轮与沉积物研究；建立样本库与长期监测"],
+e4:["可关注天文与地质科普","资助重元素与同位素研究；推动天文与地质的交叉合作"],
+e3:["长期关注气候趋势，不要把单一年份当作趋势","持续监测长期气候；制定中长期农业与能源规划"],
+e2:["了解地质史有助于理性看待风险","支持古生物与地球史研究；在科学上保持审慎"],
+e5:["保护生物多样性本身就是为未来保险","长期保存基因与种质资源；建设跨代科学与教育体系"]};
+var by={};N.forEach(function(n){by[n.id]=n;n.to=[]});
+N.forEach(function(n){n.f.forEach(function(p){by[p].to.push(n.id)})});
+function walk(id,key,out){by[id][key].forEach(function(x){if(!out[x]){out[x]=1;walk(x,key,out)}});return out}
+var grid=document.getElementById("grid"),det=document.getElementById("detail"),cur=null,stage=-1;
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x)e.textContent=x;return e}
+function build(){
+ grid.innerHTML="";
+ grid.appendChild(el("div","sh"));
+ S.forEach(function(s,i){var b=el("button","sh");b.style.setProperty("--c",s[2]);b.setAttribute("aria-pressed",stage===i);
+  var t=el("b","",s[0]);b.appendChild(t);if(s[1])b.appendChild(el("span","",s[1]));
+  b.onclick=function(){stage=stage===i?-1:i;build()};grid.appendChild(b)});
+ var up=cur?walk(cur,"f",{}):{},dn=cur?walk(cur,"to",{}):{};
+ L.forEach(function(r,li){
+  var rl=el("div","rl",r[0]);rl.appendChild(el("span","",r[1]));grid.appendChild(rl);
+  S.forEach(function(s,si){
+   var c=el("div","cell"+(stage>=0&&stage!==si?" off":""));
+   N.filter(function(n){return n.l===li&&n.s===si}).forEach(function(n){
+    var k=el("button","chip"+(n.id===cur?" sel":up[n.id]?" up":dn[n.id]?" dn":""),n.t);
+    k.onclick=function(){pick(n.id)};c.appendChild(k)});
+   grid.appendChild(c)})});
+ grid.className="grid"+(cur?" dim":"");
+}
+function list(ids,cls){var col=el("div",cls);return col}
+function pick(id){cur=id;build();var n=by[id];det.innerHTML="";
+ var m=el("div");m.appendChild(el("h3","",n.t));
+ m.appendChild(el("div","tag",L[n.l][0]+"｜"+S[n.s][0]+(S[n.s][1]?"（"+S[n.s][1]+"）":"")));
+ m.appendChild(el("p","",n.d));det.appendChild(m);
+ [["由什么导致",n.f,"col-up"],["进而引发",n.to,"col-dn"]].forEach(function(g){
+  var c=el("div",g[2]);c.appendChild(el("h4","",g[0]));var u=el("ul");
+  if(!g[1].length){u.appendChild(el("li","empty",g[0]==="由什么导致"?"这是整条因果链的起点":"这是链条的末端"))}
+  g[1].forEach(function(x){var li=el("li");var b=el("button","lk",by[x].t);b.onclick=function(){pick(x)};li.appendChild(b);u.appendChild(li)});
+  c.appendChild(u);det.appendChild(c)});
+ if(P[id]){var ac=el("div","act");[["普通人怎么做",P[id][0]],["政府部门怎么做",P[id][1]]].forEach(function(g){var d=el("div");d.appendChild(el("h4","",g[0]));var u=el("ul");g[1].split("；").forEach(function(t){u.appendChild(el("li","",t))});d.appendChild(u);ac.appendChild(d)});det.appendChild(ac)}
+ var xs=X[id]||[];if(xs.length){var ex=el("div","ext");xs.forEach(function(q){var s=el("div");s.appendChild(el("h4","",q[0]));
+  if(typeof q[1]==="string")s.appendChild(el("p","",q[1]));else{var ul=el("ul");q[1].forEach(function(t){ul.appendChild(el("li","",t))});s.appendChild(ul)}ex.appendChild(s)});det.appendChild(ex)}
+ if(id==="c2")det.appendChild(sim())}
+build();pick("a1");
+</script>
+</body>
+</html>
