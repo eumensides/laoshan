@@ -56,6 +56,18 @@ h2{font:600 22px "Noto Serif SC",serif;margin:28px 0 6px}
 .sim{grid-column:1/-1;border:1px solid var(--line);border-radius:8px;padding:14px}
 .sim input{width:100%}.rg{display:grid;grid-template-columns:120px 1fr 56px;gap:8px;align-items:center;font-size:13px;margin:5px 0}
 .bar{height:12px;border-radius:3px;background:var(--up)}.bar.m{background:var(--down)}.bar.h{background:#c8304a}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:10px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;font-size:14.5px}
+.card h3{font:600 18px "Noto Serif SC",serif;margin:0 0 4px}.card .tag{margin-bottom:10px}
+.card ol{margin:0;padding-left:20px}.card li{margin:0 0 6px}.card p{margin:8px 0 0}
+.warn{border-left:4px solid var(--down);padding:2px 0 2px 12px;color:var(--mut);font-size:13.5px;margin-top:10px}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.tabs button{font:inherit;font-size:14px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);border-radius:20px;padding:5px 14px;cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--sel);color:var(--selt);border-color:var(--sel)}
+.tabs button:focus-visible{outline:3px solid var(--up);outline-offset:2px}
+.st{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;display:grid;grid-template-columns:1fr 1fr;gap:6px 24px;font-size:14.5px}
+@media(max-width:820px){.st{grid-template-columns:1fr}}
+.st h3{grid-column:1/-1;margin:0;font:600 20px "Noto Serif SC",serif}.st p{margin:4px 0}.st b{color:var(--up)}.st .full{grid-column:1/-1}
 .note{margin-top:30px;font-size:14px;color:var(--mut);max-width:48em}
 .note p{margin:0 0 8px}
 </style>
@@ -70,6 +82,30 @@ h2{font:600 22px "Noto Serif SC",serif;margin:28px 0 6px}
 <div class="fact"><b>伤害分几波到来</b>从毫秒级的电子故障，到延迟数年的宇宙线，再到百万年的地质记录。</div>
 </div>
 
+<h2>先看源头：恒星的一生与元素的来历</h2>
+<p class="hint">短伽马射线暴常由两颗致密星（中子星或黑洞）并合产生，而这类事件同时也是金、铂等重元素的重要产地。点击阶段，看恒星如何一步步“烧”出元素。</p>
+<div class="tabs" id="tabs" role="group" aria-label="恒星阶段"></div>
+<div class="st" id="star" aria-live="polite"></div>
+
+<h2>地球真的被击中过吗：两个证据</h2>
+<p class="hint">下面两个案例都是学界的假说或推断，证据强度不同，请对照每张卡片末尾的说明。</p>
+<div class="cards">
+<div class="card"><h3>奥陶纪末：约 4.4 亿年前</h3><div class="tag">假说｜Melott、Lieberman、Thomas 等人，2003–2005</div>
+<ol><li><b>约 10 秒的闪光</b>：研究者估算，距离在约 6000 光年内的伽马射线暴，到达地面的紫外线可达到不亚于太阳的强度，这就是“天空短暂出现第二个太阳”的由来，属于模型推演，没有当时的记录。</li>
+<li><b>数周内</b>：伽马射线使氮气、氧气裂解，生成一氧化氮和二氧化氮，臭氧层最多可损失约一半。</li>
+<li><b>数年内</b>：五年后臭氧仍至少损失约 10%，太阳紫外线持续增强，浮游生物和浅水物种受创更重。</li>
+<li><b>降温</b>：二氧化氮形成褐色气溶胶遮光，可能触发冈瓦纳冰期，造成第一幕灭绝。</li>
+<li><b>后果</b>：约 60% 的海洋无脊椎动物消失（Thomas 估算），古生物学界也常引用约 85% 海洋物种。</li></ol>
+<div class="warn">需要澄清：被破坏的是臭氧层（最多约一半），不是 70% 的大气；脊椎动物（鱼类）早在寒武纪就已出现，志留—泥盆纪的繁盛并没有被证明与该事件有直接因果。作者自己也称之为“可信的工作假说”，冰期仍是主流解释。</div></div>
+<div class="card"><h3>公元 774–775 年：真实的树轮记录</h3><div class="tag">推断｜Miyake 等 2012；Hambaryan 与 Neuhäuser 2013</div>
+<ol><li><b>发现</b>：日本雪松年轮在 774 至 775 年间，碳-14 和铍-10 突然升高，意味着有一次短时间的高能辐射袭击了地球。</li>
+<li><b>排除</b>：当时没有超新星记录，也未找到超新星遗迹；太阳耀斑的强度被认为不足以解释，不过学界对此仍有争论。</li>
+<li><b>推断</b>：德国耶拿大学的研究者提出，这是一次银河系内的短伽马射线暴，来自两个致密天体并合，距离约 3000 至 12000 光年。</li>
+<li><b>为何没灭绝</b>：他们认为若比约 3000 光年更近，就会造成部分物种灭绝，而这次什么也没发生。</li>
+<li><b>放到今天</b>：同样的事件可能让现代的敏感电子系统受冲击，卫星与通信首当其冲。</li></ol>
+<div class="warn">这仍是一个假说。太阳极端粒子事件等解释也被提出，学界尚无定论；在过去 3000 年的树轮中，只出现过这一次类似的尖峰。</div></div>
+</div>
+
 <h2>影响矩阵</h2>
 <p class="hint">点击任一方块，查看它的成因（蓝）与后果（橙）。点击列标题可聚焦某个时间段。</p>
 <div class="scroll"><div class="grid" id="grid" role="group" aria-label="影响矩阵"></div></div>
@@ -78,6 +114,7 @@ h2{font:600 22px "Noto Serif SC",serif;margin:28px 0 6px}
 <div class="detail" id="detail" aria-live="polite"></div>
 
 <div class="note">
+<p>资料来源：Melott 等，《Did a gamma-ray burst initiate the late Ordovician mass extinction?》（2004）；Thomas 等（2005，天体物理期刊快报）；Miyake 等（2012，Nature）；Hambaryan 与 Neuhäuser（2013，MNRAS）；Wallner 等（2015 Nature、2021 Science）；亥姆霍兹德累斯顿-罗森多夫研究中心 2026 年 6 月新闻稿。</p>
 <p>说明：这是基于大气化学与天体物理模型的情景推演，数值与时间点存在较大不确定性，带“推测”的条目尚无定论。</p>
 <p>短暴通常由中子星并合产生，能量低于长暴，因此需要近得多的距离才会造成全球性后果，发生概率极低。爆发多为窄束喷流，只有被束流扫过的方向才会受到直接冲击。</p>
 </div>
@@ -218,6 +255,20 @@ function pick(id){cur=id;build();var n=by[id];det.innerHTML="";
  var xs=X[id]||[];if(xs.length){var ex=el("div","ext");xs.forEach(function(q){var s=el("div");s.appendChild(el("h4","",q[0]));
   if(typeof q[1]==="string")s.appendChild(el("p","",q[1]));else{var ul=el("ul");q[1].forEach(function(t){ul.appendChild(el("li","",t))});s.appendChild(ul)}ex.appendChild(s)});det.appendChild(ex)}
  if(id==="c2")det.appendChild(sim())}
+X.e2=[["奥陶纪末假说","2003 至 2005 年，Melott 等人提出：约 6000 光年内的一次伽马射线暴，可能引发了约 4.4 亿年前的大灭绝。该事件被作者称为“可信的工作假说”，没有直接证据，与冈瓦纳冰期的主流解释并存。"]];
+X.e1=[["公元 774–775 年的树轮","年轮中的碳-14 约升高 1.2%，同时铍-10 也升高，可能是短伽马射线暴的痕迹，但也有太阳极端事件的解释。"],["怎么识别","同位素在全球树木和极地冰芯中同步出现，比单一地点的异常更可信。"]];
+X.e4=[["深海里的重元素","深海铁锰结壳中检测到来自宇宙的钚-244，它半衰期约 8000 万年，说明有重元素从太空落入地球。2026 年的研究认为它的到达与铁-60 的超新星信号不吻合，指向很罕见的 r 过程事件（如中子星并合或极端超新星），发生在一亿多年前。"]];
+var ST=[["主序星","氢→氦","核心温度约 1000 万 K 以上","质子-质子链与 CNO 循环，4 个氢核合成 1 个氦核","太阳正处于这一阶段，约 50 亿年后离开","大爆炸只造出氢、氦和极微量的锂；比锂更重的元素，几乎都来自恒星及其爆发。",""],
+["红巨星","氦→碳、氧","核心温度约 1 亿 K","3α 过程：3 个氦核合成碳-12，再与氦结合成氧-16","质量不超过约 8 倍太阳的恒星到此为止，抛出外壳，留下碳氧白矮星","碳是生命的骨架，氧构成水与岩石，来自这一阶段。","白矮星不再聚变，只是慢慢冷却，并不会烧出铁或金。"],
+["大质量恒星","碳、氖、氧、硅→铁","核心温度可达数十亿 K","依次燃烧碳、氖、氧、硅，最终堆积成铁核，形成“洋葱”结构","质量约 8 倍太阳以上的恒星会走到这里","地球上大部分铁来自这一阶段。","铁族元素（铁-56、镍-62 附近）的比结合能最高，再聚变不再净放能，炉子熄火；严格说比结合能最高的是镍-62，而不是铁-56。"],
+["超新星与中子星并合","金、铂、铀","极高的中子密度","s 过程（慢中子俘获，发生在红巨星内）造出约一半的重核，如锶、钡、铅；r 过程（快中子俘获）造出金、铂、铀","核心坍缩超新星，以及两颗中子星并合的千新星","2017 年观测到的中子星并合，首次直接确认千新星能合成金、铂等元素；中子星并合是金的主要来源之一，但超新星等其他来源是否也有贡献仍有争论。","短伽马射线暴常伴随中子星并合，所以它既是灾难，也是金子的产地。"],
+["钚","人工与痕量天然","反应堆或 r 过程","人工钚-239：铀-238 吸收中子后经两次 β 衰变得到","最长寿的钚-244 半衰期约 8000 万年，太阳系诞生时的钚早已衰变殆尽","我们用的钚主要是人工产物；但钚-244 也是 r 过程的产物，微量落入地球的钚在深海结壳中被测到。","所以不能说钚“不属于恒星链条”：天然钚是遥远r过程事件的信使，只是极为稀少。"]];
+var sk=0;function rs(){var tb=document.getElementById("tabs"),s=document.getElementById("star");tb.innerHTML="";s.innerHTML="";
+ST.forEach(function(q,i){var b=el("button","",q[0]);b.setAttribute("aria-pressed",i===sk);b.onclick=function(){sk=i;rs()};tb.appendChild(b)});
+var q=ST[sk];s.appendChild(el("h3","",q[0]+"："+q[1]));
+[["温度",q[2]],["核反应",q[3]],["天体状态",q[4]],["代表元素",q[5]]].forEach(function(g){var p=el("p");var b=el("b","",g[0]+"：");p.appendChild(b);p.appendChild(document.createTextNode(g[1]));s.appendChild(p)});
+if(q[6]){var p=el("p","full");p.appendChild(el("b","","常见误区："));p.appendChild(document.createTextNode(q[6]));s.appendChild(p)}}
+rs();
 build();pick("a1");
 </script>
 </body>
