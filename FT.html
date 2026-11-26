@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>傅里叶变换：把世界还原成“配方”</title>
+<style>
+:root{--bg:#fffaf3;--card:#fff;--tx:#2b2620;--mu:#7a6f62;--ac:#e8590c;--ac2:#1c7ed6;--bd:#eadfce;--hl:#fff1e0;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#16130f;--card:#201c17;--tx:#f1e9dd;--mu:#a89c8c;--ac:#ff8a3d;--ac2:#5aa9f0;--bd:#3a332a;--hl:#2c241b;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#16130f;--card:#201c17;--tx:#f1e9dd;--mu:#a89c8c;--ac:#ff8a3d;--ac2:#5aa9f0;--bd:#3a332a;--hl:#2c241b;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:17px/1.85 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+main{max-width:760px;margin:0 auto;padding:24px 18px 60px}
+header{text-align:center;padding:36px 0 16px}
+h1{font-size:2rem;line-height:1.3;margin:.3em 0}
+h1 span{color:var(--ac)}
+h2{font-size:1.4rem;margin:2.2em 0 .4em;padding-left:12px;border-left:5px solid var(--ac)}
+.sub{color:var(--mu)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:18px;margin:16px 0}
+.tip{background:var(--hl);border-radius:12px;padding:12px 16px;margin:14px 0}
+canvas{width:100%;height:200px;display:block}
+label{display:flex;align-items:center;gap:10px;font-size:.92rem;margin:6px 0}
+label b{min-width:5.5em;color:var(--mu);font-weight:500}
+input[type=range]{flex:1;accent-color:var(--ac)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.grid .card{margin:0;padding:14px}
+.grid h3{margin:0 0 4px;font-size:1.05rem}
+.grid p{margin:0;font-size:.93rem;line-height:1.7;color:var(--mu)}
+.big{font-size:1.15rem;text-align:center;font-weight:600;margin:12px 0}
+code{background:var(--hl);padding:2px 6px;border-radius:6px;font-size:.9em}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+td,th{border-bottom:1px solid var(--bd);padding:8px;text-align:left;vertical-align:top}
+footer{text-align:center;color:var(--mu);font-size:.85rem;margin-top:48px}
+</style>
+</head>
+<body>
+<main>
+<header>
+<div class="sub">一篇给“数学恐惧症患者”的科普</div>
+<h1>傅里叶变换：<br>把世界还原成<span>“配方”</span></h1>
+<p class="sub">不用公式也能懂，最后还有公式的白话翻译。</p>
+</header>
+
+<h2>① 先来个比喻：奶昔与配方</h2>
+<p>你喝了一杯奶昔，想知道里面放了什么。直接看，只是一杯糊状的东西，分不清谁是谁。</p>
+<p>傅里叶变换就像一台神奇的“成分分析仪”：把奶昔倒进去，它告诉你<b>“香蕉 3 份、草莓 1 份、牛奶 2 份”</b>。</p>
+<p>声音、图像、心电图、股价，都是一杯杯“奶昔”。它们里面的“水果”，就是<b>不同频率的正弦波</b>，也就是最简单的、一起一伏的波浪。傅里叶变换做的事，是把一团混乱的信号拆成一张清晰的“频率配方单”。</p>
+
+<h2>② 实验一：弯的也能掰直？</h2>
+<p>你相信吗？把一堆圆滑的正弦波加起来，能拼出一个带直角的方波。拖动滑块，看看要加多少个波。</p>
+<div class="card">
+<canvas id="c1"></canvas>
+<label><b>正弦波个数</b><input id="n" type="range" min="1" max="40" value="1"><span id="nv">1</span></label>
+<div class="sub" style="font-size:.88rem">虚线是目标方波，实线是叠加结果。第 k 个波的频率是 (2k−1) 倍，力气是 1/(2k−1)，越高频越小。</div>
+</div>
+<div class="tip">你会发现：个数越多越像方波。但拐角处总有一点“冒头”，这叫吉布斯现象，是傅里叶级数著名的小脾气。</div>
+
+<h2>③ 两个世界：时域和频域</h2>
+<p>同一个信号，有两种看法：</p>
+<div class="grid">
+<div class="card"><h3>⏱ 时域</h3><p>横轴是时间。像看<b>乐谱录音的波形</b>：每一刻声音有多大。直观，但看不出里面有哪些音。</p></div>
+<div class="card"><h3>🎼 频域</h3><p>横轴是频率。像看<b>钢琴的琴键灯</b>：哪些键亮着、亮多亮，一目了然。</p></div>
+</div>
+<p>傅里叶变换就是两个世界之间的“传送门”：时域 → 频域是正变换，频域 → 时域是逆变换。同一个东西，换个角度，很多难题就变简单了。</p>
+
+<h2>④ 实验二：自己当调音师</h2>
+<p>下面是 4 个“琴键”，推动滑块调大小。上图是你调出的波形（时域），下图是配方柱状图（频域）。</p>
+<div class="card">
+<canvas id="c2" style="height:150px"></canvas>
+<canvas id="c3" style="height:110px"></canvas>
+<label><b>1 倍频</b><input class="m" type="range" min="0" max="1" step=".05" value="1"></label>
+<label><b>2 倍频</b><input class="m" type="range" min="0" max="1" step=".05" value="0"></label>
+<label><b>3 倍频</b><input class="m" type="range" min="0" max="1" step=".05" value="0.5"></label>
+<label><b>5 倍频</b><input class="m" type="range" min="0" max="1" step=".05" value="0"></label>
+</div>
+<p>注意：波形越复杂，不代表配方越复杂。只要看柱状图，几根柱子就能说清楚。这就是频域的魔力。</p>
+
+<h2>⑤ 公式的白话翻译</h2>
+<p>教科书上的傅里叶变换长这样：</p>
+<div class="big">F(ω) = ∫ f(t) · e<sup>−iωt</sup> dt</div>
+<p>别怕，它只干三件事：</p>
+<table>
+<tr><td><b>造探测器</b></td><td><code>e<sup>−iωt</sup></code> 是一个以 ω 频率转圈的“探测器”，欧拉公式告诉我们它就是 cos 与 sin 的组合。</td></tr>
+<tr><td><b>相乘</b></td><td>把信号 f(t) 与探测器逐点相乘。频率对得上的部分步调一致，乘出来总是正的；对不上的正负抵消。</td></tr>
+<tr><td><b>求和（积分）</b></td><td>全部加起来。对得上，结果大；对不上，约等于 0。</td></tr>
+</table>
+<p>就像在嘈杂的广播里拧收音机旋钮：每转到一个频率（ω），听听信号有多响，把所有 ω 扫一遍，就得到了整张“频谱”。</p>
+
+<h2>⑥ 它到底有什么用？几乎无处不在</h2>
+<div class="grid">
+<div class="card"><h3>🎵 MP3 / 音乐压缩</h3><p>人耳听不到的频率，直接丢掉，文件小了十倍。</p></div>
+<div class="card"><h3>🖼 JPEG 图片</h3><p>图像也能拆成“花纹的配方”，不重要的细节花纹少存点。</p></div>
+<div class="card"><h3>🎧 降噪耳机</h3><p>找出噪音的频率，反向制造一个抵消它。</p></div>
+<div class="card"><h3>🏥 核磁共振 MRI</h3><p>机器收到的是频率信号，用傅里叶变换“翻译”成人体图像。</p></div>
+<div class="card"><h3>📶 Wi-Fi / 5G</h3><p>OFDM 技术把数据分在很多频率上并行传输，靠的就是 FFT。</p></div>
+<div class="card"><h3>🔍 听歌识曲</h3><p>把歌曲变成“频率指纹”，几秒内在海量曲库里匹配。</p></div>
+<div class="card"><h3>🌋 地震与天文</h3><p>从杂乱的震动、星光里找出隐藏的周期。</p></div>
+<div class="card"><h3>📈 金融与气象</h3><p>用来分析价格、气温里的周期性成分（但别指望它预测暴富）。</p></div>
+</div>
+
+<h2>⑦ FFT：让它快得飞起</h2>
+<p>计算机处理的是一个个采样点，用的是“离散傅里叶变换”（DFT）。老办法需要做大约 N² 次运算：1 百万个点，就要 1 万亿次，太慢。</p>
+<p>1965 年，库利（Cooley）与图基（Tukey）重新发现并推广了<b>快速傅里叶变换（FFT）</b>。它用“分而治之”：把大问题切成小问题，反复利用重复的计算，把运算量降到约 N·log N。同样 100 万个点，只要大约 2 千万次，快了五万倍。</p>
+<div class="tip">FFT 常被誉为 20 世纪最重要的算法之一：没有它，就没有流畅的手机通信、数字音视频和医学影像。</div>
+
+<h2>⑧ AI 生图里的傅里叶：先画轮廓，再画细节</h2>
+<p>Midjourney、Stable Diffusion 这类“扩散模型”的训练，是先把图片一步步加噪声变成“雪花屏”，再教 AI 倒着一步步擦掉噪声。傅里叶在这里有一个很妙的角色。</p>
+<p><b>关键事实一：</b>自然图像的“配方”很偏科。大块的明暗、轮廓（低频）力气很大，细小的纹理、毛发（高频）力气很小，频率越高越弱。<br><b>关键事实二：</b>扩散用的白噪声在每个频率上力气一样大。</p>
+<p>结果就是：加噪时，<b>高频细节最先被淹没</b>，低频轮廓最后才消失。反过来生成时，AI 先把大轮廓画出来，再慢慢补细节，像画家先打草稿再描毛发。研究者把这个性质叫“频谱自回归”。拖动滑块亲眼看看：</p>
+<div class="card">
+<canvas id="c4" style="height:140px"></canvas>
+<canvas id="c5" style="height:120px"></canvas>
+<label><b>噪声强度</b><input id="s" type="range" min="0" max="100" value="20"><span id="sv"></span></label>
+<div class="sub" style="font-size:.88rem">上图：每根柱子是一个频率（左低右高），虚线是噪声水平，被淹没的变灰。下图：还“看得清”的频率合成的信号，虚线是原信号。往右拖是加噪，往左拖就是 AI 生成时的去噪过程。</div>
+</div>
+<p>这个发现已经被拿来做实事：</p>
+<div class="grid">
+<div class="card"><h3>⚡ 省算力</h3><p>早期高频还淹在噪声里，没必要用高分辨率去算。有研究让分辨率随去噪逐步增大，加速图像和视频生成。</p></div>
+<div class="card"><h3>🧱 直接在频域画图</h3><p>DCTdiff 学 JPEG 的思路，在 DCT（傅里叶的近亲）空间里做扩散，并从理论上说明扩散就是“频谱自回归”。</p></div>
+<div class="card"><h3>🔭 由粗到细的生成</h3><p>VAR 这类模型先预测小分辨率图，再逐级放大，本质也是先低频后高频。</p></div>
+<div class="card"><h3>⚖️ 让每个频率公平</h3><p>标准加噪对高频不友好，有研究改成“所有频率同速加噪”，在高频占主导的数据上效果更好。</p></div>
+</div>
+<div class="tip">还有一个背景：神经网络天生偏爱先学低频、难学高频，这叫“谱偏置”。给网络输入一组傅里叶特征（不同频率的正弦余弦）能帮它学到更细的细节。</div>
+
+<h2>⑨ 大语言模型里的傅里叶：藏在“位置”里</h2>
+<p>先泼点冷水：ChatGPT、Claude 这类大模型的主干是注意力加前馈网络，并不是“一个大号傅里叶变换”。但在几个关键位置，傅里叶的影子很清楚：</p>
+<table>
+<tr><td><b>📍 位置编码</b></td><td>模型读的是一串词，必须知道谁在前谁在后。2017 年原版 Transformer 就用不同频率的正弦、余弦给每个位置“盖章”，像一组快慢不同的时钟指针，合起来能唯一确定位置。</td></tr>
+<tr><td><b>🔄 RoPE 旋转位置编码</b></td><td>现在主流大模型常用的做法：把向量两两配对，按位置旋转一个角度，每一对对应一个频率。有研究用信号处理理论指出，RoPE 隐式地做了一次非均匀离散傅里叶变换，并据此提出 FoPE，改善长文本外推。</td></tr>
+<tr><td><b>🧩 FNet</b></td><td>干脆用傅里叶变换替换注意力来“混合”词与词的信息，不用学习参数，却保留了 BERT 的大部分效果，而且更快。</td></tr>
+<tr><td><b>🚀 FFT 加速</b></td><td>有研究把 FFT 用到带 RoPE 的注意力计算上，试图突破 N² 的算力墙。</td></tr>
+<tr><td><b>🎲 随机傅里叶特征</b></td><td>有学者用这个视角分析 softmax 注意力，把它看成对查询与键做“随机旋转”，并据此改进新型架构。</td></tr>
+</table>
+<p>所以一句话：<b>在 AI 生图里，傅里叶解释了“为什么先画轮廓再画细节”；在大模型里，它是“知道词在第几位”的数学语言。</b>它们都在重复同一个老道理：把复杂的东西拆成不同快慢的波。</p>
+
+<h2>⑩ 一个小故事</h2>
+<p>1807 年，法国数学家傅里叶研究“铁棒里的热怎么传播”，提出了一个大胆想法：<b>任何函数都能写成正弦波的和</b>。当时的大佬拉格朗日认为这不可能，论文被搁置多年。后来人们发现：虽然严格条件要细究，但这个思想本身极其强大，深刻改变了数学、物理和工程。</p>
+
+<h2>⑪ 三个常见误解</h2>
+<table>
+<tr><td>❌ 只对周期信号有用</td><td>✅ 傅里叶级数针对周期信号，傅里叶变换可处理非周期信号。</td></tr>
+<tr><td>❌ 频率配方会“丢信息”</td><td>✅ 正逆变换完全可逆，没有信息损失，只是换了表达方式。</td></tr>
+<tr><td>❌ 只知道有哪些频率，不知道何时出现</td><td>✅ 对！所以有了短时傅里叶变换、小波变换，来兼顾“何时”和“多高”。</td></tr>
+</table>
+
+<h2>🎯 一句话总结</h2>
+<div class="card big">任何复杂信号，都是简单正弦波的合奏；<br>傅里叶变换，就是帮你听出每位乐手的音量。</div>
+
+<footer>基于傅里叶变换的经典讲法重新编写 · 含三个可交互小实验 · ⑧⑨ 参考了近年扩散模型与位置编码的相关论文</footer>
+</main>
+
+<script>
+function setup(c){var d=window.devicePixelRatio||1,w=c.clientWidth,h=c.clientHeight;c.width=w*d;c.height=h*d;var x=c.getContext('2d');x.scale(d,d);return{x:x,w:w,h:h}}
+function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim()}
+function axis(g){g.x.strokeStyle=css('--bd');g.x.lineWidth=1;g.x.beginPath();g.x.moveTo(0,g.h/2);g.x.lineTo(g.w,g.h/2);g.x.stroke()}
+function draw1(){
+ var c=document.getElementById('c1'),g=setup(c),N=+document.getElementById('n').value;
+ document.getElementById('nv').textContent=N;axis(g);var X=g.x,P=4*Math.PI,A=g.h*0.3;
+ X.setLineDash([5,4]);X.strokeStyle=css('--mu');X.beginPath();
+ for(var i=0;i<=g.w;i++){var t=i/g.w*P,v=Math.sin(t)>=0?1:-1;X[i?'lineTo':'moveTo'](i,g.h/2-v*A*1.27)}X.stroke();
+ X.setLineDash([]);X.strokeStyle=css('--ac');X.lineWidth=2.5;X.beginPath();
+ for(var i=0;i<=g.w;i++){var t=i/g.w*P,s=0;for(var k=1;k<=N;k++){var m=2*k-1;s+=Math.sin(m*t)/m}
+  X[i?'lineTo':'moveTo'](i,g.h/2-s*A*1.27)}X.stroke();
+}
+function draw2(){
+ var f=[1,2,3,5],a=[].map.call(document.querySelectorAll('.m'),function(e){return +e.value});
+ var g=setup(document.getElementById('c2'));axis(g);var X=g.x,sum=a.reduce(function(p,q){return p+q},0)||1;
+ X.strokeStyle=css('--ac2');X.lineWidth=2.5;X.beginPath();
+ for(var i=0;i<=g.w;i++){var t=i/g.w*2*Math.PI,s=0;for(var k=0;k<4;k++)s+=a[k]*Math.sin(f[k]*t);
+  X[i?'lineTo':'moveTo'](i,g.h/2-s/sum*g.h*0.42)}X.stroke();
+ var b=setup(document.getElementById('c3')),Y=b.x,bw=b.w/4;
+ Y.fillStyle=css('--mu');Y.font='12px sans-serif';Y.textAlign='center';
+ for(var k=0;k<4;k++){var hh=a[k]*(b.h-34);Y.fillStyle=css('--ac');Y.fillRect(k*bw+bw*0.3,b.h-20-hh,bw*0.4,hh);
+  Y.fillStyle=css('--mu');Y.fillText(f[k]+' 倍频',k*bw+bw/2,b.h-5)}
+}
+function draw3(){
+ var s=+document.getElementById('s').value,sg=0.03*Math.pow(40,s/100),K=24,ph=[],dead=0;
+ for(var k=1;k<=K;k++){ph.push(k*2.3%6.28);if(1/k<=sg)dead++}
+ document.getElementById('sv').textContent=dead+'/'+K+' 被淹没';
+ var b=setup(document.getElementById('c4')),Y=b.x,bw=b.w/K,H=b.h-26;
+ for(var k=1;k<=K;k++){var a=1/k;Y.fillStyle=a>sg?css('--ac'):css('--bd');Y.fillRect((k-1)*bw+bw*0.15,b.h-18-a*H,bw*0.7,a*H)}
+ Y.setLineDash([5,4]);Y.strokeStyle=css('--ac2');Y.lineWidth=2;var ny=b.h-18-Math.min(sg,1)*H;Y.beginPath();Y.moveTo(0,ny);Y.lineTo(b.w,ny);Y.stroke();Y.setLineDash([]);
+ Y.fillStyle=css('--mu');Y.font='12px sans-serif';Y.textAlign='left';Y.fillText('低频（轮廓）',2,b.h-4);Y.textAlign='right';Y.fillText('高频（细节）',b.w-2,b.h-4);
+ var g=setup(document.getElementById('c5')),X=g.x;axis(g);
+ function line(only,col,dash){X.setLineDash(dash?[4,4]:[]);X.strokeStyle=col;X.lineWidth=dash?1.5:2.5;X.beginPath();
+  for(var i=0;i<=g.w;i++){var t=i/g.w*2*Math.PI,v=0;for(var k=1;k<=K;k++)if(!only||1/k>sg)v+=Math.sin(k*t+ph[k-1])/k;
+   X[i?'lineTo':'moveTo'](i,g.h/2-v*g.h*0.13)}X.stroke();X.setLineDash([])}
+ line(false,css('--mu'),true);line(true,css('--ac'),false);
+}
+function all(){draw1();draw2();draw3()}
+document.getElementById('n').oninput=draw1;document.getElementById('s').oninput=draw3;
+[].forEach.call(document.querySelectorAll('.m'),function(e){e.oninput=draw2});
+window.addEventListener('resize',all);
+matchMedia('(prefers-color-scheme:dark)').addEventListener('change',all);
+all();
+</script>
+</body>
+</html>
